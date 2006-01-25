@@ -4,6 +4,10 @@
 	Version="7.10"
 	Name="XML"
 	ProjectGUID="{706D3603-2D7F-4F20-8F15-3377188B0DF8}"
+	SccProjectName="SAK"
+	SccAuxPath="SAK"
+	SccLocalPath="SAK"
+	SccProvider="SAK"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
