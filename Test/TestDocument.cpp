@@ -48,6 +48,9 @@ void TestDocument()
 	TEST_TRUE(pDoc->GetChildCount() == 2);
 	TEST_TRUE((*++pDoc->BeginChild())->Type() == XML::ELEMENT_NODE);
 
+	TEST_TRUE(pDoc->HasRootElement() == true);
+	TEST_TRUE(pDoc->GetRootElement() == pElement);
+
 	TEST_THROWS(pDoc->AppendChild(pElement));
 	TEST_THROWS(pDoc->AppendChild(pDoc));
 }

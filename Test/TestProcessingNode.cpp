@@ -17,4 +17,13 @@ void TestProcessingNode()
 	XML::ProcessingNodePtr pNode(new XML::ProcessingNode);
 
 	TEST_TRUE(pNode->Type() == XML::PROCESSING_NODE);
+	TEST_TRUE(pNode->Target().empty());
+
+	pNode = XML::ProcessingNodePtr(new XML::ProcessingNode(TXT("Target1")));
+
+	TEST_TRUE(pNode->Target() == TXT("Target1"));
+
+	pNode->SetTarget(TXT("Target2"));
+
+	TEST_TRUE(pNode->Target() == TXT("Target2"));
 }
