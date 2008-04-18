@@ -27,6 +27,11 @@ typedef std::vector<NodePtr> Nodes;
 class NodeContainer
 {
 public:
+	//! The container const iterator.
+	typedef Nodes::const_iterator const_iterator;
+	//! The container iterator.
+	typedef Nodes::iterator iterator;
+
 	//
 	// Properties.
 	//
@@ -38,16 +43,16 @@ public:
 	size_t GetChildCount() const;
 	
 	//! Get the start iterator for the child nodes.
-	Nodes::const_iterator BeginChild() const;
+	const_iterator BeginChild() const;
 
 	//! Get the end iterator for the child nodes.
-	Nodes::const_iterator EndChild() const;
+	const_iterator EndChild() const;
 
 	//! Get the start iterator for the child nodes.
-	Nodes::iterator BeginChild();
+	iterator BeginChild();
 
 	//! Get the end iterator for the child nodes.
-	Nodes::iterator EndChild();
+	iterator EndChild();
 
 	//
 	// Methods.
@@ -94,7 +99,7 @@ inline size_t NodeContainer::GetChildCount() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the start iterator for the child nodes.
 
-inline Nodes::const_iterator NodeContainer::BeginChild() const
+inline NodeContainer::const_iterator NodeContainer::BeginChild() const
 {
 	return m_vChildNodes.begin();
 }
@@ -102,7 +107,7 @@ inline Nodes::const_iterator NodeContainer::BeginChild() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the end iterator for the child nodes.
 
-inline Nodes::const_iterator NodeContainer::EndChild() const
+inline NodeContainer::const_iterator NodeContainer::EndChild() const
 {
 	return m_vChildNodes.end();
 }
@@ -110,7 +115,7 @@ inline Nodes::const_iterator NodeContainer::EndChild() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the start iterator for the child nodes.
 
-inline Nodes::iterator NodeContainer::BeginChild()
+inline NodeContainer::iterator NodeContainer::BeginChild()
 {
 	return m_vChildNodes.begin();
 }
@@ -118,7 +123,7 @@ inline Nodes::iterator NodeContainer::BeginChild()
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the end iterator for the child nodes.
 
-inline Nodes::iterator NodeContainer::EndChild()
+inline NodeContainer::iterator NodeContainer::EndChild()
 {
 	return m_vChildNodes.end();
 }
