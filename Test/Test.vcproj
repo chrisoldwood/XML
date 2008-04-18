@@ -4,6 +4,10 @@
 	Version="7.10"
 	Name="Test"
 	ProjectGUID="{628EB416-09CC-41B1-BBB6-3834FF58E083}"
+	SccProjectName="SAK"
+	SccAuxPath="SAK"
+	SccLocalPath="SAK"
+	SccProvider="SAK"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -151,7 +155,16 @@
 				RelativePath=".\Test.cpp">
 			</File>
 			<File
+				RelativePath=".\TestAttributes.cpp">
+			</File>
+			<File
+				RelativePath=".\TestCharTable.cpp">
+			</File>
+			<File
 				RelativePath=".\TestCommentNode.cpp">
+			</File>
+			<File
+				RelativePath=".\TestDocTypeNode.cpp">
 			</File>
 			<File
 				RelativePath=".\TestDocument.cpp">
@@ -163,7 +176,13 @@
 				RelativePath=".\TestProcessingNode.cpp">
 			</File>
 			<File
+				RelativePath=".\TestReader.cpp">
+			</File>
+			<File
 				RelativePath=".\TestTextNode.cpp">
+			</File>
+			<File
+				RelativePath=".\TestWriter.cpp">
 			</File>
 		</Filter>
 		<Filter
