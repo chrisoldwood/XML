@@ -1,0 +1,7 @@
+<!DOCTYPE TEST>
+<?xml version = "1.0" encoding="utf-8"?>
+<!-- A comment -->
+<?test test = "test"?>
+<TEST a = "b"  >
+<TEST  />
+</TEST  > 
