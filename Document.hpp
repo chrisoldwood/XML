@@ -13,6 +13,7 @@
 
 #include "Node.hpp"
 #include "NodeContainer.hpp"
+#include "ElementNode.hpp"
 
 namespace XML
 {
@@ -41,10 +42,10 @@ public:
 	//
 
 	//! Get the root element.
-	const NodePtr GetRootElement() const;
+	const ElementNodePtr GetRootElement() const;
 
 	//! Get the root element.
-	NodePtr GetRootElement();
+	ElementNodePtr GetRootElement();
 
 private:
 	//

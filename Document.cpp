@@ -44,35 +44,35 @@ bool Document::HasRootElement() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the root element.
 
-const NodePtr Document::GetRootElement() const
+const ElementNodePtr Document::GetRootElement() const
 {
 	// Find the first element node...
 	for (Nodes::const_iterator it = BeginChild(); it != EndChild(); ++it)
 	{
-		const NodePtr& pNode = *it;
+		NodePtr pNode = *it;
 
 		if (pNode->Type() == ELEMENT_NODE)
-			return pNode;
+			return Core::static_ptr_cast<ElementNode>(pNode);
 	}
 
-	return NodePtr();
+	return ElementNodePtr();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the root element.
 
-NodePtr Document::GetRootElement()
+ElementNodePtr Document::GetRootElement()
 {
 	// Find the first element node...
 	for (Nodes::const_iterator it = BeginChild(); it != EndChild(); ++it)
 	{
-		const NodePtr& pNode = *it;
+		NodePtr pNode = *it;
 
 		if (pNode->Type() == ELEMENT_NODE)
-			return pNode;
+			return Core::static_ptr_cast<ElementNode>(pNode);
 	}
 
-	return NodePtr();
+	return ElementNodePtr();
 }
 
 //namespace XML
