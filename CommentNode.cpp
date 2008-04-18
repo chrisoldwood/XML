@@ -19,7 +19,7 @@ CommentNode::CommentNode()
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from a string comment.
 
-CommentNode::CommentNode(const std::tstring& strComment)
+CommentNode::CommentNode(const tstring& strComment)
 	: m_strComment(strComment)
 {
 }

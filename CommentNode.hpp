@@ -26,7 +26,7 @@ public:
 	CommentNode();
 
 	//! Construction from a string comment.
-	CommentNode(const std::tstring& strComment);
+	CommentNode(const tstring& strComment);
 
 	//
 	// Properties
@@ -36,16 +36,16 @@ public:
 	virtual NodeType Type() const;
 
 	//! Get the comment.
-	const std::tstring& Comment() const;
+	const tstring& Comment() const;
 
 	//! Set the comment.
-	void SetComment(const std::tstring& strComment);
+	void SetComment(const tstring& strComment);
 
 private:
 	//
 	// Members.
 	//
-	std::tstring	m_strComment;		//!< The string comment.
+	tstring	m_strComment;		//!< The string comment.
 
 	//! Destructor.
 	virtual ~CommentNode();
@@ -65,7 +65,7 @@ inline NodeType CommentNode::Type() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the comment.
 
-inline const std::tstring& CommentNode::Comment() const
+inline const tstring& CommentNode::Comment() const
 {
 	return m_strComment;
 }
@@ -73,7 +73,7 @@ inline const std::tstring& CommentNode::Comment() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the comment.
 
-inline void CommentNode::SetComment(const std::tstring& strComment)
+inline void CommentNode::SetComment(const tstring& strComment)
 {
 	m_strComment = strComment;
 }

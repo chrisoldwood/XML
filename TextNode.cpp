@@ -19,7 +19,7 @@ TextNode::TextNode()
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from the text string.
 
-TextNode::TextNode(const std::tstring& strText)
+TextNode::TextNode(const tstring& strText)
 	: m_strText(strText)
 {
 }
