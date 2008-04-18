@@ -25,6 +25,7 @@ enum NodeType
 	TEXT_NODE,			//!< A text string node.
 	COMMENT_NODE,		//!< A comment node.
 	PROCESSING_NODE,	//!< A processing instruction node.
+	DOCTYPE_NODE,		//!< A document type node.
 };
 
 ////////////////////////////////////////////////////////////////////////////////
