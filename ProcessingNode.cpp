@@ -17,6 +17,23 @@ ProcessingNode::ProcessingNode()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Construction from a target.
+
+ProcessingNode::ProcessingNode(const tstring& strTarget)
+	: m_strTarget(strTarget)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Construction from a target and attributes.
+
+ProcessingNode::ProcessingNode(const tstring& strTarget, const Attributes& vAttribs)
+	: m_strTarget(strTarget)
+	, m_vAttribs(vAttribs)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Destructor.
 
 ProcessingNode::~ProcessingNode()

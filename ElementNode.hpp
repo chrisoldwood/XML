@@ -13,6 +13,7 @@
 
 #include "Node.hpp"
 #include "NodeContainer.hpp"
+#include "Attributes.hpp"
 
 namespace XML
 {
@@ -28,7 +29,10 @@ public:
 	ElementNode();
 
 	//! Construction from the element name.
-	ElementNode(const std::tstring& strName);
+	ElementNode(const tstring& strName);
+
+	//! Construction from an element name and attributes.
+	ElementNode(const tstring& strName, const Attributes& vAttribs);
 
 	//
 	// Properties
@@ -38,16 +42,23 @@ public:
 	virtual NodeType Type() const;
 
 	//! Get the elements name.
-	const std::tstring& Name() const;
+	const tstring& Name() const;
 
 	//! Set the elements name.
-	void SetName(const std::tstring& strName);
+	void SetName(const tstring& strName);
+
+	//! Get the attributes.
+	const Attributes& GetAttributes() const;
+
+	//! Get the attributes.
+	Attributes& GetAttributes();
 
 private:
 	//
 	// Members.
 	//
-	std::tstring	m_strName;		//!< The element name.
+	tstring		m_strName;		//!< The element name.
+	Attributes	m_vAttribs;		//!< The attributes.
 
 	//! Destructor.
 	virtual ~ElementNode();
@@ -67,7 +78,7 @@ inline NodeType ElementNode::Type() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the elements name.
 
-inline const std::tstring& ElementNode::Name() const
+inline const tstring& ElementNode::Name() const
 {
 	return m_strName;
 }
@@ -75,9 +86,26 @@ inline const std::tstring& ElementNode::Name() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the elements name.
 
-inline void ElementNode::SetName(const std::tstring& strName)
+inline void ElementNode::SetName(const tstring& strName)
 {
 	m_strName = strName;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the attributes.
+
+inline const Attributes& ElementNode::GetAttributes() const
+{
+	return m_vAttribs;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the attributes.
+
+inline Attributes& ElementNode::GetAttributes()
+{
+	return m_vAttribs;
 }
 
 //namespace XML

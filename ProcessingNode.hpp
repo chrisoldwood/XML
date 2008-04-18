@@ -12,6 +12,7 @@
 #endif
 
 #include "Node.hpp"
+#include "Attributes.hpp"
 
 namespace XML
 {
@@ -25,6 +26,12 @@ public:
 	//! Default constructor.
 	ProcessingNode();
 
+	//! Construction from a target.
+	ProcessingNode(const tstring& strTarget);
+
+	//! Construction from a target and attributes.
+	ProcessingNode(const tstring& strTarget, const Attributes& vAttribs);
+
 	//
 	// Properties
 	//
@@ -32,10 +39,24 @@ public:
 	//! Get the real type of the node.
 	virtual NodeType Type() const;
 
+	//! Get the target.
+	const tstring& Target() const;
+
+	//! Set the target.
+	void SetTarget(const tstring& strTarget);
+
+	//! Get the attributes.
+	const Attributes& GetAttributes() const;
+
+	//! Get the attributes.
+	Attributes& GetAttributes();
+
 private:
 	//
 	// Members.
 	//
+	tstring		m_strTarget;	//!< The target text.
+	Attributes	m_vAttribs;		//!< The attributes.
 
 	//! Destructor.
 	virtual ~ProcessingNode();
@@ -50,6 +71,38 @@ typedef Core::RefCntPtr<ProcessingNode> ProcessingNodePtr;
 inline NodeType ProcessingNode::Type() const
 {
 	return PROCESSING_NODE;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the target.
+
+inline const tstring& ProcessingNode::Target() const
+{
+	return m_strTarget;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Set the target.
+
+inline void ProcessingNode::SetTarget(const tstring& strTarget)
+{
+	m_strTarget = strTarget;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the attributes.
+
+inline const Attributes& ProcessingNode::GetAttributes() const
+{
+	return m_vAttribs;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the attributes.
+
+inline Attributes& ProcessingNode::GetAttributes()
+{
+	return m_vAttribs;
 }
 
 //namespace XML
