@@ -116,7 +116,16 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\Attributes.cpp">
+			</File>
+			<File
+				RelativePath=".\CharTable.cpp">
+			</File>
+			<File
 				RelativePath=".\CommentNode.cpp">
+			</File>
+			<File
+				RelativePath=".\DocTypeNode.cpp">
 			</File>
 			<File
 				RelativePath=".\Document.cpp">
@@ -149,7 +158,13 @@
 				RelativePath=".\ProcessingNode.cpp">
 			</File>
 			<File
+				RelativePath=".\Reader.cpp">
+			</File>
+			<File
 				RelativePath=".\TextNode.cpp">
+			</File>
+			<File
+				RelativePath=".\Writer.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -157,16 +172,31 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\Attribute.hpp">
+			</File>
+			<File
+				RelativePath=".\Attributes.hpp">
+			</File>
+			<File
+				RelativePath=".\CharTable.hpp">
+			</File>
+			<File
 				RelativePath=".\CommentNode.hpp">
 			</File>
 			<File
 				RelativePath=".\Common.hpp">
 			</File>
 			<File
+				RelativePath=".\DocTypeNode.hpp">
+			</File>
+			<File
 				RelativePath=".\Document.hpp">
 			</File>
 			<File
 				RelativePath=".\ElementNode.hpp">
+			</File>
+			<File
+				RelativePath=".\IOException.hpp">
 			</File>
 			<File
 				RelativePath=".\Node.hpp">
@@ -178,10 +208,16 @@
 				RelativePath=".\ProcessingNode.hpp">
 			</File>
 			<File
+				RelativePath=".\Reader.hpp">
+			</File>
+			<File
 				RelativePath=".\TextNode.hpp">
 			</File>
 			<File
 				RelativePath=".\Types.hpp">
+			</File>
+			<File
+				RelativePath=".\Writer.hpp">
 			</File>
 		</Filter>
 		<Filter

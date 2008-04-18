@@ -1,3 +1,7 @@
-- Ensure ref counting correct for parents.
+- Add simple support for DOCTYPE tag.
 
-- Create NodeContainer mixin class for doc and element node.
+- Add Forward declarations header for client-side code.
+
+- Fix comment node to correctly detect the -->
+
+- Add support for the core entity references.
