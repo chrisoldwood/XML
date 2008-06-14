@@ -111,4 +111,15 @@ void TestReader()
 	pDoc = oReader.ReadDocument(strFlagsTest, XML::Reader::DISCARD_DOC_TYPES);
 
 	TEST_TRUE(pDoc->GetChildCount() == 5);
+
+	TEST_THROWS(oReader.ReadDocument(TXT("<!")));
+	TEST_THROWS(oReader.ReadDocument(TXT("<!-")));
+
+	TEST_TRUE(oReader.ReadDocument(TXT("<!DOCTYPE root PUBLIC \"http://\"[<!-- comment -->]><root/>")).Get() != nullptr);
+
+	TEST_TRUE(oReader.ReadDocument(TXT("<root a=\"<>\" b='<>' />")).Get() != nullptr);
+
+	TEST_TRUE(oReader.ReadDocument(TXT("<!-- <> -> -- --><root/>")).Get() != nullptr);
+
+	TEST_TRUE(oReader.ReadDocument(TXT("<root> <![CDATA[ ]]> </root>")).Get() != nullptr);
 }

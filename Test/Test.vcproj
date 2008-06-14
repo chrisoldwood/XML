@@ -158,6 +158,9 @@
 				RelativePath=".\TestAttributes.cpp">
 			</File>
 			<File
+				RelativePath=".\TestCDataNode.cpp">
+			</File>
+			<File
 				RelativePath=".\TestCharTable.cpp">
 			</File>
 			<File
