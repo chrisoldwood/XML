@@ -7,6 +7,12 @@
 #include "Reader.hpp"
 #include "IOException.hpp"
 #include "CharTable.hpp"
+#include "TextNode.hpp"
+#include "ElementNode.hpp"
+#include "CommentNode.hpp"
+#include "ProcessingNode.hpp"
+#include "DocTypeNode.hpp"
+#include "CDataNode.hpp"
 
 namespace XML
 {
@@ -76,14 +82,22 @@ DocumentPtr Reader::ReadDocument(const tchar* pcBegin, const tchar* pcEnd, uint 
 					{
 						ReadCommentTag(pcNodeBegin);
 					}
-					else
+					else if (*m_pcCurrent == TXT('D'))
 					{
 						ReadDocTypeTag(pcNodeBegin);
+					}
+					else if (*m_pcCurrent == TXT('['))
+					{
+						ReadCDataSection(pcNodeBegin);
+					}
+					else
+					{
+						throw IOException(TXT("Invalid node type"));
 					}
 				}
 				else
 				{
-					throw IOException(TXT("EOF encountered reading a comment or document type node"));
+					throw IOException(TXT("EOF encountered reading a node"));
 				}
 			}
 			// A processing instruction tag?
@@ -134,8 +148,10 @@ void Reader::Initialise(const tchar* pcBegin, const tchar* pcEnd, uint nFlags)
 
 void Reader::ReadCommentTag(const tchar* pcNodeBegin)
 {
+	ASSERT((m_pcCurrent-pcNodeBegin) >= 2);
+
 	// Find node terminator.
-	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('>')) )
+	while ( (m_pcCurrent != m_pcEnd) && ((*m_pcCurrent != TXT('>') || (tstrncmp(m_pcCurrent-2, TXT("-->"), 3) != 0))) )
 		++m_pcCurrent;
 
 	if (m_pcCurrent == m_pcEnd)
@@ -242,7 +258,7 @@ void Reader::ReadTextNode(const tchar* pcNodeBegin)
 	// Read up to a tag marker.
 	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('<')) )
 	{
-		if (!isspace(static_cast<uint>(*m_pcCurrent)))
+		if (!tisspace(static_cast<utchar>(*m_pcCurrent)))
 			bWhitespaceOnly = false;
 
 		++m_pcCurrent;
@@ -276,7 +292,34 @@ void Reader::ReadElementTag(const tchar* pcNodeBegin)
 {
 	// Find node terminator.
 	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('>')) )
-		++m_pcCurrent;
+	{
+		// Apostrophe enclosed string?
+		if (*m_pcCurrent == TXT('\''))
+		{
+			++m_pcCurrent;
+
+			while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('\'')) )
+				++m_pcCurrent;
+
+			if (*m_pcCurrent == TXT('\''))
+				++m_pcCurrent;
+		}
+		// Double-quote enclosed string?
+		else if (*m_pcCurrent == TXT('\"'))
+		{
+			++m_pcCurrent;
+
+			while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('\"')) )
+				++m_pcCurrent;
+
+			if (*m_pcCurrent == TXT('\"'))
+				++m_pcCurrent;
+		}
+		else
+		{
+			++m_pcCurrent;
+		}
+	}
 
 	if (m_pcCurrent == m_pcEnd)
 		throw IOException(TXT("EOF encountered reading an element node"));
@@ -368,7 +411,23 @@ void Reader::ReadDocTypeTag(const tchar* pcNodeBegin)
 {
 	// Find node terminator.
 	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('>')) )
-		++m_pcCurrent;
+	{
+		// Declarations?
+		if (*m_pcCurrent == TXT('['))
+		{
+			++m_pcCurrent;
+
+			while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT(']')) )
+				++m_pcCurrent;
+
+			if (*m_pcCurrent == TXT(']'))
+				++m_pcCurrent;
+		}
+		else
+		{
+			++m_pcCurrent;
+		}
+	}
 
 	if (m_pcCurrent == m_pcEnd)
 		throw IOException(TXT("EOF encountered reading a document type node"));
@@ -398,6 +457,44 @@ void Reader::ReadDocTypeTag(const tchar* pcNodeBegin)
 		
 		AppendChild(m_oNodeStack.top(), pNode);
 	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read and parse CDATA section.
+
+void Reader::ReadCDataSection(const tchar* pcNodeBegin)
+{
+	ASSERT((m_pcCurrent-pcNodeBegin) >= 2);
+
+	// Find node terminator.
+	while ( (m_pcCurrent != m_pcEnd) && ((*m_pcCurrent != TXT('>') || (tstrncmp(m_pcCurrent-2, TXT("]]>"), 3) != 0))) )
+		++m_pcCurrent;
+
+	if (m_pcCurrent == m_pcEnd)
+		throw IOException(TXT("EOF encountered reading a CDATA section"));
+
+	ASSERT(*m_pcCurrent == TXT('>'));
+	++m_pcCurrent;
+
+	const tchar* pcNodeEnd = m_pcCurrent;
+	size_t       nLength   = pcNodeEnd - pcNodeBegin;
+
+	// Must be at least "<![CDATA[]]>"
+	if ( (nLength < 12)
+	  || (tstrncmp(pcNodeBegin, TXT("<![CDATA["), 9) != 0)
+	  || (tstrncmp(pcNodeEnd-3, TXT("]]>"),       3) != 0) )
+	{
+		throw IOException(TXT("Invalid CDATA section format"));
+	}
+
+	// Adjust iterators for the inner text.
+	pcNodeBegin += 9;
+	pcNodeEnd   -= 3;
+
+	// Create node and append to collection.
+	CDataNodePtr pNode = CDataNodePtr(new CDataNode(tstring(pcNodeBegin, pcNodeEnd)));
+	
+	AppendChild(m_oNodeStack.top(), pNode);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
