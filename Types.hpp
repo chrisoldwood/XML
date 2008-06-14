@@ -26,6 +26,7 @@ enum NodeType
 	COMMENT_NODE,		//!< A comment node.
 	PROCESSING_NODE,	//!< A processing instruction node.
 	DOCTYPE_NODE,		//!< A document type node.
+	CDATA_NODE,			//!< A CDATA section.
 };
 
 ////////////////////////////////////////////////////////////////////////////////

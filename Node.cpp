@@ -39,6 +39,7 @@ const tchar* Node::FormatNodeType(NodeType eType)
 		case COMMENT_NODE:		return TXT("Comment");
 		case PROCESSING_NODE:	return TXT("Processing Instruction");
 		case DOCTYPE_NODE:		return TXT("Document Type");
+		case CDATA_NODE:		return TXT("CDATA");
 		default:				ASSERT_FALSE();
 	}
 

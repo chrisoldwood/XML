@@ -12,11 +12,6 @@
 #endif
 
 #include "Document.hpp"
-#include "TextNode.hpp"
-#include "ElementNode.hpp"
-#include "CommentNode.hpp"
-#include "ProcessingNode.hpp"
-#include "DocTypeNode.hpp"
 #include <stack>
 
 namespace XML
@@ -88,6 +83,9 @@ private:
 
 	//! Read and parse a document type tag.
 	void ReadDocTypeTag(const tchar* pcNodeBegin);
+
+	//! Read and parse CDATA section.
+	void ReadCDataSection(const tchar* pcNodeBegin);
 
 	//! Read an identifier.
 	const tchar* ReadIdentifier(const tchar* pcBegin, const tchar* pcEnd, tstring& strIdentifier);
