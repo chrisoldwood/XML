@@ -1,7 +1,9 @@
-- Add simple support for DOCTYPE tag.
-
 - Add Forward declarations header for client-side code.
 
 - Fix comment node to correctly detect the -->
 
 - Add support for the core entity references.
+
+- Fix DOCTYPE which allows [] inside the tag.
+
+- Add support for CDATA.
