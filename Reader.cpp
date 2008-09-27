@@ -122,9 +122,13 @@ DocumentPtr Reader::ReadDocument(const tchar* pcBegin, const tchar* pcEnd, uint 
 	if (m_oNodeStack.size() > 1)
 		throw IOException(TXT("One or more end tags were missing"));
 
+	m_oNodeStack.pop();
+
 	// Document empty?
 	if (!pDoc->HasRootElement())
 		throw IOException(TXT("The XML document was empty"));
+
+	ASSERT(m_oNodeStack.size() == 0);
 
 	return pDoc;
 }
