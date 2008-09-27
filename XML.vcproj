@@ -29,6 +29,7 @@
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
+				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
@@ -37,12 +38,11 @@
 				PrecompiledHeaderThrough="Common.hpp"
 				WarningLevel="4"
 				WarnAsError="TRUE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="3"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/XML.lib"/>
+				Name="VCLibrarianTool"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -73,6 +73,7 @@
 				AdditionalOptions="/EHa"
 				AdditionalIncludeDirectories="../../Lib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
+				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="TRUE"
@@ -86,8 +87,7 @@
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/XML.lib"/>
+				Name="VCLibrarianTool"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -169,6 +169,9 @@
 			<File
 				RelativePath=".\Writer.cpp">
 			</File>
+			<File
+				RelativePath=".\XPathIterator.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -211,6 +214,9 @@
 				RelativePath=".\NodeContainer.hpp">
 			</File>
 			<File
+				RelativePath=".\ParseException.hpp">
+			</File>
+			<File
 				RelativePath=".\ProcessingNode.hpp">
 			</File>
 			<File
@@ -224,6 +230,9 @@
 			</File>
 			<File
 				RelativePath=".\Writer.hpp">
+			</File>
+			<File
+				RelativePath=".\XPathIterator.hpp">
 			</File>
 		</Filter>
 		<Filter
