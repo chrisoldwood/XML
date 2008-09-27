@@ -48,4 +48,14 @@ void TestAttributes()
 	oAttribs.SetAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value3"))));
 
 	TEST_TRUE((*oAttribs.Begin())->Value() == TXT("value3"));
+
+	pAttrib = oAttribs.Find(TXT("name"));
+
+	TEST_TRUE(pAttrib->Name() == TXT("name"));
+	TEST_TRUE(oAttribs.Find(TXT("invalid_name")).Get() == nullptr);
+
+	pAttrib = oAttribs.Get(TXT("name"));
+
+	TEST_TRUE(pAttrib->Name() == TXT("name"));
+	TEST_THROWS(oAttribs.Get(TXT("invalid_name")));
 }

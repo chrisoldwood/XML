@@ -187,6 +187,9 @@
 			<File
 				RelativePath=".\TestWriter.cpp">
 			</File>
+			<File
+				RelativePath=".\TestXPathIterator.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"

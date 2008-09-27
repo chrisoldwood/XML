@@ -7,3 +7,5 @@
 - Fix DOCTYPE which allows [] inside the tag.
 
 - Add support for CDATA.
+
+- Add shorthand on Atrributes for getting an attribute value.

@@ -16,9 +16,11 @@ extern void TestTextNode();
 extern void TestCommentNode();
 extern void TestProcessingNode();
 extern void TestElementNode();
+extern void TestCDataNode();
 extern void TestDocument();
 extern void TestReader();
 extern void TestWriter();
+extern void TestXPathIterator();
 
 ////////////////////////////////////////////////////////////////////////////////
 //! The entry point for the test harness.
@@ -33,9 +35,11 @@ int _tmain(int /*argc*/, _TCHAR* /*argv*/[])
 		TestCommentNode();
 		TestProcessingNode();
 		TestElementNode();
+		TestCDataNode();
 		TestDocument();
 		TestReader();
 		TestWriter();
+		TestXPathIterator();
 
 		Core::SetTestRunFinalStatus(true);
 	}
