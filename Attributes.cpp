@@ -6,6 +6,7 @@
 #include "Common.hpp"
 #include "Attributes.hpp"
 #include <Core/InvalidArgException.hpp>
+#include <Core/StringUtils.hpp>
 #include <algorithm>
 
 namespace XML
@@ -83,6 +84,19 @@ AttributePtr Attributes::Find(const tstring& strName) const
 
 	if (it != m_vAttribs.end())
 		pAttribute = *it;
+
+	return pAttribute;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get an attribute by its name or throw if not found.
+
+AttributePtr Attributes::Get(const tstring& strName) const
+{
+	AttributePtr pAttribute = Find(strName);
+
+	if (pAttribute.Get() == nullptr)
+		throw Core::InvalidArgException(Core::Fmt(TXT("Failed to retrieve attribute '%s'"), strName.c_str()));
 
 	return pAttribute;
 }

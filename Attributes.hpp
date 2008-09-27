@@ -76,6 +76,9 @@ public:
 	//! Find an attribute by its name.
 	AttributePtr Find(const tstring& strName) const;
 
+	//! Get an attribute by its name or throw if not found.
+	AttributePtr Get(const tstring& strName) const; // throw(InvalidArgException)
+
 private:
 	//
 	// Members.
