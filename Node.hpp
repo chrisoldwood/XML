@@ -107,7 +107,7 @@ inline bool Node::HasParent() const
 
 inline const NodePtr Node::Parent() const
 {
-	return NodePtr(m_pParent);
+	return NodePtr(m_pParent, true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ inline const NodePtr Node::Parent() const
 
 inline NodePtr Node::Parent()
 {
-	return NodePtr(m_pParent);
+	return NodePtr(m_pParent, true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
