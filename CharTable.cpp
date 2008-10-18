@@ -16,6 +16,8 @@ CharTable::CharTable()
 {
 	STATIC_ASSERT(sizeof(uint) >= sizeof(tchar));
 
+	std::fill(m_anASCII, m_anASCII+TABLE_SIZE, 0);
+
 	// Set the whitespace chars.
 	AppendFlags(TXT(' '),  WHITESPACE);
 	AppendFlags(TXT('\t'), WHITESPACE);

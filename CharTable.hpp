@@ -44,11 +44,14 @@ private:
 	//! A map of character to flags.
 	typedef std::map<uint, uint> MapCharFlags;
 
+	//! The size of the ASCII table.
+	static const size_t TABLE_SIZE = 127;
+
 	//
 	// Members.
 	//
-	uint			m_anASCII[127];		//!< Lookup table for the ASCII chars.
-	MapCharFlags	m_mapOther;			//!< Lookup map for non-ASCII chars.
+	uint			m_anASCII[TABLE_SIZE];	//!< Lookup table for the ASCII chars.
+	MapCharFlags	m_mapOther;				//!< Lookup map for non-ASCII chars.
 
 	//! The character flags
 	enum
