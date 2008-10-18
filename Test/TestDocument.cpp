@@ -38,7 +38,10 @@ void TestDocument()
 
 	TEST_TRUE(pDoc->BeginChild() != pDoc->EndChild());
 	TEST_TRUE((*pDoc->BeginChild()).Get() == pText.Get());
-	TEST_TRUE(++pDoc->BeginChild() == pDoc->EndChild());
+
+	XML::Nodes::iterator itBeginChild = pDoc->BeginChild();	// ++pDoc->BeginChild() fails to build in Release.
+
+	TEST_TRUE(++itBeginChild == pDoc->EndChild());
 
 	XML::ElementNodePtr pElement(new XML::ElementNode(TXT("ElementNode")));
 
@@ -46,7 +49,10 @@ void TestDocument()
 
 	TEST_TRUE(pDoc->HasChildren() == true);
 	TEST_TRUE(pDoc->GetChildCount() == 2);
-	TEST_TRUE((*++pDoc->BeginChild())->Type() == XML::ELEMENT_NODE);
+
+	itBeginChild = pDoc->BeginChild();	// ++pDoc->BeginChild() fails to build in Release.
+
+	TEST_TRUE((*++itBeginChild)->Type() == XML::ELEMENT_NODE);
 
 	TEST_TRUE(pDoc->HasRootElement() == true);
 	TEST_TRUE(pDoc->GetRootElement() == pElement);
