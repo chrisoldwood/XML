@@ -214,9 +214,6 @@
 				RelativePath=".\NodeContainer.hpp">
 			</File>
 			<File
-				RelativePath=".\ParseException.hpp">
-			</File>
-			<File
 				RelativePath=".\ProcessingNode.hpp">
 			</File>
 			<File
