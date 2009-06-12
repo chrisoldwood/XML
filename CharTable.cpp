@@ -6,6 +6,11 @@
 #include "Common.hpp"
 #include "CharTable.hpp"
 
+#if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 2)) // GCC 4.2+
+// Caused by the STATIC_ASSERT macro.
+#pragma GCC diagnostic ignored "-Wunused-value"
+#endif
+
 namespace XML
 {
 

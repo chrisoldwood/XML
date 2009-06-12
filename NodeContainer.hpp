@@ -12,6 +12,7 @@
 #endif
 
 #include "Node.hpp"
+#include <vector>
 
 namespace XML
 {
@@ -41,7 +42,7 @@ public:
 
 	//! Get the count of child nodes.
 	size_t GetChildCount() const;
-	
+
 	//! Get the start iterator for the child nodes.
 	const_iterator BeginChild() const;
 

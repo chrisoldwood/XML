@@ -26,7 +26,7 @@ public:
 	IOException(const tstring& strDetails);
 
 	//! Destructor.
-	virtual ~IOException();
+	virtual ~IOException() throw();
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@ inline IOException::IOException(const tstring& strDetails)
 ////////////////////////////////////////////////////////////////////////////////
 //! Destructor.
 
-inline IOException::~IOException()
+inline IOException::~IOException() throw()
 {
 }
 
