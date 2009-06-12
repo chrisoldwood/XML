@@ -12,4 +12,4 @@
 
 - Change use of GetType() to use some form of Extension Interface.
 
-- Remove Hungarian Notation.
+- Remove Hungarian Notation and switch to camelCase.

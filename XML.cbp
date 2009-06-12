@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="XML" />
+		<Option pch_mode="2" />
+		<Option compiler="gnu_gcc_4x_compiler" />
+		<Build>
+			<Target title="Debug Win32">
+				<Option output="lib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="Debug" />
+				<Option type="2" />
+				<Option compiler="gnu_gcc_4x_compiler" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O0" />
+					<Add option="-frtti" />
+					<Add option="-DWIN32" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_LIB" />
+					<Add directory="..\..\Lib" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="..\..\Lib" />
+				</ResourceCompiler>
+			</Target>
+			<Target title="Release Win32">
+				<Option output="lib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="Release" />
+				<Option type="2" />
+				<Option compiler="gnu_gcc_4x_compiler" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-frtti" />
+					<Add option="-DWIN32" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_LIB" />
+					<Add directory="..\..\Lib" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="..\..\Lib" />
+				</ResourceCompiler>
+			</Target>
+		</Build>
+		<Unit filename="Attribute.hpp" />
+		<Unit filename="Attributes.cpp" />
+		<Unit filename="Attributes.hpp" />
+		<Unit filename="CDataNode.cpp" />
+		<Unit filename="CDataNode.hpp" />
+		<Unit filename="CharTable.cpp" />
+		<Unit filename="CharTable.hpp" />
+		<Unit filename="CommentNode.cpp" />
+		<Unit filename="CommentNode.hpp" />
+		<Unit filename="Common.hpp" />
+		<Unit filename="DocTypeNode.cpp" />
+		<Unit filename="DocTypeNode.hpp" />
+		<Unit filename="Document.cpp" />
+		<Unit filename="Document.hpp" />
+		<Unit filename="ElementNode.cpp" />
+		<Unit filename="ElementNode.hpp" />
+		<Unit filename="IOException.hpp" />
+		<Unit filename="Node.cpp" />
+		<Unit filename="Node.hpp" />
+		<Unit filename="NodeContainer.cpp" />
+		<Unit filename="NodeContainer.hpp" />
+		<Unit filename="ProcessingNode.cpp" />
+		<Unit filename="ProcessingNode.hpp" />
+		<Unit filename="ReadMe.txt" />
+		<Unit filename="Reader.cpp" />
+		<Unit filename="Reader.hpp" />
+		<Unit filename="TODO.txt" />
+		<Unit filename="TextNode.cpp" />
+		<Unit filename="TextNode.hpp" />
+		<Unit filename="Types.hpp" />
+		<Unit filename="Writer.cpp" />
+		<Unit filename="Writer.hpp" />
+		<Unit filename="XPathIterator.cpp" />
+		<Unit filename="XPathIterator.hpp" />
+		<Unit filename="pch.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
