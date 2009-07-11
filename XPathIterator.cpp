@@ -26,7 +26,7 @@ XPathIterator::XPathIterator(const tstring& strQuery, const NodePtr& pNode)
 	, m_pNode(pNode)
 	, m_itNode(m_vecNodes.end())
 {
-	Begin();
+	begin();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ XPathIterator::XPathIterator(const tstring& strQuery, const NodePtr& pNode)
 
 XPathIterator::~XPathIterator()
 {
-	Reset();
+	reset();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +53,7 @@ NodePtr XPathIterator::operator*() const
 
 void XPathIterator::operator++()
 {
-	Next();
+	next();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ void XPathIterator::operator++()
 //! NB: As they are not copyable the only iterator they can be equivalent to is
 //! an end iterator.
 
-bool XPathIterator::Equals(const XPathIterator& RHS) const
+bool XPathIterator::equals(const XPathIterator& RHS) const
 {
 	return ( (m_itNode     == m_vecNodes.end())
 		  && (RHS.m_itNode == RHS.m_vecNodes.end()) );
@@ -70,7 +70,7 @@ bool XPathIterator::Equals(const XPathIterator& RHS) const
 ////////////////////////////////////////////////////////////////////////////////
 //! Start the iteration.
 
-void XPathIterator::Begin()
+void XPathIterator::begin()
 {
 	tstring::const_iterator it  = m_strQuery.begin();
 	tstring::const_iterator end = m_strQuery.end();
@@ -86,11 +86,11 @@ void XPathIterator::Begin()
 			++it;
 
 			// Search for the document root...
-			while (pContext->HasParent())
-				pContext = pContext->Parent();
+			while (pContext->hasParent())
+				pContext = pContext->parent();
 		}
 
-		Parse(it, end, pContext);
+		parse(it, end, pContext);
 	}
 
 	// Start iterating the result set.
@@ -100,7 +100,7 @@ void XPathIterator::Begin()
 ////////////////////////////////////////////////////////////////////////////////
 //! Continue the iteration.
 
-void XPathIterator::Next()
+void XPathIterator::next()
 {
 	if (m_itNode == m_vecNodes.end())
 		throw Core::BadLogicException(TXT("Attempted to advance an invalid XPath iterator"));
@@ -111,10 +111,10 @@ void XPathIterator::Next()
 ////////////////////////////////////////////////////////////////////////////////
 //! End the iteration.
 
-void XPathIterator::Reset()
+void XPathIterator::reset()
 {
 	m_strQuery.clear();
-	m_pNode.Reset();
+	m_pNode.reset();
 	m_vecNodes.clear();
 	m_itNode = m_vecNodes.end();
 }
@@ -122,13 +122,13 @@ void XPathIterator::Reset()
 ////////////////////////////////////////////////////////////////////////////////
 //! Parse the next part of the query.
 
-void XPathIterator::Parse(QueryIterator begin, QueryIterator end, const NodePtr& pContext)
+void XPathIterator::parse(QueryIterator begin, QueryIterator end, const NodePtr& pContext)
 {
 	// Finished parsing?
 	if (begin == end)
 	{
 		// Add to results, if valid node.
-		if (pContext.Get() != nullptr)
+		if (pContext.get() != nullptr)
 			m_vecNodes.push_back(pContext);
 
 		return;
@@ -148,25 +148,25 @@ void XPathIterator::Parse(QueryIterator begin, QueryIterator end, const NodePtr&
 
 	tstring strName(itName, it);
 
-	NodeType       eType  = pContext->Type();
+	NodeType       eType  = pContext->type();
 	NodeContainer* pNodes = nullptr;
 
 	// Has children?
 	if (eType == DOCUMENT_NODE)
-		pNodes = Core::static_ptr_cast<Document>(pContext).Get();
+		pNodes = Core::static_ptr_cast<Document>(pContext).get();
 	else if (eType == ELEMENT_NODE)
-		pNodes = Core::static_ptr_cast<ElementNode>(pContext).Get();
+		pNodes = Core::static_ptr_cast<ElementNode>(pContext).get();
 
 	// Find all children that match the name.
-	for (NodeContainer::const_iterator itNode = pNodes->BeginChild(); itNode != pNodes->EndChild(); ++itNode)
+	for (NodeContainer::const_iterator itNode = pNodes->beginChild(); itNode != pNodes->endChild(); ++itNode)
 	{
 		const NodePtr& pNode = *itNode;
 
 		// If a match, recurse...
-		if ( (pNode->Type() == ELEMENT_NODE)
-			&& (Core::static_ptr_cast<ElementNode>(pNode)->Name() == strName) )
+		if ( (pNode->type() == ELEMENT_NODE)
+			&& (Core::static_ptr_cast<ElementNode>(pNode)->name() == strName) )
 		{
-			Parse(it, end, *itNode);
+			parse(it, end, *itNode);
 		}
 	}
 }

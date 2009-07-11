@@ -12,51 +12,51 @@
 ////////////////////////////////////////////////////////////////////////////////
 //! The unit tests for the Document class.
 
-void TestDocument()
+void testDocument()
 {
 //	XML::Document oDoc;		// Shouldn't compile.
 
 	const XML::DocumentPtr pDoc1(new XML::Document);
 
-	TEST_TRUE(pDoc1->HasChildren() == false);
-	TEST_TRUE(pDoc1->GetChildCount() == 0);
-	TEST_TRUE(pDoc1->BeginChild() == pDoc1->EndChild());
-	TEST_TRUE(pDoc1->HasRootElement() == false);
-	TEST_TRUE(pDoc1->GetRootElement().Get() == nullptr);
+	TEST_TRUE(pDoc1->hasChildren() == false);
+	TEST_TRUE(pDoc1->getChildCount() == 0);
+	TEST_TRUE(pDoc1->beginChild() == pDoc1->endChild());
+	TEST_TRUE(pDoc1->hasRootElement() == false);
+	TEST_TRUE(pDoc1->getRootElement().get() == nullptr);
 
 	XML::DocumentPtr pDoc(new XML::Document);
 
-	TEST_TRUE(pDoc->BeginChild() == pDoc->EndChild());
-	TEST_TRUE(pDoc->GetRootElement().Get() == nullptr);
+	TEST_TRUE(pDoc->beginChild() == pDoc->endChild());
+	TEST_TRUE(pDoc->getRootElement().get() == nullptr);
 
 	XML::TextNodePtr pText(new XML::TextNode(TXT("TextNode")));
 
-	pDoc->AppendChild(pText);
+	pDoc->appendChild(pText);
 
-	TEST_TRUE(pDoc->HasChildren() == true);
-	TEST_TRUE(pDoc->GetChildCount() == 1);
+	TEST_TRUE(pDoc->hasChildren() == true);
+	TEST_TRUE(pDoc->getChildCount() == 1);
 
-	TEST_TRUE(pDoc->BeginChild() != pDoc->EndChild());
-	TEST_TRUE((*pDoc->BeginChild()).Get() == pText.Get());
+	TEST_TRUE(pDoc->beginChild() != pDoc->endChild());
+	TEST_TRUE((*pDoc->beginChild()).get() == pText.get());
 
-	XML::Nodes::iterator itBeginChild = pDoc->BeginChild();	// ++pDoc->BeginChild() fails to build in Release.
+	XML::Nodes::iterator itBeginChild = pDoc->beginChild();	// ++pDoc->BeginChild() fails to build in Release.
 
-	TEST_TRUE(++itBeginChild == pDoc->EndChild());
+	TEST_TRUE(++itBeginChild == pDoc->endChild());
 
 	XML::ElementNodePtr pElement(new XML::ElementNode(TXT("ElementNode")));
 
-	pDoc->AppendChild(pElement);
+	pDoc->appendChild(pElement);
 
-	TEST_TRUE(pDoc->HasChildren() == true);
-	TEST_TRUE(pDoc->GetChildCount() == 2);
+	TEST_TRUE(pDoc->hasChildren() == true);
+	TEST_TRUE(pDoc->getChildCount() == 2);
 
-	itBeginChild = pDoc->BeginChild();	// ++pDoc->BeginChild() fails to build in Release.
+	itBeginChild = pDoc->beginChild();	// ++pDoc->BeginChild() fails to build in Release.
 
-	TEST_TRUE((*++itBeginChild)->Type() == XML::ELEMENT_NODE);
+	TEST_TRUE((*++itBeginChild)->type() == XML::ELEMENT_NODE);
 
-	TEST_TRUE(pDoc->HasRootElement() == true);
-	TEST_TRUE(pDoc->GetRootElement() == pElement);
+	TEST_TRUE(pDoc->hasRootElement() == true);
+	TEST_TRUE(pDoc->getRootElement() == pElement);
 
-	TEST_THROWS(pDoc->AppendChild(pElement));
-	TEST_THROWS(pDoc->AppendChild(pDoc));
+	TEST_THROWS(pDoc->appendChild(pElement));
+	TEST_THROWS(pDoc->appendChild(pDoc));
 }

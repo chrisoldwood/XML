@@ -39,19 +39,19 @@ public:
 	//
 
 	//! Get the real type of the node.
-	virtual NodeType Type() const;
+	virtual NodeType type() const;
 
 	//! Get the elements name.
-	const tstring& Name() const;
+	const tstring& name() const;
 
 	//! Set the elements name.
-	void SetName(const tstring& strName);
+	void setName(const tstring& strName);
 
 	//! Get the attributes.
-	const Attributes& GetAttributes() const;
+	const Attributes& getAttributes() const;
 
 	//! Get the attributes.
-	Attributes& GetAttributes();
+	Attributes& getAttributes();
 
 private:
 	//
@@ -70,7 +70,7 @@ typedef Core::RefCntPtr<ElementNode> ElementNodePtr;
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the real type of the node.
 
-inline NodeType ElementNode::Type() const
+inline NodeType ElementNode::type() const
 {
 	return ELEMENT_NODE;
 }
@@ -78,7 +78,7 @@ inline NodeType ElementNode::Type() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the elements name.
 
-inline const tstring& ElementNode::Name() const
+inline const tstring& ElementNode::name() const
 {
 	return m_strName;
 }
@@ -86,7 +86,7 @@ inline const tstring& ElementNode::Name() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the elements name.
 
-inline void ElementNode::SetName(const tstring& strName)
+inline void ElementNode::setName(const tstring& strName)
 {
 	m_strName = strName;
 }
@@ -95,7 +95,7 @@ inline void ElementNode::SetName(const tstring& strName)
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the attributes.
 
-inline const Attributes& ElementNode::GetAttributes() const
+inline const Attributes& ElementNode::getAttributes() const
 {
 	return m_vAttribs;
 }
@@ -103,7 +103,7 @@ inline const Attributes& ElementNode::GetAttributes() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the attributes.
 
-inline Attributes& ElementNode::GetAttributes()
+inline Attributes& ElementNode::getAttributes()
 {
 	return m_vAttribs;
 }

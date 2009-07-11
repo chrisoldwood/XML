@@ -39,22 +39,22 @@ Reader::~Reader()
 //! Helper function for appending a child node.
 
 template<typename T>
-inline void AppendChild(NodePtr pNode, Core::RefCntPtr<T>& pChild)
+inline void appendChild(NodePtr pNode, Core::RefCntPtr<T>& pChild)
 {
-	ASSERT((pNode->Type() == DOCUMENT_NODE) || (pNode->Type() == ELEMENT_NODE));
+	ASSERT((pNode->type() == DOCUMENT_NODE) || (pNode->type() == ELEMENT_NODE));
 
-	if (pNode->Type() == DOCUMENT_NODE)
-		Core::static_ptr_cast<Document>(pNode)->AppendChild(pChild);
+	if (pNode->type() == DOCUMENT_NODE)
+		Core::static_ptr_cast<Document>(pNode)->appendChild(pChild);
 	else
-		Core::static_ptr_cast<ElementNode>(pNode)->AppendChild(pChild);
+		Core::static_ptr_cast<ElementNode>(pNode)->appendChild(pChild);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read a document from a pair of raw string pointers.
 
-DocumentPtr Reader::ReadDocument(const tchar* pcBegin, const tchar* pcEnd, uint nFlags)
+DocumentPtr Reader::readDocument(const tchar* pcBegin, const tchar* pcEnd, uint nFlags)
 {
-	Initialise(pcBegin, pcEnd, nFlags);
+	initialise(pcBegin, pcEnd, nFlags);
 
 	DocumentPtr pDoc(new Document);
 
@@ -80,15 +80,15 @@ DocumentPtr Reader::ReadDocument(const tchar* pcBegin, const tchar* pcEnd, uint 
 
 					if (*m_pcCurrent == TXT('-'))
 					{
-						ReadCommentTag(pcNodeBegin);
+						readCommentTag(pcNodeBegin);
 					}
 					else if (*m_pcCurrent == TXT('D'))
 					{
-						ReadDocTypeTag(pcNodeBegin);
+						readDocTypeTag(pcNodeBegin);
 					}
 					else if (*m_pcCurrent == TXT('['))
 					{
-						ReadCDataSection(pcNodeBegin);
+						readCDataSection(pcNodeBegin);
 					}
 					else
 					{
@@ -103,18 +103,18 @@ DocumentPtr Reader::ReadDocument(const tchar* pcBegin, const tchar* pcEnd, uint 
 			// A processing instruction tag?
 			else if (*m_pcCurrent == TXT('?'))
 			{
-				ReadProcessingTag(pcNodeBegin);
+				readProcessingTag(pcNodeBegin);
 			}
 			// An element tag.
 			else
 			{
-				ReadElementTag(pcNodeBegin);
+				readElementTag(pcNodeBegin);
 			}
 		}
 		// Is text.
 		else
 		{
-			ReadTextNode(pcNodeBegin);
+			readTextNode(pcNodeBegin);
 		}
 	}
 
@@ -125,7 +125,7 @@ DocumentPtr Reader::ReadDocument(const tchar* pcBegin, const tchar* pcEnd, uint 
 	m_oNodeStack.pop();
 
 	// Document empty?
-	if (!pDoc->HasRootElement())
+	if (!pDoc->hasRootElement())
 		throw IOException(TXT("The XML document was empty"));
 
 	ASSERT(m_oNodeStack.size() == 0);
@@ -136,7 +136,7 @@ DocumentPtr Reader::ReadDocument(const tchar* pcBegin, const tchar* pcEnd, uint 
 ////////////////////////////////////////////////////////////////////////////////
 //! Initialise the internal state ready for reading.
 
-void Reader::Initialise(const tchar* pcBegin, const tchar* pcEnd, uint nFlags)
+void Reader::initialise(const tchar* pcBegin, const tchar* pcEnd, uint nFlags)
 {
 	m_pcBegin   = pcBegin;
 	m_pcEnd     = pcEnd;
@@ -150,7 +150,7 @@ void Reader::Initialise(const tchar* pcBegin, const tchar* pcEnd, uint nFlags)
 ////////////////////////////////////////////////////////////////////////////////
 //! Read and parse a comment tag.
 
-void Reader::ReadCommentTag(const tchar* pcNodeBegin)
+void Reader::readCommentTag(const tchar* pcNodeBegin)
 {
 	ASSERT((m_pcCurrent-pcNodeBegin) >= 2);
 
@@ -185,14 +185,14 @@ void Reader::ReadCommentTag(const tchar* pcNodeBegin)
 		// Create node and append to collection.
 		CommentNodePtr pNode = CommentNodePtr(new CommentNode(tstring(pcNodeBegin, pcNodeEnd)));
 		
-		AppendChild(m_oNodeStack.top(), pNode);
+		appendChild(m_oNodeStack.top(), pNode);
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read and parse a processing instruction tag.
 
-void Reader::ReadProcessingTag(const tchar* pcNodeBegin)
+void Reader::readProcessingTag(const tchar* pcNodeBegin)
 {
 	// Find node terminator.
 	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('>')) )
@@ -226,12 +226,12 @@ void Reader::ReadProcessingTag(const tchar* pcNodeBegin)
 		Attributes vAttribs;
 
 		// Read the target.
-		const tchar* pcCurrent = ReadIdentifier(pcNodeBegin, pcNodeEnd, strTarget);	
+		const tchar* pcCurrent = readIdentifier(pcNodeBegin, pcNodeEnd, strTarget);	
 
 		while (pcCurrent != pcNodeEnd)
 		{
 			// Skip whitespace.
-			while ( (pcCurrent != pcNodeEnd) && (s_oCharTable.IsWhitespace(*pcCurrent)) )
+			while ( (pcCurrent != pcNodeEnd) && (s_oCharTable.isWhitespace(*pcCurrent)) )
 				++pcCurrent;
 
 			// Read attribute, if present.
@@ -239,23 +239,23 @@ void Reader::ReadProcessingTag(const tchar* pcNodeBegin)
 			{
 				tstring strName, strValue;
 
-				pcCurrent = ReadAttribute(pcCurrent, pcNodeEnd, strName, strValue);
+				pcCurrent = readAttribute(pcCurrent, pcNodeEnd, strName, strValue);
 
-				vAttribs.SetAttribute(AttributePtr(new Attribute(strName, strValue)));
+				vAttribs.setAttribute(AttributePtr(new Attribute(strName, strValue)));
 			}
 		}
 
 		// Create node and append to collection.
 		ProcessingNodePtr pNode = ProcessingNodePtr(new ProcessingNode(strTarget, vAttribs));
 		
-		AppendChild(m_oNodeStack.top(), pNode);
+		appendChild(m_oNodeStack.top(), pNode);
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read and create a text node.
 
-void Reader::ReadTextNode(const tchar* pcNodeBegin)
+void Reader::readTextNode(const tchar* pcNodeBegin)
 {
 	bool bWhitespaceOnly = true;
 
@@ -283,7 +283,7 @@ void Reader::ReadTextNode(const tchar* pcNodeBegin)
 			// Create node and append to collection.
 			TextNodePtr pNode = TextNodePtr(new TextNode(tstring(pcNodeBegin, pcNodeEnd)));
 
-			AppendChild(m_oNodeStack.top(), pNode);
+			appendChild(m_oNodeStack.top(), pNode);
 		}
 	}
 }
@@ -292,7 +292,7 @@ void Reader::ReadTextNode(const tchar* pcNodeBegin)
 //! Read and parse an element tag. If the tag is a start tag or empty tag an
 //! element node is returned. If it's a close tag, no node is returned.
 
-void Reader::ReadElementTag(const tchar* pcNodeBegin)
+void Reader::readElementTag(const tchar* pcNodeBegin)
 {
 	// Find node terminator.
 	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('>')) )
@@ -352,12 +352,12 @@ void Reader::ReadElementTag(const tchar* pcNodeBegin)
 		// Validate tag matches the last open one.
 		NodePtr pNode = m_oNodeStack.top();
 
-		if (pNode->Type() != ELEMENT_NODE)
+		if (pNode->type() != ELEMENT_NODE)
 			throw IOException(TXT("End tag encountered without a matching start tag"));
 
 		ElementNodePtr pElement = Core::static_ptr_cast<ElementNode>(pNode);
 
-		if (pElement->Name() != strName)
+		if (pElement->name() != strName)
 			throw IOException(TXT("End tag does not match the last start tag"));
 
 		// Valid.
@@ -378,12 +378,12 @@ void Reader::ReadElementTag(const tchar* pcNodeBegin)
 		Attributes vAttribs;
 
 		// Read the target.
-		const tchar* pcCurrent = ReadIdentifier(pcNodeBegin, pcNodeEnd, strName);	
+		const tchar* pcCurrent = readIdentifier(pcNodeBegin, pcNodeEnd, strName);	
 
 		while (pcCurrent != pcNodeEnd)
 		{
 			// Skip whitespace.
-			while ( (pcCurrent != pcNodeEnd) && (s_oCharTable.IsWhitespace(*pcCurrent)) )
+			while ( (pcCurrent != pcNodeEnd) && (s_oCharTable.isWhitespace(*pcCurrent)) )
 				++pcCurrent;
 
 			// Read attribute, if present.
@@ -391,16 +391,16 @@ void Reader::ReadElementTag(const tchar* pcNodeBegin)
 			{
 				tstring strName, strValue;
 
-				pcCurrent = ReadAttribute(pcCurrent, pcNodeEnd, strName, strValue);
+				pcCurrent = readAttribute(pcCurrent, pcNodeEnd, strName, strValue);
 
-				vAttribs.SetAttribute(AttributePtr(new Attribute(strName, strValue)));
+				vAttribs.setAttribute(AttributePtr(new Attribute(strName, strValue)));
 			}
 		}
 
 		// Create node and append to collection.
 		ElementNodePtr pNode(new ElementNode(strName, vAttribs));
 
-		AppendChild(m_oNodeStack.top(), pNode);
+		appendChild(m_oNodeStack.top(), pNode);
 
 		// Track start tags.
 		if (*pcNodeEnd != TXT('/'))
@@ -411,7 +411,7 @@ void Reader::ReadElementTag(const tchar* pcNodeBegin)
 ////////////////////////////////////////////////////////////////////////////////
 //! Read and parse a document type tag.
 
-void Reader::ReadDocTypeTag(const tchar* pcNodeBegin)
+void Reader::readDocTypeTag(const tchar* pcNodeBegin)
 {
 	// Find node terminator.
 	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('>')) )
@@ -459,14 +459,14 @@ void Reader::ReadDocTypeTag(const tchar* pcNodeBegin)
 		// Create node and append to collection.
 		DocTypeNodePtr pNode = DocTypeNodePtr(new DocTypeNode(tstring(pcNodeBegin, pcNodeEnd)));
 		
-		AppendChild(m_oNodeStack.top(), pNode);
+		appendChild(m_oNodeStack.top(), pNode);
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read and parse CDATA section.
 
-void Reader::ReadCDataSection(const tchar* pcNodeBegin)
+void Reader::readCDataSection(const tchar* pcNodeBegin)
 {
 	ASSERT((m_pcCurrent-pcNodeBegin) >= 2);
 
@@ -498,13 +498,13 @@ void Reader::ReadCDataSection(const tchar* pcNodeBegin)
 	// Create node and append to collection.
 	CDataNodePtr pNode = CDataNodePtr(new CDataNode(tstring(pcNodeBegin, pcNodeEnd)));
 	
-	AppendChild(m_oNodeStack.top(), pNode);
+	appendChild(m_oNodeStack.top(), pNode);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read an identifier.
 
-const tchar* Reader::ReadIdentifier(const tchar* pcBegin, const tchar* pcEnd, tstring& strIdentifier)
+const tchar* Reader::readIdentifier(const tchar* pcBegin, const tchar* pcEnd, tstring& strIdentifier)
 {
 	if (pcBegin == pcEnd)
 		throw IOException(TXT("EOF encountered reading a tag identifier"));
@@ -512,7 +512,7 @@ const tchar* Reader::ReadIdentifier(const tchar* pcBegin, const tchar* pcEnd, ts
 	const tchar* pcCurrent = pcBegin;
 
 	// Find end of identifier.
-	while ( (pcCurrent != pcEnd) && (s_oCharTable.IsIdentifier(*pcCurrent)) )
+	while ( (pcCurrent != pcEnd) && (s_oCharTable.isIdentifier(*pcCurrent)) )
 		++pcCurrent;
 
 	size_t nLength = pcCurrent - pcBegin;
@@ -529,7 +529,7 @@ const tchar* Reader::ReadIdentifier(const tchar* pcBegin, const tchar* pcEnd, ts
 ////////////////////////////////////////////////////////////////////////////////
 //! Read an attribute. The reads both the name and value.
 
-const tchar* Reader::ReadAttribute(const tchar* pcBegin, const tchar* pcEnd, tstring& strName, tstring& strValue)
+const tchar* Reader::readAttribute(const tchar* pcBegin, const tchar* pcEnd, tstring& strName, tstring& strValue)
 {
 	if (pcBegin == pcEnd)
 		throw IOException(TXT("EOF encountered reading an attribute"));
@@ -537,7 +537,7 @@ const tchar* Reader::ReadAttribute(const tchar* pcBegin, const tchar* pcEnd, tst
 	const tchar* pcCurrent = pcBegin;
 
 	// Find end of attribute name.
-	while ( (pcCurrent != pcEnd) && (s_oCharTable.IsIdentifier(*pcCurrent)) )
+	while ( (pcCurrent != pcEnd) && (s_oCharTable.isIdentifier(*pcCurrent)) )
 		++pcCurrent;
 
 	size_t nNameLen = pcCurrent - pcBegin;
@@ -549,7 +549,7 @@ const tchar* Reader::ReadAttribute(const tchar* pcBegin, const tchar* pcEnd, tst
 	strName = tstring(pcBegin, pcCurrent);
 
 	// Skip whitespace.
-	while ( (pcCurrent != pcEnd) && (s_oCharTable.IsWhitespace(*pcCurrent)) )
+	while ( (pcCurrent != pcEnd) && (s_oCharTable.isWhitespace(*pcCurrent)) )
 		++pcCurrent;
 
 	if ( (pcCurrent == pcEnd) || (*pcCurrent != TXT('=')) )
@@ -558,7 +558,7 @@ const tchar* Reader::ReadAttribute(const tchar* pcBegin, const tchar* pcEnd, tst
 	++pcCurrent;
 
 	// Skip whitespace.
-	while ( (pcCurrent != pcEnd) && (s_oCharTable.IsWhitespace(*pcCurrent)) )
+	while ( (pcCurrent != pcEnd) && (s_oCharTable.isWhitespace(*pcCurrent)) )
 		++pcCurrent;
 
 	if ( (pcCurrent == pcEnd) || ((*pcCurrent != TXT('\"')) && (*pcCurrent != TXT('\''))) )

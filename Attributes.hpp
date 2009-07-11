@@ -46,38 +46,38 @@ public:
 	//
 
 	//! Query if the collection is empty.
-	bool IsEmpty() const;
+	bool isEmpty() const;
 
 	//! Query how many attributes there are.
-	size_t Count() const;
+	size_t count() const;
 
 	//! Get the start iterator for the collection.
-	const_iterator Begin() const;
+	const_iterator begin() const;
 
 	//! Get the end iterator for the collection.
-	const_iterator End() const;
+	const_iterator end() const;
 
 	//! Get the start iterator for the collection.
-	iterator Begin();
+	iterator begin();
 
 	//! Get the end iterator for the collection.
-	iterator End();
+	iterator end();
 
 	//
 	// Methods.
 	//
 
 	//! Clear the set of attributes.
-	void Clear();
+	void clear();
 
 	//! Set an attribute.
-	void SetAttribute(const AttributePtr& pAttribute);
+	void setAttribute(const AttributePtr& pAttribute);
 
 	//! Find an attribute by its name.
-	AttributePtr Find(const tstring& strName) const;
+	AttributePtr find(const tstring& strName) const;
 
 	//! Get an attribute by its name or throw if not found.
-	AttributePtr Get(const tstring& strName) const; // throw(InvalidArgException)
+	AttributePtr get(const tstring& strName) const; // throw(InvalidArgException)
 
 private:
 	//
@@ -89,7 +89,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 //! Query if the collection is empty.
 
-inline bool Attributes::IsEmpty() const
+inline bool Attributes::isEmpty() const
 {
 	return m_vAttribs.empty();
 }
@@ -97,7 +97,7 @@ inline bool Attributes::IsEmpty() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Query how many attributes there are.
 
-inline size_t Attributes::Count() const
+inline size_t Attributes::count() const
 {
 	return m_vAttribs.size();
 }
@@ -105,7 +105,7 @@ inline size_t Attributes::Count() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the start iterator for the collection.
 
-inline Attributes::const_iterator Attributes::Begin() const
+inline Attributes::const_iterator Attributes::begin() const
 {
 	return m_vAttribs.begin();
 }
@@ -113,7 +113,7 @@ inline Attributes::const_iterator Attributes::Begin() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the end iterator for the collection.
 
-inline Attributes::const_iterator Attributes::End() const
+inline Attributes::const_iterator Attributes::end() const
 {
 	return m_vAttribs.end();
 }
@@ -121,7 +121,7 @@ inline Attributes::const_iterator Attributes::End() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the start iterator for the collection.
 
-inline Attributes::iterator Attributes::Begin()
+inline Attributes::iterator Attributes::begin()
 {
 	return m_vAttribs.begin();
 }
@@ -129,7 +129,7 @@ inline Attributes::iterator Attributes::Begin()
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the end iterator for the collection.
 
-inline Attributes::iterator Attributes::End()
+inline Attributes::iterator Attributes::end()
 {
 	return m_vAttribs.end();
 }

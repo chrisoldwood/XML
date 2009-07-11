@@ -34,13 +34,13 @@ public:
 	//
 
 	//! Get the real type of the node.
-	virtual NodeType Type() const;
+	virtual NodeType type() const;
 
 	//! Get the declaration.
-	const tstring& Declaration() const;
+	const tstring& declaration() const;
 
 	//! Set the declaration.
-	void SetDeclaration(const tstring& strDeclaration);
+	void setDeclaration(const tstring& strDeclaration);
 
 private:
 	//
@@ -58,7 +58,7 @@ typedef Core::RefCntPtr<DocTypeNode> DocTypeNodePtr;
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the real type of the node.
 
-inline NodeType DocTypeNode::Type() const
+inline NodeType DocTypeNode::type() const
 {
 	return DOCTYPE_NODE;
 }
@@ -66,7 +66,7 @@ inline NodeType DocTypeNode::Type() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the declaration.
 
-inline const tstring& DocTypeNode::Declaration() const
+inline const tstring& DocTypeNode::declaration() const
 {
 	return m_strDeclaration;
 }
@@ -74,7 +74,7 @@ inline const tstring& DocTypeNode::Declaration() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the declaration.
 
-inline void DocTypeNode::SetDeclaration(const tstring& strDeclaration)
+inline void DocTypeNode::setDeclaration(const tstring& strDeclaration)
 {
 	m_strDeclaration = strDeclaration;
 }

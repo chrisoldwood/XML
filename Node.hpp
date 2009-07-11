@@ -37,26 +37,26 @@ public:
 	//
 
 	//! Get the real type of the node.
-	virtual NodeType Type() const = 0;
+	virtual NodeType type() const = 0;
 
 	//! Get the type of the node as a string.
-	const tchar* TypeStr() const;
+	const tchar* typeStr() const;
 
 	//! Get if the node has a parent.
-	bool HasParent() const;
+	bool hasParent() const;
 
 	//! Get the parent node.
-	const NodePtr Parent() const;
+	const NodePtr parent() const;
 
 	//! Get the parent node.
-	NodePtr Parent();
+	NodePtr parent();
 
 	//
 	// Class Methods.
 	//
 
 	//! Convert the node type to a string.
-	static const tchar* FormatNodeType(NodeType eType);
+	static const tchar* formatNodeType(NodeType eType);
 
 protected:	
 	//! Default constructor.
@@ -70,7 +70,7 @@ protected:
 	//
 
 	//! Set the parent node.
-	void SetParent(Node* pParent);
+	void setParent(Node* pParent);
 
 private:
 	//
@@ -89,15 +89,15 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the type of the node as a string.
 
-inline const tchar* Node::TypeStr() const
+inline const tchar* Node::typeStr() const
 {
-	return FormatNodeType(Type());
+	return formatNodeType(type());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Get if the node has a parent.
 
-inline bool Node::HasParent() const
+inline bool Node::hasParent() const
 {
 	return (m_pParent != nullptr);
 }
@@ -105,7 +105,7 @@ inline bool Node::HasParent() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the parent node.
 
-inline const NodePtr Node::Parent() const
+inline const NodePtr Node::parent() const
 {
 	return NodePtr(m_pParent, true);
 }
@@ -113,7 +113,7 @@ inline const NodePtr Node::Parent() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the parent node.
 
-inline NodePtr Node::Parent()
+inline NodePtr Node::parent()
 {
 	return NodePtr(m_pParent, true);
 }
@@ -121,7 +121,7 @@ inline NodePtr Node::Parent()
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the parent node.
 
-inline void Node::SetParent(Node* pParent)
+inline void Node::setParent(Node* pParent)
 {
 	ASSERT(m_pParent == nullptr);
 

@@ -44,10 +44,10 @@ public:
 	//
 
 	//! Read a document from a pair of raw string pointers.
-	DocumentPtr ReadDocument(const tchar* pcBegin, const tchar* pcEnd, uint nFlags = DEFAULT); // throw(IOException)
+	DocumentPtr readDocument(const tchar* pcBegin, const tchar* pcEnd, uint nFlags = DEFAULT); // throw(IOException)
 
 	//! Read a document from a string.
-	DocumentPtr ReadDocument(const tstring& str, uint nFlags = DEFAULT); // throw(IOException)
+	DocumentPtr readDocument(const tstring& str, uint nFlags = DEFAULT); // throw(IOException)
 
 private:
 	//! A stack of XML nodes.
@@ -67,37 +67,37 @@ private:
 	//
 
 	//! Initialise the internal state ready for reading.
-	void Initialise(const tchar* pcBegin, const tchar* pcEnd, uint nFlags);
+	void initialise(const tchar* pcBegin, const tchar* pcEnd, uint nFlags);
 
 	//! Read and parse a comment tag.
-	void ReadCommentTag(const tchar* pcNodeBegin);
+	void readCommentTag(const tchar* pcNodeBegin);
 
 	//! Read and parse a processing instruction tag.
-	void ReadProcessingTag(const tchar* pcNodeBegin);
+	void readProcessingTag(const tchar* pcNodeBegin);
 
 	//! Read and create a text node.
-	void ReadTextNode(const tchar* pcNodeBegin);
+	void readTextNode(const tchar* pcNodeBegin);
 
 	//! Read and parse an element tag.
-	void ReadElementTag(const tchar* pcNodeBegin);
+	void readElementTag(const tchar* pcNodeBegin);
 
 	//! Read and parse a document type tag.
-	void ReadDocTypeTag(const tchar* pcNodeBegin);
+	void readDocTypeTag(const tchar* pcNodeBegin);
 
 	//! Read and parse CDATA section.
-	void ReadCDataSection(const tchar* pcNodeBegin);
+	void readCDataSection(const tchar* pcNodeBegin);
 
 	//! Read an identifier.
-	const tchar* ReadIdentifier(const tchar* pcBegin, const tchar* pcEnd, tstring& strIdentifier);
+	const tchar* readIdentifier(const tchar* pcBegin, const tchar* pcEnd, tstring& strIdentifier);
 
 	//! Read an attribute.
-	const tchar* ReadAttribute(const tchar* pcBegin, const tchar* pcEnd, tstring& strName, tstring& strValue);
+	const tchar* readAttribute(const tchar* pcBegin, const tchar* pcEnd, tstring& strName, tstring& strValue);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read a document from a string.
 
-inline DocumentPtr Reader::ReadDocument(const tstring& str, uint nFlags)
+inline DocumentPtr Reader::readDocument(const tstring& str, uint nFlags)
 {
 	const tchar* pcBegin = nullptr;
 	const tchar* pcEnd   = nullptr;
@@ -109,7 +109,7 @@ inline DocumentPtr Reader::ReadDocument(const tstring& str, uint nFlags)
 		pcEnd   = pcBegin + str.length();
 	}
 
-	return ReadDocument(pcBegin, pcEnd, nFlags);
+	return readDocument(pcBegin, pcEnd, nFlags);
 }
 
 //namespace XML

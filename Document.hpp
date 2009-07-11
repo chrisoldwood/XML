@@ -32,20 +32,20 @@ public:
 	//
 
 	//! Get the real type of the node.
-	virtual NodeType Type() const;
+	virtual NodeType type() const;
 
 	//! Checks if the document has a root element.
-	bool HasRootElement() const;
+	bool hasRootElement() const;
 
 	//
 	// Methods.
 	//
 
 	//! Get the root element.
-	const ElementNodePtr GetRootElement() const;
+	const ElementNodePtr getRootElement() const;
 
 	//! Get the root element.
-	ElementNodePtr GetRootElement();
+	ElementNodePtr getRootElement();
 
 private:
 	//
@@ -62,7 +62,7 @@ typedef Core::RefCntPtr<Document> DocumentPtr;
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the real type of the node.
 
-inline NodeType Document::Type() const
+inline NodeType Document::type() const
 {
 	return DOCUMENT_NODE;
 }

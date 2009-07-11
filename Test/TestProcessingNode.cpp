@@ -10,20 +10,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 //! The unit tests for the ProcessingNode class.
 
-void TestProcessingNode()
+void testProcessingNode()
 {
 //	XML::ProcessingNode oNode;		// Shouldn't compile.
 
 	XML::ProcessingNodePtr pNode(new XML::ProcessingNode);
 
-	TEST_TRUE(pNode->Type() == XML::PROCESSING_NODE);
-	TEST_TRUE(pNode->Target().empty());
+	TEST_TRUE(pNode->type() == XML::PROCESSING_NODE);
+	TEST_TRUE(pNode->target().empty());
 
 	pNode = XML::ProcessingNodePtr(new XML::ProcessingNode(TXT("Target1")));
 
-	TEST_TRUE(pNode->Target() == TXT("Target1"));
+	TEST_TRUE(pNode->target() == TXT("Target1"));
 
-	pNode->SetTarget(TXT("Target2"));
+	pNode->setTarget(TXT("Target2"));
 
-	TEST_TRUE(pNode->Target() == TXT("Target2"));
+	TEST_TRUE(pNode->target() == TXT("Target2"));
 }

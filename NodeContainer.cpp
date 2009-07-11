@@ -29,19 +29,19 @@ NodeContainer::~NodeContainer()
 ////////////////////////////////////////////////////////////////////////////////
 //! Append a child node.
 
-void NodeContainer::AppendChild(NodePtr& pNode)
+void NodeContainer::appendChild(NodePtr& pNode)
 {
 	// Validate node.
-	if (pNode->Type() == DOCUMENT_NODE)
+	if (pNode->type() == DOCUMENT_NODE)
 		throw Core::InvalidArgException(TXT("Failed to append a node because it's a Document node"));
 
-	if (pNode->HasParent())
-		throw Core::InvalidArgException(Core::Fmt(TXT("Failed to append a '%s' node because it is already part of a document"), pNode->TypeStr()));
+	if (pNode->hasParent())
+		throw Core::InvalidArgException(Core::fmt(TXT("Failed to append a '%s' node because it is already part of a document"), pNode->typeStr()));
 
 	// Add to the children.
 	m_vChildNodes.push_back(pNode);
 
-	pNode->SetParent(m_pParent);
+	pNode->setParent(m_pParent);
 }
 
 //namespace XML

@@ -37,19 +37,19 @@ public:
 	//
 
 	//! Get the real type of the node.
-	virtual NodeType Type() const;
+	virtual NodeType type() const;
 
 	//! Get the target.
-	const tstring& Target() const;
+	const tstring& target() const;
 
 	//! Set the target.
-	void SetTarget(const tstring& strTarget);
+	void setTarget(const tstring& strTarget);
 
 	//! Get the attributes.
-	const Attributes& GetAttributes() const;
+	const Attributes& getAttributes() const;
 
 	//! Get the attributes.
-	Attributes& GetAttributes();
+	Attributes& getAttributes();
 
 private:
 	//
@@ -68,7 +68,7 @@ typedef Core::RefCntPtr<ProcessingNode> ProcessingNodePtr;
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the real type of the node.
 
-inline NodeType ProcessingNode::Type() const
+inline NodeType ProcessingNode::type() const
 {
 	return PROCESSING_NODE;
 }
@@ -76,7 +76,7 @@ inline NodeType ProcessingNode::Type() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the target.
 
-inline const tstring& ProcessingNode::Target() const
+inline const tstring& ProcessingNode::target() const
 {
 	return m_strTarget;
 }
@@ -84,7 +84,7 @@ inline const tstring& ProcessingNode::Target() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the target.
 
-inline void ProcessingNode::SetTarget(const tstring& strTarget)
+inline void ProcessingNode::setTarget(const tstring& strTarget)
 {
 	m_strTarget = strTarget;
 }
@@ -92,7 +92,7 @@ inline void ProcessingNode::SetTarget(const tstring& strTarget)
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the attributes.
 
-inline const Attributes& ProcessingNode::GetAttributes() const
+inline const Attributes& ProcessingNode::getAttributes() const
 {
 	return m_vAttribs;
 }
@@ -100,7 +100,7 @@ inline const Attributes& ProcessingNode::GetAttributes() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the attributes.
 
-inline Attributes& ProcessingNode::GetAttributes()
+inline Attributes& ProcessingNode::getAttributes()
 {
 	return m_vAttribs;
 }

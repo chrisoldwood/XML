@@ -35,10 +35,10 @@ public:
 	//
 
 	//! Check if a character is whitespace. 
-	bool IsWhitespace(tchar cChar) const;
+	bool isWhitespace(tchar cChar) const;
 
 	//! Check if a character is valid in an identifier.
-	bool IsIdentifier(tchar cChar) const;
+	bool isIdentifier(tchar cChar) const;
 
 private:
 	//! A map of character to flags.
@@ -66,32 +66,32 @@ private:
 	//
 
 	//! Get the flags for the character.
-	uint GetFlags(uint nChar) const;
+	uint getFlags(uint nChar) const;
 
 	//! Get the flags for the character.
-	uint& GetFlags(uint nChar);
+	uint& getFlags(uint nChar);
 
 	//! Append flags for the character.
-	void AppendFlags(tchar cChar, uint nFlags);
+	void appendFlags(tchar cChar, uint nFlags);
 
 	//! Append flags for the character range.
-	void AppendFlags(tchar cFirst, tchar cLast, uint nFlags);
+	void appendFlags(tchar cFirst, tchar cLast, uint nFlags);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Check if a character is whitespace. 
 
-inline bool CharTable::IsWhitespace(tchar cChar) const
+inline bool CharTable::isWhitespace(tchar cChar) const
 {
-	return (GetFlags(cChar) & WHITESPACE);
+	return (getFlags(cChar) & WHITESPACE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Check if a character is valid in an identifier.
 
-inline bool CharTable::IsIdentifier(tchar cChar) const
+inline bool CharTable::isIdentifier(tchar cChar) const
 {
-	return (GetFlags(cChar) & IDENTIFIER);
+	return (getFlags(cChar) & IDENTIFIER);
 }
 
 //namespace XML

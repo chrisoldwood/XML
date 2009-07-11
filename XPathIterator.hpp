@@ -48,7 +48,7 @@ public:
 	//
 
 	//! Compare two iterators for equivalence.
-	bool Equals(const XPathIterator& RHS) const;
+	bool equals(const XPathIterator& RHS) const;
 
 private:
 	//! The results container type.
@@ -71,16 +71,16 @@ private:
 	//
 
 	//! Start the iteration.
-	void Begin();
+	void begin();
 
 	//! Continue the iteration.
-	void Next();
+	void next();
 
 	//! End the iteration.
-	void Reset();
+	void reset();
 
 	//! Parse the next part of the query.
-	void Parse(QueryIterator begin, QueryIterator end, const NodePtr& pContext);
+	void parse(QueryIterator begin, QueryIterator end, const NodePtr& pContext);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ private:
 
 inline bool operator==(const XPathIterator& LHS, const XPathIterator& RHS)
 {
-	return LHS.Equals(RHS);
+	return LHS.equals(RHS);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

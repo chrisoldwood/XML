@@ -32,13 +32,13 @@ public:
 	//
 
 	//! Get the name.
-	const tstring& Name() const;
+	const tstring& name() const;
 
 	//! Get the value.
-	const tstring& Value() const;
+	const tstring& value() const;
 
 	//! Set the value.
-	void SetValue(const tstring& strValue);
+	void setValue(const tstring& strValue);
 
 private:
 	//
@@ -70,7 +70,7 @@ inline Attribute::Attribute(const tstring& strName, const tstring& strValue)
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the name.
 
-inline const tstring& Attribute::Name() const
+inline const tstring& Attribute::name() const
 {
 	return m_strName;
 }
@@ -78,7 +78,7 @@ inline const tstring& Attribute::Name() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the value.
 
-inline const tstring& Attribute::Value() const
+inline const tstring& Attribute::value() const
 {
 	return m_strValue;
 }
@@ -86,7 +86,7 @@ inline const tstring& Attribute::Value() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the value.
 
-inline void Attribute::SetValue(const tstring& strValue)
+inline void Attribute::setValue(const tstring& strValue)
 {
 	m_strValue = strValue;
 }

@@ -20,7 +20,7 @@ static const tstring g_strXML =	TXT("<?xml version='1.0' ?>")
 ////////////////////////////////////////////////////////////////////////////////
 //! The unit tests for the XPathIterator class.
 
-void TestXPathIterator()
+void testXPathIterator()
 {
 	XML::XPathIterator end;
 	XML::XPathIterator begin;
@@ -30,10 +30,10 @@ void TestXPathIterator()
 
 	XML::Reader oReader;
 
-	XML::DocumentPtr pDoc = oReader.ReadDocument(g_strXML);
+	XML::DocumentPtr pDoc = oReader.readDocument(g_strXML);
 
 {
-	XML::XPathIterator it(TXT("/"), *pDoc->BeginChild());
+	XML::XPathIterator it(TXT("/"), *pDoc->beginChild());
 
 	TEST_TRUE(*it == pDoc);
 	++it;
@@ -43,7 +43,7 @@ void TestXPathIterator()
 {
 	XML::XPathIterator it(TXT("A"), pDoc);
 
-	XML::Nodes::const_iterator it2 = pDoc->BeginChild();
+	XML::Nodes::const_iterator it2 = pDoc->beginChild();
 
 	++it2;
 
@@ -55,12 +55,12 @@ void TestXPathIterator()
 
 	XML::ElementNodePtr p = Core::dynamic_ptr_cast<XML::ElementNode>(*it);
 
-	TEST_TRUE((p->Name() == TXT("B")) && (p->GetAttributes().Find(TXT("ID"))->Value() == TXT("2.1")));
+	TEST_TRUE((p->name() == TXT("B")) && (p->getAttributes().find(TXT("ID"))->value() == TXT("2.1")));
 
 	++it;
 	p = Core::dynamic_ptr_cast<XML::ElementNode>(*it);
 
-	TEST_TRUE((p->Name() == TXT("B")) && (p->GetAttributes().Find(TXT("ID"))->Value() == TXT("2.3")));
+	TEST_TRUE((p->name() == TXT("B")) && (p->getAttributes().find(TXT("ID"))->value() == TXT("2.3")));
 
 	++it;
 	TEST_TRUE(it == end);

@@ -27,14 +27,14 @@ Document::~Document()
 ////////////////////////////////////////////////////////////////////////////////
 //! Checks if the document has a root element.
 
-bool Document::HasRootElement() const
+bool Document::hasRootElement() const
 {
 	// Find the first element node...
-	for (Nodes::const_iterator it = BeginChild(); it != EndChild(); ++it)
+	for (Nodes::const_iterator it = beginChild(); it != endChild(); ++it)
 	{
 		const NodePtr& pNode = *it;
 
-		if (pNode->Type() == ELEMENT_NODE)
+		if (pNode->type() == ELEMENT_NODE)
 			return true;
 	}
 
@@ -44,14 +44,14 @@ bool Document::HasRootElement() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the root element.
 
-const ElementNodePtr Document::GetRootElement() const
+const ElementNodePtr Document::getRootElement() const
 {
 	// Find the first element node...
-	for (Nodes::const_iterator it = BeginChild(); it != EndChild(); ++it)
+	for (Nodes::const_iterator it = beginChild(); it != endChild(); ++it)
 	{
 		NodePtr pNode = *it;
 
-		if (pNode->Type() == ELEMENT_NODE)
+		if (pNode->type() == ELEMENT_NODE)
 			return Core::static_ptr_cast<ElementNode>(pNode);
 	}
 
@@ -61,14 +61,14 @@ const ElementNodePtr Document::GetRootElement() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the root element.
 
-ElementNodePtr Document::GetRootElement()
+ElementNodePtr Document::getRootElement()
 {
 	// Find the first element node...
-	for (Nodes::const_iterator it = BeginChild(); it != EndChild(); ++it)
+	for (Nodes::const_iterator it = beginChild(); it != endChild(); ++it)
 	{
 		NodePtr pNode = *it;
 
-		if (pNode->Type() == ELEMENT_NODE)
+		if (pNode->type() == ELEMENT_NODE)
 			return Core::static_ptr_cast<ElementNode>(pNode);
 	}
 

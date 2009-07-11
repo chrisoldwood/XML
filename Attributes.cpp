@@ -29,7 +29,7 @@ struct FindByName : public std::unary_function<AttributePtr, bool>
 	//! Compare the attribute name for a match.
 	bool operator()(const AttributePtr& pAttribute)
 	{
-		return (pAttribute->Name() == m_str);
+		return (pAttribute->name() == m_str);
 	}
 };
 
@@ -50,7 +50,7 @@ Attributes::~Attributes()
 ////////////////////////////////////////////////////////////////////////////////
 //! Clear the set of attributes.
 
-void Attributes::Clear()
+void Attributes::clear()
 {
 	m_vAttribs.clear();
 }
@@ -59,16 +59,16 @@ void Attributes::Clear()
 //! Set an attribute. If the attribute name already exists in the collection
 //! it replaces it, otherwise it is appeneded.
 
-void Attributes::SetAttribute(const AttributePtr& pAttribute)
+void Attributes::setAttribute(const AttributePtr& pAttribute)
 {
-	if (pAttribute->Name().empty())
+	if (pAttribute->name().empty())
 		throw Core::InvalidArgException(TXT("Failed to set an attribute as the name is empty"));
 
 	// Replace value or append attribute to collection.
-	AttributePtr pExisting = Find(pAttribute->Name());
+	AttributePtr pExisting = find(pAttribute->name());
 
-	if (pExisting.Get() != nullptr)
-		pExisting->SetValue(pAttribute->Value());
+	if (pExisting.get() != nullptr)
+		pExisting->setValue(pAttribute->value());
 	else
 		m_vAttribs.push_back(pAttribute);
 }
@@ -76,7 +76,7 @@ void Attributes::SetAttribute(const AttributePtr& pAttribute)
 ////////////////////////////////////////////////////////////////////////////////
 //! Find an attribute by its name.
 
-AttributePtr Attributes::Find(const tstring& strName) const
+AttributePtr Attributes::find(const tstring& strName) const
 {
 	AttributePtr pAttribute;
 
@@ -91,12 +91,12 @@ AttributePtr Attributes::Find(const tstring& strName) const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get an attribute by its name or throw if not found.
 
-AttributePtr Attributes::Get(const tstring& strName) const
+AttributePtr Attributes::get(const tstring& strName) const
 {
-	AttributePtr pAttribute = Find(strName);
+	AttributePtr pAttribute = find(strName);
 
-	if (pAttribute.Get() == nullptr)
-		throw Core::InvalidArgException(Core::Fmt(TXT("Failed to retrieve attribute '%s'"), strName.c_str()));
+	if (pAttribute.get() == nullptr)
+		throw Core::InvalidArgException(Core::fmt(TXT("Failed to retrieve attribute '%s'"), strName.c_str()));
 
 	return pAttribute;
 }

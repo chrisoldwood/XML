@@ -38,33 +38,33 @@ public:
 	//
 
 	//! Query if the node has any child nodes.
-	bool HasChildren() const;
+	bool hasChildren() const;
 
 	//! Get the count of child nodes.
-	size_t GetChildCount() const;
+	size_t getChildCount() const;
 
 	//! Get the start iterator for the child nodes.
-	const_iterator BeginChild() const;
+	const_iterator beginChild() const;
 
 	//! Get the end iterator for the child nodes.
-	const_iterator EndChild() const;
+	const_iterator endChild() const;
 
 	//! Get the start iterator for the child nodes.
-	iterator BeginChild();
+	iterator beginChild();
 
 	//! Get the end iterator for the child nodes.
-	iterator EndChild();
+	iterator endChild();
 
 	//
 	// Methods.
 	//
 
 	//! Append a child node.
-	void AppendChild(NodePtr& pNode);
+	void appendChild(NodePtr& pNode);
 
 	//! Append a child node.
 	template<typename T>
-	void AppendChild(Core::RefCntPtr<T>& pNode);
+	void appendChild(Core::RefCntPtr<T>& pNode);
 
 protected:
 	//! Constructor.
@@ -84,7 +84,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 //! Query if the node has any child nodes.
 
-inline bool NodeContainer::HasChildren() const
+inline bool NodeContainer::hasChildren() const
 {
 	return !m_vChildNodes.empty();
 }
@@ -92,7 +92,7 @@ inline bool NodeContainer::HasChildren() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the count of child nodes.
 
-inline size_t NodeContainer::GetChildCount() const
+inline size_t NodeContainer::getChildCount() const
 {
 	return m_vChildNodes.size();
 }
@@ -100,7 +100,7 @@ inline size_t NodeContainer::GetChildCount() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the start iterator for the child nodes.
 
-inline NodeContainer::const_iterator NodeContainer::BeginChild() const
+inline NodeContainer::const_iterator NodeContainer::beginChild() const
 {
 	return m_vChildNodes.begin();
 }
@@ -108,7 +108,7 @@ inline NodeContainer::const_iterator NodeContainer::BeginChild() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the end iterator for the child nodes.
 
-inline NodeContainer::const_iterator NodeContainer::EndChild() const
+inline NodeContainer::const_iterator NodeContainer::endChild() const
 {
 	return m_vChildNodes.end();
 }
@@ -116,7 +116,7 @@ inline NodeContainer::const_iterator NodeContainer::EndChild() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the start iterator for the child nodes.
 
-inline NodeContainer::iterator NodeContainer::BeginChild()
+inline NodeContainer::iterator NodeContainer::beginChild()
 {
 	return m_vChildNodes.begin();
 }
@@ -124,18 +124,18 @@ inline NodeContainer::iterator NodeContainer::BeginChild()
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the end iterator for the child nodes.
 
-inline NodeContainer::iterator NodeContainer::EndChild()
+inline NodeContainer::iterator NodeContainer::endChild()
 {
 	return m_vChildNodes.end();
 }
 
 //! Append a child node.
 template<typename T>
-inline void NodeContainer::AppendChild(Core::RefCntPtr<T>& pNode)
+inline void NodeContainer::appendChild(Core::RefCntPtr<T>& pNode)
 {
 	NodePtr p = pNode;
 
-	AppendChild(p);
+	appendChild(p);
 }
 
 //namespace XML

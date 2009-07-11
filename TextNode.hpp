@@ -33,13 +33,13 @@ public:
 	//
 
 	//! Get the real type of the node.
-	virtual NodeType Type() const;
+	virtual NodeType type() const;
 
 	//! Get the text string.
-	const tstring& Text() const;
+	const tstring& text() const;
 
 	//! Set the text string.
-	void SetText(const tstring& strText);
+	void setText(const tstring& strText);
 
 private:
 	//
@@ -57,7 +57,7 @@ typedef Core::RefCntPtr<TextNode> TextNodePtr;
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the real type of the node.
 
-inline NodeType TextNode::Type() const
+inline NodeType TextNode::type() const
 {
 	return TEXT_NODE;
 }
@@ -65,7 +65,7 @@ inline NodeType TextNode::Type() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the text string.
 
-inline const tstring& TextNode::Text() const
+inline const tstring& TextNode::text() const
 {
 	return m_strText;
 }
@@ -73,7 +73,7 @@ inline const tstring& TextNode::Text() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the text string.
 
-inline void TextNode::SetText(const tstring& strText)
+inline void TextNode::setText(const tstring& strText)
 {
 	m_strText = strText;
 }

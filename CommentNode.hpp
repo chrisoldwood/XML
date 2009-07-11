@@ -33,13 +33,13 @@ public:
 	//
 
 	//! Get the real type of the node.
-	virtual NodeType Type() const;
+	virtual NodeType type() const;
 
 	//! Get the comment.
-	const tstring& Comment() const;
+	const tstring& comment() const;
 
 	//! Set the comment.
-	void SetComment(const tstring& strComment);
+	void setComment(const tstring& strComment);
 
 private:
 	//
@@ -57,7 +57,7 @@ typedef Core::RefCntPtr<CommentNode> CommentNodePtr;
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the real type of the node.
 
-inline NodeType CommentNode::Type() const
+inline NodeType CommentNode::type() const
 {
 	return COMMENT_NODE;
 }
@@ -65,7 +65,7 @@ inline NodeType CommentNode::Type() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the comment.
 
-inline const tstring& CommentNode::Comment() const
+inline const tstring& CommentNode::comment() const
 {
 	return m_strComment;
 }
@@ -73,7 +73,7 @@ inline const tstring& CommentNode::Comment() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the comment.
 
-inline void CommentNode::SetComment(const tstring& strComment)
+inline void CommentNode::setComment(const tstring& strComment)
 {
 	m_strComment = strComment;
 }

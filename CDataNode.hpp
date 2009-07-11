@@ -33,13 +33,13 @@ public:
 	//
 
 	//! Get the real type of the node.
-	virtual NodeType Type() const;
+	virtual NodeType type() const;
 
 	//! Get the text string.
-	const tstring& Text() const;
+	const tstring& text() const;
 
 	//! Set the text string.
-	void SetText(const tstring& strText);
+	void setText(const tstring& strText);
 
 private:
 	//
@@ -57,7 +57,7 @@ typedef Core::RefCntPtr<CDataNode> CDataNodePtr;
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the real type of the node.
 
-inline NodeType CDataNode::Type() const
+inline NodeType CDataNode::type() const
 {
 	return CDATA_NODE;
 }
@@ -65,7 +65,7 @@ inline NodeType CDataNode::Type() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the text string.
 
-inline const tstring& CDataNode::Text() const
+inline const tstring& CDataNode::text() const
 {
 	return m_strText;
 }
@@ -73,7 +73,7 @@ inline const tstring& CDataNode::Text() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the text string.
 
-inline void CDataNode::SetText(const tstring& strText)
+inline void CDataNode::setText(const tstring& strText)
 {
 	m_strText = strText;
 }

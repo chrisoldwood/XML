@@ -15,111 +15,111 @@
 ////////////////////////////////////////////////////////////////////////////////
 //! The unit tests for the Reader class.
 
-void TestReader()
+void testReader()
 {
 	XML::Reader oReader;
 
-	XML::DocumentPtr pDoc = oReader.ReadDocument(TXT("  <?P?>  <!DOCTYPE R>  <!---->  <R><E/></R>  "));
+	XML::DocumentPtr pDoc = oReader.readDocument(TXT("  <?P?>  <!DOCTYPE R>  <!---->  <R><E/></R>  "));
 
-	TEST_TRUE(pDoc->GetChildCount() == 9);
-	TEST_TRUE(pDoc->GetRootElement()->Name() == TXT("R"));
+	TEST_TRUE(pDoc->getChildCount() == 9);
+	TEST_TRUE(pDoc->getRootElement()->name() == TXT("R"));
 
-	XML::Nodes::iterator it = pDoc->BeginChild();
+	XML::Nodes::iterator it = pDoc->beginChild();
 
-	TEST_TRUE((*it)->Type() == XML::TEXT_NODE);
-	TEST_TRUE(Core::dynamic_ptr_cast<XML::TextNode>(*it)->Text() == TXT("  "));
+	TEST_TRUE((*it)->type() == XML::TEXT_NODE);
+	TEST_TRUE(Core::dynamic_ptr_cast<XML::TextNode>(*it)->text() == TXT("  "));
 
 	++it;
 
-	TEST_TRUE((*it)->Type() == XML::PROCESSING_NODE);
-	TEST_TRUE(Core::dynamic_ptr_cast<XML::ProcessingNode>(*it)->Target() == TXT("P"));
+	TEST_TRUE((*it)->type() == XML::PROCESSING_NODE);
+	TEST_TRUE(Core::dynamic_ptr_cast<XML::ProcessingNode>(*it)->target() == TXT("P"));
 
 	it += 2;
 
-	TEST_TRUE((*it)->Type() == XML::DOCTYPE_NODE);
-	TEST_TRUE(Core::dynamic_ptr_cast<XML::DocTypeNode>(*it)->Declaration() == TXT(" R"));
+	TEST_TRUE((*it)->type() == XML::DOCTYPE_NODE);
+	TEST_TRUE(Core::dynamic_ptr_cast<XML::DocTypeNode>(*it)->declaration() == TXT(" R"));
 
 	it += 2;
 
-	TEST_TRUE((*it)->Type() == XML::COMMENT_NODE);
-	TEST_TRUE(Core::dynamic_ptr_cast<XML::CommentNode>(*it)->Comment() == TXT(""));
+	TEST_TRUE((*it)->type() == XML::COMMENT_NODE);
+	TEST_TRUE(Core::dynamic_ptr_cast<XML::CommentNode>(*it)->comment() == TXT(""));
 
 	it += 2;
 
-	TEST_TRUE((*it)->Type() == XML::ELEMENT_NODE);
+	TEST_TRUE((*it)->type() == XML::ELEMENT_NODE);
 
 	XML::ElementNodePtr pElement = Core::dynamic_ptr_cast<XML::ElementNode>(*it);
 
-	TEST_TRUE(pElement->Name() == TXT("R"));
-	TEST_TRUE(pElement->GetChildCount() == 1);
-	TEST_TRUE(Core::dynamic_ptr_cast<XML::ElementNode>(*pElement->BeginChild())->Name() == TXT("E"));
+	TEST_TRUE(pElement->name() == TXT("R"));
+	TEST_TRUE(pElement->getChildCount() == 1);
+	TEST_TRUE(Core::dynamic_ptr_cast<XML::ElementNode>(*pElement->beginChild())->name() == TXT("E"));
 
-	TEST_THROWS(oReader.ReadDocument(TXT("")));
-	TEST_THROWS(oReader.ReadDocument(TXT(" x <R/>")));
-	TEST_THROWS(oReader.ReadDocument(TXT("<R/> x ")));
-	TEST_THROWS(oReader.ReadDocument(TXT("<?\?><R/>")));	// ??> is a trigraph.
-	TEST_THROWS(oReader.ReadDocument(TXT("<R>")));
-	TEST_THROWS(oReader.ReadDocument(TXT("</R>")));
-	TEST_THROWS(oReader.ReadDocument(TXT("<R><E></R>")));
-	TEST_THROWS(oReader.ReadDocument(TXT("<R></E></R>")));
+	TEST_THROWS(oReader.readDocument(TXT("")));
+	TEST_THROWS(oReader.readDocument(TXT(" x <R/>")));
+	TEST_THROWS(oReader.readDocument(TXT("<R/> x ")));
+	TEST_THROWS(oReader.readDocument(TXT("<?\?><R/>")));	// ??> is a trigraph.
+	TEST_THROWS(oReader.readDocument(TXT("<R>")));
+	TEST_THROWS(oReader.readDocument(TXT("</R>")));
+	TEST_THROWS(oReader.readDocument(TXT("<R><E></R>")));
+	TEST_THROWS(oReader.readDocument(TXT("<R></E></R>")));
 
-	pDoc = oReader.ReadDocument(TXT("<?xml version=\"1.0\" encoding=\"utf-8\"?><R/>"));
+	pDoc = oReader.readDocument(TXT("<?xml version=\"1.0\" encoding=\"utf-8\"?><R/>"));
 
-	ASSERT(pDoc->GetChildCount() == 2);
+	ASSERT(pDoc->getChildCount() == 2);
 
-	XML::ProcessingNodePtr pProcNode = Core::dynamic_ptr_cast<XML::ProcessingNode>(*pDoc->BeginChild());
+	XML::ProcessingNodePtr pProcNode = Core::dynamic_ptr_cast<XML::ProcessingNode>(*pDoc->beginChild());
 
-	TEST_TRUE(pProcNode->Target() == TXT("xml"));
+	TEST_TRUE(pProcNode->target() == TXT("xml"));
 
-	const XML::Attributes& vAttribs = pProcNode->GetAttributes();
+	const XML::Attributes& vAttribs = pProcNode->getAttributes();
 
-	TEST_TRUE(vAttribs.IsEmpty() == false);
-	TEST_TRUE(vAttribs.Count() == 2);
+	TEST_TRUE(vAttribs.isEmpty() == false);
+	TEST_TRUE(vAttribs.count() == 2);
 
-	XML::Attributes::const_iterator itAttrib = vAttribs.Begin();
+	XML::Attributes::const_iterator itAttrib = vAttribs.begin();
 
-	TEST_TRUE((*itAttrib)->Name() == TXT("version"));
-	TEST_TRUE((*itAttrib)->Value() == TXT("1.0"));
+	TEST_TRUE((*itAttrib)->name() == TXT("version"));
+	TEST_TRUE((*itAttrib)->value() == TXT("1.0"));
 
 	++itAttrib;
 
-	TEST_TRUE((*itAttrib)->Name() == TXT("encoding"));
-	TEST_TRUE((*itAttrib)->Value() == TXT("utf-8"));
+	TEST_TRUE((*itAttrib)->name() == TXT("encoding"));
+	TEST_TRUE((*itAttrib)->value() == TXT("utf-8"));
 
-	TEST_THROWS(oReader.ReadDocument(TXT("<R a>")));
-	TEST_THROWS(oReader.ReadDocument(TXT("<R a=>")));
-	TEST_THROWS(oReader.ReadDocument(TXT("<R a=b>")));
-	TEST_THROWS(oReader.ReadDocument(TXT("<R a='b>")));
-	TEST_THROWS(oReader.ReadDocument(TXT("<R a='b\">")));
+	TEST_THROWS(oReader.readDocument(TXT("<R a>")));
+	TEST_THROWS(oReader.readDocument(TXT("<R a=>")));
+	TEST_THROWS(oReader.readDocument(TXT("<R a=b>")));
+	TEST_THROWS(oReader.readDocument(TXT("<R a='b>")));
+	TEST_THROWS(oReader.readDocument(TXT("<R a='b\">")));
 
-	TEST_TRUE(oReader.ReadDocument(TXT("<?x v = \"1.0\" encoding = 'utf-8'  ?><R a = 'b'  />")).Get() != nullptr);
+	TEST_TRUE(oReader.readDocument(TXT("<?x v = \"1.0\" encoding = 'utf-8'  ?><R a = 'b'  />")).get() != nullptr);
 
 	const tstring strFlagsTest = TXT(" \t<?xml?><!DOCTYPE R><!----><R>\r\n</R> \t");
 
-	pDoc = oReader.ReadDocument(strFlagsTest, XML::Reader::DISCARD_WHITESPACE);
+	pDoc = oReader.readDocument(strFlagsTest, XML::Reader::DISCARD_WHITESPACE);
 
-	TEST_TRUE(pDoc->GetChildCount() == 4);
+	TEST_TRUE(pDoc->getChildCount() == 4);
 
-	pDoc = oReader.ReadDocument(strFlagsTest, XML::Reader::DISCARD_COMMENTS);
+	pDoc = oReader.readDocument(strFlagsTest, XML::Reader::DISCARD_COMMENTS);
 
-	TEST_TRUE(pDoc->GetChildCount() == 5);
+	TEST_TRUE(pDoc->getChildCount() == 5);
 
-	pDoc = oReader.ReadDocument(strFlagsTest, XML::Reader::DISCARD_PROC_INSTNS);
+	pDoc = oReader.readDocument(strFlagsTest, XML::Reader::DISCARD_PROC_INSTNS);
 
-	TEST_TRUE(pDoc->GetChildCount() == 5);
+	TEST_TRUE(pDoc->getChildCount() == 5);
 
-	pDoc = oReader.ReadDocument(strFlagsTest, XML::Reader::DISCARD_DOC_TYPES);
+	pDoc = oReader.readDocument(strFlagsTest, XML::Reader::DISCARD_DOC_TYPES);
 
-	TEST_TRUE(pDoc->GetChildCount() == 5);
+	TEST_TRUE(pDoc->getChildCount() == 5);
 
-	TEST_THROWS(oReader.ReadDocument(TXT("<!")));
-	TEST_THROWS(oReader.ReadDocument(TXT("<!-")));
+	TEST_THROWS(oReader.readDocument(TXT("<!")));
+	TEST_THROWS(oReader.readDocument(TXT("<!-")));
 
-	TEST_TRUE(oReader.ReadDocument(TXT("<!DOCTYPE root PUBLIC \"http://\"[<!-- comment -->]><root/>")).Get() != nullptr);
+	TEST_TRUE(oReader.readDocument(TXT("<!DOCTYPE root PUBLIC \"http://\"[<!-- comment -->]><root/>")).get() != nullptr);
 
-	TEST_TRUE(oReader.ReadDocument(TXT("<root a=\"<>\" b='<>' />")).Get() != nullptr);
+	TEST_TRUE(oReader.readDocument(TXT("<root a=\"<>\" b='<>' />")).get() != nullptr);
 
-	TEST_TRUE(oReader.ReadDocument(TXT("<!-- <> -> -- --><root/>")).Get() != nullptr);
+	TEST_TRUE(oReader.readDocument(TXT("<!-- <> -> -- --><root/>")).get() != nullptr);
 
-	TEST_TRUE(oReader.ReadDocument(TXT("<root> <![CDATA[ ]]> </root>")).Get() != nullptr);
+	TEST_TRUE(oReader.readDocument(TXT("<root> <![CDATA[ ]]> </root>")).get() != nullptr);
 }

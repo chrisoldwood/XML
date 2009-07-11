@@ -29,7 +29,7 @@ Node::~Node()
 ////////////////////////////////////////////////////////////////////////////////
 //! Convert the node type to a string.
 
-const tchar* Node::FormatNodeType(NodeType eType)
+const tchar* Node::formatNodeType(NodeType eType)
 {
 	switch(eType)
 	{
@@ -43,7 +43,7 @@ const tchar* Node::FormatNodeType(NodeType eType)
 		default:				ASSERT_FALSE();
 	}
 
-	throw Core::InvalidArgException(Core::Fmt(TXT("Invalid NodeType passed to GetNodeTypeStr: %u"), eType));
+	throw Core::InvalidArgException(Core::fmt(TXT("Invalid NodeType passed to GetNodeTypeStr: %u"), eType));
 }
 
 //namespace XML
