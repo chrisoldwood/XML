@@ -11,5 +11,3 @@
 - Add shorthand on Atrributes for getting an attribute value.
 
 - Change use of GetType() to use some form of Extension Interface.
-
-- Remove Hungarian Notation and switch to camelCase.
