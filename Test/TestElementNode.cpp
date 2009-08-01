@@ -7,16 +7,14 @@
 #include <Core/UnitTest.hpp>
 #include <XML/ElementNode.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the ElementNode class.
-
-void testElementNode()
+TEST_SET(ElementNode)
 {
 //	XML::ElementNode oNode;		// Shouldn't compile.
 
 	XML::ElementNodePtr pNode(new XML::ElementNode);
 
 	TEST_TRUE(pNode->type() == XML::ELEMENT_NODE);
+	TEST_TRUE(tstrlen(pNode->typeStr()) != 0);
 	TEST_TRUE(pNode->name().empty());
 
 	pNode = XML::ElementNodePtr(new XML::ElementNode(TXT("Name1")));
@@ -27,3 +25,4 @@ void testElementNode()
 
 	TEST_TRUE(pNode->name() == TXT("Name2"));
 }
+TEST_SET_END

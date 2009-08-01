@@ -7,10 +7,7 @@
 #include <Core/UnitTest.hpp>
 #include <XML/Attributes.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the Attribute struct & Attributes class.
-
-void testAttributes()
+TEST_SET(Attributes)
 {
 	XML::Attribute oAttrib1;
 
@@ -58,4 +55,13 @@ void testAttributes()
 
 	TEST_TRUE(pAttrib->name() == TXT("name"));
 	TEST_THROWS(oAttribs.get(TXT("invalid_name")));
+
+	ASSERT(oAttribs.count() != 0);
+
+	oAttribs.clear();
+
+	TEST_TRUE(oAttribs.count() == 0);
+
+	TEST_THROWS(oAttribs.setAttribute(XML::AttributePtr(new XML::Attribute)));
 }
+TEST_SET_END

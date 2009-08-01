@@ -7,10 +7,7 @@
 #include <Core/UnitTest.hpp>
 #include <XML/CharTable.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the CharTable class.
-
-void testCharTable()
+TEST_SET(CharTable)
 {
 	XML::CharTable oCharTable;
 
@@ -27,4 +24,9 @@ void testCharTable()
 	TEST_TRUE(oCharTable.isIdentifier(TXT('-')) == true);
 	TEST_TRUE(oCharTable.isIdentifier(TXT('_')) == true);
 	TEST_TRUE(oCharTable.isIdentifier(TXT('.')) == true);
+
+	const tchar nonAscii = TXT('\xFF');
+
+	TEST_TRUE(oCharTable.isIdentifier(nonAscii) == false);
 }
+TEST_SET_END

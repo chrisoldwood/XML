@@ -9,14 +9,14 @@
 #include <XML/TextNode.hpp>
 #include <XML/ElementNode.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the Document class.
-
-void testDocument()
+TEST_SET(Document)
 {
 //	XML::Document oDoc;		// Shouldn't compile.
 
 	const XML::DocumentPtr pDoc1(new XML::Document);
+
+	TEST_TRUE(pDoc1->type() == XML::DOCUMENT_NODE);
+	TEST_TRUE(tstrlen(pDoc1->typeStr()) != 0);
 
 	TEST_TRUE(pDoc1->hasChildren() == false);
 	TEST_TRUE(pDoc1->getChildCount() == 0);
@@ -59,4 +59,9 @@ void testDocument()
 
 	TEST_THROWS(pDoc->appendChild(pElement));
 	TEST_THROWS(pDoc->appendChild(pDoc));
+
+	const XML::DocumentPtr constDoc(pDoc);
+
+	TEST_TRUE(constDoc->getRootElement().get() != nullptr);
 }
+TEST_SET_END

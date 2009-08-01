@@ -8,25 +8,23 @@
 #include <XML/XPathIterator.hpp>
 #include <XML/Reader.hpp>
 
-static const tstring g_strXML =	TXT("<?xml version='1.0' ?>")
-								TXT("<A ID='1'>")
-								TXT("    <B ID='2.1'/>")
-								TXT("    <C ID='2.2'>")
-								TXT("        <B ID='3'/>")
-								TXT("    </C>")
-								TXT("    <B ID='2.3'/>")
-								TXT("</A>");
-
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the XPathIterator class.
-
-void testXPathIterator()
+TEST_SET(XPathIterator)
 {
+	static const tstring g_strXML =	TXT("<?xml version='1.0' ?>")
+									TXT("<A ID='1'>")
+									TXT("    <B ID='2.1'/>")
+									TXT("    <C ID='2.2'>")
+									TXT("        <B ID='3'/>")
+									TXT("    </C>")
+									TXT("    <B ID='2.3'/>")
+									TXT("</A>");
+
 	XML::XPathIterator end;
 	XML::XPathIterator begin;
 
 	TEST_TRUE(begin == end);
 	TEST_FALSE(begin != end);
+	TEST_THROWS(*end);
 
 	XML::Reader oReader;
 
@@ -66,4 +64,13 @@ void testXPathIterator()
 	TEST_TRUE(it == end);
 }
 
+{
+	XML::XPathIterator it(TXT("A"), pDoc);
+
+	++it;
+
+	TEST_THROWS(++it);
 }
+
+}
+TEST_SET_END

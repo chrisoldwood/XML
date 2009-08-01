@@ -7,16 +7,14 @@
 #include <Core/UnitTest.hpp>
 #include <XML/TextNode.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the TextNode class.
-
-void testTextNode()
+TEST_SET(TextNode)
 {
 //	XML::TextNode oNode;		// Shouldn't compile.
 
 	XML::TextNodePtr pNode(new XML::TextNode);
 
 	TEST_TRUE(pNode->type() == XML::TEXT_NODE);
+	TEST_TRUE(tstrlen(pNode->typeStr()) != 0);
 	TEST_TRUE(pNode->text().empty());
 
 	pNode = XML::TextNodePtr(new XML::TextNode(TXT("Text1")));
@@ -27,3 +25,4 @@ void testTextNode()
 
 	TEST_TRUE(pNode->text() == TXT("Text2"));
 }
+TEST_SET_END

@@ -12,10 +12,7 @@
 #include <XML/ProcessingNode.hpp>
 #include <XML/DocTypeNode.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the Reader class.
-
-void testReader()
+TEST_SET(Reader)
 {
 	XML::Reader oReader;
 
@@ -57,6 +54,7 @@ void testReader()
 	TEST_THROWS(oReader.readDocument(TXT("")));
 	TEST_THROWS(oReader.readDocument(TXT(" x <R/>")));
 	TEST_THROWS(oReader.readDocument(TXT("<R/> x ")));
+	TEST_THROWS(oReader.readDocument(TXT("<?")));	// ??> is a trigraph.
 	TEST_THROWS(oReader.readDocument(TXT("<?\?><R/>")));	// ??> is a trigraph.
 	TEST_THROWS(oReader.readDocument(TXT("<R>")));
 	TEST_THROWS(oReader.readDocument(TXT("</R>")));
@@ -86,7 +84,10 @@ void testReader()
 	TEST_TRUE((*itAttrib)->name() == TXT("encoding"));
 	TEST_TRUE((*itAttrib)->value() == TXT("utf-8"));
 
+	TEST_THROWS(oReader.readDocument(TXT("<>")));
+	TEST_THROWS(oReader.readDocument(TXT("<+>")));
 	TEST_THROWS(oReader.readDocument(TXT("<R a>")));
+	TEST_THROWS(oReader.readDocument(TXT("<R +>")));
 	TEST_THROWS(oReader.readDocument(TXT("<R a=>")));
 	TEST_THROWS(oReader.readDocument(TXT("<R a=b>")));
 	TEST_THROWS(oReader.readDocument(TXT("<R a='b>")));
@@ -114,12 +115,19 @@ void testReader()
 
 	TEST_THROWS(oReader.readDocument(TXT("<!")));
 	TEST_THROWS(oReader.readDocument(TXT("<!-")));
+	TEST_THROWS(oReader.readDocument(TXT("<!-->")));
 
 	TEST_TRUE(oReader.readDocument(TXT("<!DOCTYPE root PUBLIC \"http://\"[<!-- comment -->]><root/>")).get() != nullptr);
+	TEST_THROWS(oReader.readDocument(TXT("<!")));
+	TEST_THROWS(oReader.readDocument(TXT("<!D")));
+	TEST_THROWS(oReader.readDocument(TXT("<!D>")));
 
 	TEST_TRUE(oReader.readDocument(TXT("<root a=\"<>\" b='<>' />")).get() != nullptr);
 
 	TEST_TRUE(oReader.readDocument(TXT("<!-- <> -> -- --><root/>")).get() != nullptr);
 
 	TEST_TRUE(oReader.readDocument(TXT("<root> <![CDATA[ ]]> </root>")).get() != nullptr);
+	TEST_THROWS(oReader.readDocument(TXT("<![CDATA")));
+	TEST_THROWS(oReader.readDocument(TXT("<![ ]]>")));
 }
+TEST_SET_END

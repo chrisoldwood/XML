@@ -7,9 +7,7 @@
 #include <Core/UnitTest.hpp>
 #include <XML/Writer.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-//! The unit tests for the Writer class.
-
-void testWriter()
+TEST_SET(Writer)
 {
 }
+TEST_SET_END
