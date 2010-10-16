@@ -18,6 +18,8 @@
 //! \brief     The XML Library namespace.
 //!
 //! \mainpage  XML C++ Library
+//! \section   introduction Introduction
+//! This is a library for reading and writing XML format files.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Standard headers.

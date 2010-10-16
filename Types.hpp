@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //! \file   Types.hpp
-//! \brief  .
+//! \brief  Enumerations used to support simple RTTI syle operations.
 //! \author Chris Oldwood
 
 // Check for previous inclusion
@@ -27,14 +27,6 @@ enum NodeType
 	PROCESSING_NODE,	//!< A processing instruction node.
 	DOCTYPE_NODE,		//!< A document type node.
 	CDATA_NODE,			//!< A CDATA section.
-};
-
-////////////////////////////////////////////////////////////////////////////////
-//! The types of tags stored in an XML stream. This is used for doing RTTI when
-//! deserializing an XML stream.
-
-enum TagType
-{
 };
 
 //namespace XML
