@@ -49,18 +49,18 @@
 			</Target>
 		</Build>
 		<Unit filename="Test.cpp" />
-		<Unit filename="TestAttributes.cpp" />
-		<Unit filename="TestCDataNode.cpp" />
-		<Unit filename="TestCharTable.cpp" />
-		<Unit filename="TestCommentNode.cpp" />
-		<Unit filename="TestDocTypeNode.cpp" />
-		<Unit filename="TestDocument.cpp" />
-		<Unit filename="TestElementNode.cpp" />
-		<Unit filename="TestProcessingNode.cpp" />
-		<Unit filename="TestReader.cpp" />
-		<Unit filename="TestTextNode.cpp" />
-		<Unit filename="TestWriter.cpp" />
-		<Unit filename="TestXPathIterator.cpp" />
+		<Unit filename="AttributesTests.cpp" />
+		<Unit filename="CDataNodeTests.cpp" />
+		<Unit filename="CharTableTests.cpp" />
+		<Unit filename="CommentNodeTests.cpp" />
+		<Unit filename="DocTypeNodeTests.cpp" />
+		<Unit filename="DocumentTests.cpp" />
+		<Unit filename="ElementNodeTests.cpp" />
+		<Unit filename="ProcessingNodeTests.cpp" />
+		<Unit filename="ReaderTests.cpp" />
+		<Unit filename="TextNodeTests.cpp" />
+		<Unit filename="WriterTests.cpp" />
+		<Unit filename="XPathIteratorTests.cpp" />
 		<Unit filename="stdafx.cpp" />
 		<Unit filename="stdafx.h" />
 		<Extensions>

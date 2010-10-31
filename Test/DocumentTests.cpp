@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestDocument.cpp
+//! \file   DocumentTests.cpp
 //! \brief  The unit tests for the Document class.
 //! \author Chris Oldwood
 
@@ -11,57 +11,83 @@
 
 TEST_SET(Document)
 {
-//	XML::Document oDoc;		// Shouldn't compile.
 
-	const XML::DocumentPtr pDoc1(new XML::Document);
+TEST_CASE("compilation only succeeds for construction on the heap")
+{
+//	XML::Document stackNode;		// Shouldn't compile.
 
-	TEST_TRUE(pDoc1->type() == XML::DOCUMENT_NODE);
-	TEST_TRUE(tstrlen(pDoc1->typeStr()) != 0);
+	XML::DocumentPtr heapNode(new XML::Document);
 
-	TEST_TRUE(pDoc1->hasChildren() == false);
-	TEST_TRUE(pDoc1->getChildCount() == 0);
-	TEST_TRUE(pDoc1->beginChild() == pDoc1->endChild());
-	TEST_TRUE(pDoc1->hasRootElement() == false);
-	TEST_TRUE(pDoc1->getRootElement().get() == nullptr);
+	TEST_PASSED("compilation succeeds");
+}
+TEST_CASE_END
 
-	XML::DocumentPtr pDoc(new XML::Document);
+TEST_CASE("type returns the type of the node as an enumeration value")
+{
+	XML::DocumentPtr node(new XML::Document);
 
-	TEST_TRUE(pDoc->beginChild() == pDoc->endChild());
-	TEST_TRUE(pDoc->getRootElement().get() == nullptr);
+	TEST_TRUE(node->type() == XML::DOCUMENT_NODE);
+	TEST_TRUE(tstricmp(node->typeStr(), TXT("document")) == 0);
+}
+TEST_CASE_END
 
-	XML::TextNodePtr pText(new XML::TextNode(TXT("TextNode")));
+TEST_CASE("initial document is empty")
+{
+	const XML::DocumentPtr constDocument(new XML::Document);
 
-	pDoc->appendChild(pText);
+	TEST_TRUE(constDocument->hasChildren() == false);
+	TEST_TRUE(constDocument->getChildCount() == 0);
+	TEST_TRUE(constDocument->beginChild() == constDocument->endChild());
+	TEST_TRUE(constDocument->hasRootElement() == false);
+	TEST_TRUE(constDocument->getRootElement().get() == nullptr);
 
-	TEST_TRUE(pDoc->hasChildren() == true);
-	TEST_TRUE(pDoc->getChildCount() == 1);
+	XML::DocumentPtr nonConstDocument(new XML::Document);
 
-	TEST_TRUE(pDoc->beginChild() != pDoc->endChild());
-	TEST_TRUE((*pDoc->beginChild()).get() == pText.get());
+	TEST_TRUE(nonConstDocument->beginChild() == nonConstDocument->endChild());
+	TEST_TRUE(nonConstDocument->getRootElement().get() == nullptr);
+}
+TEST_CASE_END
 
-	XML::Nodes::iterator itBeginChild = pDoc->beginChild();	// ++pDoc->BeginChild() fails to build in Release.
+TEST_CASE("appending a child node creates a non-empty node sequence")
+{
+	XML::DocumentPtr document(new XML::Document);
+	XML::TextNodePtr textNode(new XML::TextNode(TXT("TextNode")));
 
-	TEST_TRUE(++itBeginChild == pDoc->endChild());
+	document->appendChild(textNode);
 
-	XML::ElementNodePtr pElement(new XML::ElementNode(TXT("ElementNode")));
+	TEST_TRUE(document->hasChildren() == true);
+	TEST_TRUE(document->getChildCount() == 1);
 
-	pDoc->appendChild(pElement);
+	TEST_TRUE(document->beginChild() != document->endChild());
 
-	TEST_TRUE(pDoc->hasChildren() == true);
-	TEST_TRUE(pDoc->getChildCount() == 2);
+	XML::NodeContainer::iterator firstChild = document->beginChild();
 
-	itBeginChild = pDoc->beginChild();	// ++pDoc->BeginChild() fails to build in Release.
+	TEST_TRUE((*firstChild).get() == textNode.get());
 
-	TEST_TRUE((*++itBeginChild)->type() == XML::ELEMENT_NODE);
+	XML::Nodes::iterator endChild = document->endChild();	// ++pDoc->BeginChild() fails to build in Release.
 
-	TEST_TRUE(pDoc->hasRootElement() == true);
-	TEST_TRUE(pDoc->getRootElement() == pElement);
+	TEST_TRUE(++firstChild == endChild);
+}
+TEST_CASE_END
 
-	TEST_THROWS(pDoc->appendChild(pElement));
-	TEST_THROWS(pDoc->appendChild(pDoc));
+TEST_CASE("appending an element node gives the document a root element")
+{
+	XML::DocumentPtr document(new XML::Document);
+	XML::TextNodePtr nonElelementNode(new XML::TextNode(TXT("TextNode")));
 
-	const XML::DocumentPtr constDoc(pDoc);
+	document->appendChild(nonElelementNode);
 
-	TEST_TRUE(constDoc->getRootElement().get() != nullptr);
+	TEST_TRUE(document->hasRootElement() == false);
+	TEST_TRUE(document->getRootElement().get() == nullptr);
+
+	XML::ElementNodePtr elementNode(new XML::ElementNode(TXT("ElementNode")));
+
+	document->appendChild(elementNode);
+
+	TEST_TRUE(document->hasRootElement() == true);
+	TEST_TRUE(document->getRootElement() == elementNode);
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

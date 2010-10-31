@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestCommentNode.cpp
+//! \file   CommentNodeTests.cpp
 //! \brief  The unit tests for the CommentNode class.
 //! \author Chris Oldwood
 
@@ -9,20 +9,51 @@
 
 TEST_SET(CommentNode)
 {
-//	XML::CommentNode oNode;		// Shouldn't compile.
 
-	XML::CommentNodePtr pNode(new XML::CommentNode);
+TEST_CASE("compilation only succeeds for construction on the heap")
+{
+//	XML::CommentNode stackNode;		// Shouldn't compile.
 
-	TEST_TRUE(pNode->type() == XML::COMMENT_NODE);
-	TEST_TRUE(tstrlen(pNode->typeStr()) != 0);
-	TEST_TRUE(pNode->comment().empty());
+	XML::CommentNodePtr heapNode(new XML::CommentNode);
 
-	pNode = XML::CommentNodePtr(new XML::CommentNode(TXT("Comment1")));
+	TEST_PASSED("compilation succeeds");
+}
+TEST_CASE_END
 
-	TEST_TRUE(pNode->comment() == TXT("Comment1"));
+TEST_CASE("type returns the type of the node as an enumeration value")
+{
+	XML::CommentNodePtr node(new XML::CommentNode);
 
-	pNode->setComment(TXT("Comment2"));
+	TEST_TRUE(node->type() == XML::COMMENT_NODE);
+	TEST_TRUE(tstricmp(node->typeStr(), TXT("comment")) == 0);
+}
+TEST_CASE_END
 
-	TEST_TRUE(pNode->comment() == TXT("Comment2"));
+TEST_CASE("default construction results in an empty comment value")
+{
+	XML::CommentNodePtr node(new XML::CommentNode);
+
+	TEST_TRUE(node->comment().empty());
+}
+TEST_CASE_END
+
+TEST_CASE("the comment value can be set via the constructor")
+{
+	XML::CommentNodePtr node = XML::CommentNodePtr(new XML::CommentNode(TXT("comment")));
+
+	TEST_TRUE(node->comment() == TXT("comment"));
+}
+TEST_CASE_END
+
+TEST_CASE("the comment value can be set via a mutator")
+{
+	XML::CommentNodePtr node = XML::CommentNodePtr(new XML::CommentNode);
+
+	node->setComment(TXT("comment"));
+
+	TEST_TRUE(node->comment() == TXT("comment"));
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

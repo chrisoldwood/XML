@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestCharTable.cpp
+//! \file   CharTableTests.cpp
 //! \brief  The unit tests for the CharTable class.
 //! \author Chris Oldwood
 
@@ -9,24 +9,50 @@
 
 TEST_SET(CharTable)
 {
-	XML::CharTable oCharTable;
 
-	TEST_TRUE(oCharTable.isWhitespace(TXT('A')) == false);
-	TEST_TRUE(oCharTable.isWhitespace(TXT(' ')) == true);
-	TEST_TRUE(oCharTable.isWhitespace(TXT('\t')) == true);
-	TEST_TRUE(oCharTable.isWhitespace(TXT('\r')) == true);
-	TEST_TRUE(oCharTable.isWhitespace(TXT('\n')) == true);
+TEST_CASE("table returns true for characters classified as whitespace")
+{
+	XML::CharTable table;
 
-	TEST_TRUE(oCharTable.isIdentifier(TXT(' ')) == false);
-	TEST_TRUE(oCharTable.isIdentifier(TXT('M')) == true);
-	TEST_TRUE(oCharTable.isIdentifier(TXT('m')) == true);
-	TEST_TRUE(oCharTable.isIdentifier(TXT('5')) == true);
-	TEST_TRUE(oCharTable.isIdentifier(TXT('-')) == true);
-	TEST_TRUE(oCharTable.isIdentifier(TXT('_')) == true);
-	TEST_TRUE(oCharTable.isIdentifier(TXT('.')) == true);
+	TEST_TRUE(table.isWhitespace(TXT(' ')) == true);
+	TEST_TRUE(table.isWhitespace(TXT('\t')) == true);
+	TEST_TRUE(table.isWhitespace(TXT('\r')) == true);
+	TEST_TRUE(table.isWhitespace(TXT('\n')) == true);
+}
+TEST_CASE_END
+
+TEST_CASE("table returns false for characters not classified as whitespace")
+{
+	XML::CharTable table;
+
+	TEST_TRUE(table.isWhitespace(TXT('A')) == false);
+}
+TEST_CASE_END
+
+TEST_CASE("table returns true for characters that can be used in identifiers")
+{
+	XML::CharTable table;
+
+	TEST_TRUE(table.isIdentifier(TXT('M')) == true);
+	TEST_TRUE(table.isIdentifier(TXT('m')) == true);
+	TEST_TRUE(table.isIdentifier(TXT('5')) == true);
+	TEST_TRUE(table.isIdentifier(TXT('-')) == true);
+	TEST_TRUE(table.isIdentifier(TXT('_')) == true);
+	TEST_TRUE(table.isIdentifier(TXT('.')) == true);
+}
+TEST_CASE_END
+
+TEST_CASE("table returns false for characters that cannot be used in identifiers")
+{
+	XML::CharTable table;
+
+	TEST_TRUE(table.isIdentifier(TXT(' ')) == false);
 
 	const tchar nonAscii = TXT('\xFF');
 
-	TEST_TRUE(oCharTable.isIdentifier(nonAscii) == false);
+	TEST_TRUE(table.isIdentifier(nonAscii) == false);
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

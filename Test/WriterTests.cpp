@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestWriter.cpp
+//! \file   WriterTests.cpp
 //! \brief  The unit tests for the Writer class.
 //! \author Chris Oldwood
 

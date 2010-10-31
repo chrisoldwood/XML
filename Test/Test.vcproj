@@ -132,6 +132,36 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\AttributesTests.cpp">
+			</File>
+			<File
+				RelativePath=".\AttributeTests.cpp">
+			</File>
+			<File
+				RelativePath=".\CDataNodeTests.cpp">
+			</File>
+			<File
+				RelativePath=".\CharTableTests.cpp">
+			</File>
+			<File
+				RelativePath=".\CommentNodeTests.cpp">
+			</File>
+			<File
+				RelativePath=".\DocTypeNodeTests.cpp">
+			</File>
+			<File
+				RelativePath=".\DocumentTests.cpp">
+			</File>
+			<File
+				RelativePath=".\ElementNodeTests.cpp">
+			</File>
+			<File
+				RelativePath=".\ProcessingNodeTests.cpp">
+			</File>
+			<File
+				RelativePath=".\ReaderTests.cpp">
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -150,40 +180,13 @@
 				RelativePath=".\Test.cpp">
 			</File>
 			<File
-				RelativePath=".\TestAttributes.cpp">
+				RelativePath=".\TextNodeTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestCDataNode.cpp">
+				RelativePath=".\WriterTests.cpp">
 			</File>
 			<File
-				RelativePath=".\TestCharTable.cpp">
-			</File>
-			<File
-				RelativePath=".\TestCommentNode.cpp">
-			</File>
-			<File
-				RelativePath=".\TestDocTypeNode.cpp">
-			</File>
-			<File
-				RelativePath=".\TestDocument.cpp">
-			</File>
-			<File
-				RelativePath=".\TestElementNode.cpp">
-			</File>
-			<File
-				RelativePath=".\TestProcessingNode.cpp">
-			</File>
-			<File
-				RelativePath=".\TestReader.cpp">
-			</File>
-			<File
-				RelativePath=".\TestTextNode.cpp">
-			</File>
-			<File
-				RelativePath=".\TestWriter.cpp">
-			</File>
-			<File
-				RelativePath=".\TestXPathIterator.cpp">
+				RelativePath=".\XPathIteratorTests.cpp">
 			</File>
 		</Filter>
 		<Filter

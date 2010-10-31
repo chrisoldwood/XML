@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestAttributes.cpp
-//! \brief  The unit tests for the Attribute struct & Attributes class.
+//! \file   AttributesTests.cpp
+//! \brief  The unit tests for the Attributes class.
 //! \author Chris Oldwood
 
 #include "stdafx.h"
@@ -9,59 +9,129 @@
 
 TEST_SET(Attributes)
 {
-	XML::Attribute oAttrib1;
 
-	TEST_TRUE(oAttrib1.name() == TXT(""));
-	TEST_TRUE(oAttrib1.value() == TXT(""));
+TEST_CASE("default construction results in an empty sequence")
+{
+	XML::Attributes attributes;
 
-	XML::Attribute oAttrib2(TXT("name"), TXT("value"));
+	TEST_TRUE(attributes.isEmpty() == true);
+	TEST_TRUE(attributes.count() == 0);
+	TEST_TRUE(attributes.begin() == attributes.end());
+}
+TEST_CASE_END
 
-	TEST_TRUE(oAttrib2.name() == TXT("name"));
-	TEST_TRUE(oAttrib2.value() == TXT("value"));
+TEST_CASE("setting an attribute adds it to the sequence if it doesn't already exist")
+{
+	XML::AttributePtr attribute = XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value")));
 
-	oAttrib2.setValue(TXT("value2"));
+	XML::Attributes attributes;
 
-	TEST_TRUE(oAttrib2.value() == TXT("value2"));
+	attributes.setAttribute(attribute);
 
-	XML::Attributes oAttribs;
-
-	TEST_TRUE(oAttribs.isEmpty() == true);
-	TEST_TRUE(oAttribs.count() == 0);
-	TEST_TRUE(oAttribs.begin() == oAttribs.end());
-
-	XML::AttributePtr pAttrib = XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value")));
-
-	oAttribs.setAttribute(pAttrib);
-
-	XML::Attributes::iterator it = oAttribs.begin();
+	XML::Attributes::const_iterator it = attributes.begin();
 
 	TEST_TRUE((*it)->name() == TXT("name"));
 	TEST_TRUE((*it)->value() == TXT("value"));
+}
+TEST_CASE_END
 
-	(*it)->setValue(TXT("value2"));
+TEST_CASE("setting an attribute replaces the existing attribute value if it already exists")
+{
+	XML::Attributes attributes;
 
-	TEST_TRUE((*oAttribs.begin())->value() == TXT("value2"));
+	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("original"))));
+	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("replacement"))));
 
-	oAttribs.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value3"))));
+	XML::Attributes::const_iterator it = attributes.begin();
 
-	TEST_TRUE((*oAttribs.begin())->value() == TXT("value3"));
+	TEST_TRUE((*it)->value() == TXT("replacement"));
+}
+TEST_CASE_END
 
-	pAttrib = oAttribs.find(TXT("name"));
+TEST_CASE("attempting to add an unnamed attribute throws an exception")
+{
+	XML::Attributes attributes;
 
-	TEST_TRUE(pAttrib->name() == TXT("name"));
-	TEST_TRUE(oAttribs.find(TXT("invalid_name")).get() == nullptr);
+	XML::AttributePtr unnamedAttribute(new XML::Attribute);
 
-	pAttrib = oAttribs.get(TXT("name"));
+	TEST_THROWS(attributes.setAttribute(unnamedAttribute));
+}
+TEST_CASE_END
 
-	TEST_TRUE(pAttrib->name() == TXT("name"));
-	TEST_THROWS(oAttribs.get(TXT("invalid_name")));
+TEST_CASE("modifying the value of an attribute modifies the sequence")
+{
+	XML::Attributes attributes;
 
-	ASSERT(oAttribs.count() != 0);
+	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("original"))));
 
-	oAttribs.clear();
+	XML::Attributes::iterator it = attributes.begin();
 
-	TEST_TRUE(oAttribs.count() == 0);
+	(*it)->setValue(TXT("replacement"));
 
-	TEST_THROWS(oAttribs.setAttribute(XML::AttributePtr(new XML::Attribute)));
+	it = attributes.begin();
+
+	TEST_TRUE((*it)->value() == TXT("replacement"));
+}
+TEST_CASE_END
+
+TEST_CASE("an attribute can be searched for by its name")
+{
+	XML::Attributes attributes;
+
+	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value"))));
+
+	XML::AttributePtr attribute = attributes.find(TXT("name"));
+
+	TEST_TRUE(attribute->name() == TXT("name"));
+	TEST_TRUE(attribute->value() == TXT("value"));
+}
+TEST_CASE_END
+
+TEST_CASE("searching for an invalid attribute returns a null pointer")
+{
+	XML::Attributes attributes;
+
+	XML::AttributePtr attribute = attributes.find(TXT("invalid_name"));
+
+	TEST_TRUE(attribute.get() == nullptr);
+}
+TEST_CASE_END
+
+TEST_CASE("an attribute can be got by its name")
+{
+	XML::Attributes attributes;
+
+	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value"))));
+
+	XML::AttributePtr attribute = attributes.get(TXT("name"));
+
+	TEST_TRUE(attribute->name() == TXT("name"));
+	TEST_TRUE(attribute->value() == TXT("value"));
+}
+TEST_CASE_END
+
+TEST_CASE("getting an invalid attribute throws an exception")
+{
+	XML::Attributes attributes;
+
+	TEST_THROWS(attributes.get(TXT("invalid_name")));
+}
+TEST_CASE_END
+
+TEST_CASE("clearing the attributes empties the sequence")
+{
+	XML::Attributes attributes;
+
+	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name1"), TXT("value1"))));
+	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name2"), TXT("value2"))));
+
+	TEST_TRUE(attributes.count() != 0);
+
+	attributes.clear();
+
+	TEST_TRUE(attributes.count() == 0);
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

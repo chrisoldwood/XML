@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//! \file   TestElementNode.cpp
+//! \file   ElementNodeTests.cpp
 //! \brief  The unit tests for the ElementNode class.
 //! \author Chris Oldwood
 
@@ -9,20 +9,51 @@
 
 TEST_SET(ElementNode)
 {
-//	XML::ElementNode oNode;		// Shouldn't compile.
 
-	XML::ElementNodePtr pNode(new XML::ElementNode);
+TEST_CASE("compilation only succeeds for construction on the heap")
+{
+//	XML::ElementNode stackNode;		// Shouldn't compile.
 
-	TEST_TRUE(pNode->type() == XML::ELEMENT_NODE);
-	TEST_TRUE(tstrlen(pNode->typeStr()) != 0);
-	TEST_TRUE(pNode->name().empty());
+	XML::ElementNodePtr heapNode(new XML::ElementNode);
 
-	pNode = XML::ElementNodePtr(new XML::ElementNode(TXT("Name1")));
+	TEST_PASSED("compilation succeeds");
+}
+TEST_CASE_END
 
-	TEST_TRUE(pNode->name() == TXT("Name1"));
+TEST_CASE("type returns the type of the node as an enumeration value")
+{
+	XML::ElementNodePtr node(new XML::ElementNode);
 
-	pNode->setName(TXT("Name2"));
+	TEST_TRUE(node->type() == XML::ELEMENT_NODE);
+	TEST_TRUE(tstricmp(node->typeStr(), TXT("element")) == 0);
+}
+TEST_CASE_END
 
-	TEST_TRUE(pNode->name() == TXT("Name2"));
+TEST_CASE("default construction results in an empty name")
+{
+	XML::ElementNodePtr node(new XML::ElementNode);
+
+	TEST_TRUE(node->name().empty());
+}
+TEST_CASE_END
+
+TEST_CASE("the name can be set via the constructor")
+{
+	XML::ElementNodePtr node = XML::ElementNodePtr(new XML::ElementNode(TXT("name")));
+
+	TEST_TRUE(node->name() == TXT("name"));
+}
+TEST_CASE_END
+
+TEST_CASE("the name can be set via a mutator")
+{
+	XML::ElementNodePtr node = XML::ElementNodePtr(new XML::ElementNode);
+
+	node->setName(TXT("name"));
+
+	TEST_TRUE(node->name() == TXT("name"));
+}
+TEST_CASE_END
+
 }
 TEST_SET_END
