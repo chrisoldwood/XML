@@ -32,7 +32,7 @@ public:
 
 	//! Destructor.
 	~XPathIterator();
-	
+
 	//
 	// Operators.
 	//
@@ -41,7 +41,7 @@ public:
 	NodePtr operator*() const;
 
 	//! Advance the iterator.
-	void operator++();
+	XPathIterator& operator++();
 
 	//
 	// Methods.
@@ -71,7 +71,7 @@ private:
 	//
 
 	//! Start the iteration.
-	void begin();
+	void start();
 
 	//! Continue the iteration.
 	void next();

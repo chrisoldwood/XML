@@ -9,6 +9,11 @@
 #include <Core/StringUtils.hpp>
 #include <algorithm>
 
+#ifdef __GNUG__
+// base class 'X' has a non-virtual destructor
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
+
 namespace XML
 {
 
@@ -18,7 +23,7 @@ namespace XML
 struct FindByName : public std::unary_function<AttributePtr, bool>
 {
 	//! The string to match.
-	tstring	m_str;		
+	tstring	m_str;
 
 	//! Constructor.
 	FindByName(const tstring& str)
@@ -37,6 +42,7 @@ struct FindByName : public std::unary_function<AttributePtr, bool>
 //! Default constructor.
 
 Attributes::Attributes()
+	: m_vAttribs()
 {
 }
 

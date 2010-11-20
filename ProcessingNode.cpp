@@ -13,6 +13,8 @@ namespace XML
 //! Default constructor.
 
 ProcessingNode::ProcessingNode()
+	: m_strTarget()
+	, m_vAttribs()
 {
 }
 
@@ -21,6 +23,7 @@ ProcessingNode::ProcessingNode()
 
 ProcessingNode::ProcessingNode(const tstring& strTarget)
 	: m_strTarget(strTarget)
+	, m_vAttribs()
 {
 }
 

@@ -14,6 +14,8 @@ namespace XML
 
 ElementNode::ElementNode()
 	: NodeContainer(this)
+	, m_strName()
+	, m_vAttribs()
 {
 }
 
@@ -23,6 +25,7 @@ ElementNode::ElementNode()
 ElementNode::ElementNode(const tstring& strName)
 	: NodeContainer(this)
 	, m_strName(strName)
+	, m_vAttribs()
 {
 }
 

@@ -13,6 +13,7 @@ namespace XML
 //! Default constructor.
 
 TextNode::TextNode()
+	: m_strText()
 {
 }
 

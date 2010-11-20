@@ -20,7 +20,7 @@ namespace XML
 ////////////////////////////////////////////////////////////////////////////////
 //! The reader to create an XML document from a text stream.
 
-class Reader
+class Reader /*: private NotCopyable*/
 {
 public:
 	//! Default constructor.
@@ -92,6 +92,10 @@ private:
 
 	//! Read an attribute.
 	const tchar* readAttribute(const tchar* pcBegin, const tchar* pcEnd, tstring& strName, tstring& strValue);
+
+	// NotCopyable.
+	Reader(const Reader&);
+	Reader& operator=(const Reader);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

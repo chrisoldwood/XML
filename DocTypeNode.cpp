@@ -13,6 +13,7 @@ namespace XML
 //! Default constructor.
 
 DocTypeNode::DocTypeNode()
+	: m_strDeclaration()
 {
 }
 

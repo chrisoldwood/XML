@@ -14,7 +14,10 @@ namespace XML
 //! Default constructor.
 
 XPathIterator::XPathIterator()
-	: m_itNode(m_vecNodes.end())
+	: m_strQuery()
+	, m_pNode()
+	, m_vecNodes()
+	, m_itNode(m_vecNodes.end())
 {
 }
 
@@ -24,9 +27,10 @@ XPathIterator::XPathIterator()
 XPathIterator::XPathIterator(const tstring& strQuery, const NodePtr& pNode)
 	: m_strQuery(strQuery)
 	, m_pNode(pNode)
+	, m_vecNodes()
 	, m_itNode(m_vecNodes.end())
 {
-	begin();
+	start();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,9 +55,11 @@ NodePtr XPathIterator::operator*() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Advance the iterator.
 
-void XPathIterator::operator++()
+XPathIterator& XPathIterator::operator++()
 {
 	next();
+
+	return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +76,7 @@ bool XPathIterator::equals(const XPathIterator& RHS) const
 ////////////////////////////////////////////////////////////////////////////////
 //! Start the iteration.
 
-void XPathIterator::begin()
+void XPathIterator::start()
 {
 	tstring::const_iterator it  = m_strQuery.begin();
 	tstring::const_iterator end = m_strQuery.end();

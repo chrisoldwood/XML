@@ -25,7 +25,7 @@ typedef std::vector<NodePtr> Nodes;
 //! parent node is held internally so that we can fix up the child nodes here
 //! automatically.
 
-class NodeContainer
+class NodeContainer /*: private NotCopyable*/
 {
 public:
 	//! The container const iterator.
@@ -79,6 +79,10 @@ private:
 	//
 	Node*	m_pParent;			//!< The outer parent node.
 	Nodes	m_vChildNodes;		//!< The collection of child nodes.
+
+	// NotCopyable.
+	NodeContainer(const NodeContainer&);
+	NodeContainer& operator=(const NodeContainer);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

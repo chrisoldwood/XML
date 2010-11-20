@@ -14,6 +14,11 @@
 #include "Types.hpp"
 #include <Core/RefCntPtr.hpp>
 
+#ifdef __GNUG__
+// base class 'X' has a non-virtual destructor
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
+
 namespace XML
 {
 
@@ -58,7 +63,7 @@ public:
 	//! Convert the node type to a string.
 	static const tchar* formatNodeType(NodeType eType);
 
-protected:	
+protected:
 	//! Default constructor.
 	Node();
 
@@ -84,6 +89,10 @@ private:
 
 	//! Allow container class to set the parent.
 	friend class NodeContainer;
+
+	// NotCopyable.
+	Node(const Node&);
+	Node& operator=(const Node&);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

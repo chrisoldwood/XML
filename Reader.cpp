@@ -24,7 +24,11 @@ static CharTable s_oCharTable;
 //! Default constructor.
 
 Reader::Reader()
-	: m_nFlags(DEFAULT)
+	: m_pcBegin(nullptr)
+	, m_pcEnd(nullptr)
+	, m_pcCurrent(nullptr)
+	, m_nFlags(DEFAULT)
+	, m_oNodeStack()
 {
 }
 
@@ -184,7 +188,7 @@ void Reader::readCommentTag(const tchar* pcNodeBegin)
 
 		// Create node and append to collection.
 		CommentNodePtr pNode = CommentNodePtr(new CommentNode(tstring(pcNodeBegin, pcNodeEnd)));
-		
+
 		appendChild(m_oNodeStack.top(), pNode);
 	}
 }
@@ -226,7 +230,7 @@ void Reader::readProcessingTag(const tchar* pcNodeBegin)
 		Attributes vAttribs;
 
 		// Read the target.
-		const tchar* pcCurrent = readIdentifier(pcNodeBegin, pcNodeEnd, strTarget);	
+		const tchar* pcCurrent = readIdentifier(pcNodeBegin, pcNodeEnd, strTarget);
 
 		while (pcCurrent != pcNodeEnd)
 		{
@@ -247,7 +251,7 @@ void Reader::readProcessingTag(const tchar* pcNodeBegin)
 
 		// Create node and append to collection.
 		ProcessingNodePtr pNode = ProcessingNodePtr(new ProcessingNode(strTarget, vAttribs));
-		
+
 		appendChild(m_oNodeStack.top(), pNode);
 	}
 }
@@ -374,11 +378,11 @@ void Reader::readElementTag(const tchar* pcNodeBegin)
 		else
 			pcNodeEnd -= 1;
 
-		tstring    strName;
+		tstring    strElementName;
 		Attributes vAttribs;
 
 		// Read the target.
-		const tchar* pcCurrent = readIdentifier(pcNodeBegin, pcNodeEnd, strName);	
+		const tchar* pcCurrent = readIdentifier(pcNodeBegin, pcNodeEnd, strElementName);
 
 		while (pcCurrent != pcNodeEnd)
 		{
@@ -389,16 +393,16 @@ void Reader::readElementTag(const tchar* pcNodeBegin)
 			// Read attribute, if present.
 			if (pcCurrent != pcNodeEnd)
 			{
-				tstring strName, strValue;
+				tstring strAttribName, strAttribValue;
 
-				pcCurrent = readAttribute(pcCurrent, pcNodeEnd, strName, strValue);
+				pcCurrent = readAttribute(pcCurrent, pcNodeEnd, strAttribName, strAttribValue);
 
-				vAttribs.setAttribute(AttributePtr(new Attribute(strName, strValue)));
+				vAttribs.setAttribute(AttributePtr(new Attribute(strAttribName, strAttribValue)));
 			}
 		}
 
 		// Create node and append to collection.
-		ElementNodePtr pNode(new ElementNode(strName, vAttribs));
+		ElementNodePtr pNode(new ElementNode(strElementName, vAttribs));
 
 		appendChild(m_oNodeStack.top(), pNode);
 
@@ -458,7 +462,7 @@ void Reader::readDocTypeTag(const tchar* pcNodeBegin)
 
 		// Create node and append to collection.
 		DocTypeNodePtr pNode = DocTypeNodePtr(new DocTypeNode(tstring(pcNodeBegin, pcNodeEnd)));
-		
+
 		appendChild(m_oNodeStack.top(), pNode);
 	}
 }
@@ -497,7 +501,7 @@ void Reader::readCDataSection(const tchar* pcNodeBegin)
 
 	// Create node and append to collection.
 	CDataNodePtr pNode = CDataNodePtr(new CDataNode(tstring(pcNodeBegin, pcNodeEnd)));
-	
+
 	appendChild(m_oNodeStack.top(), pNode);
 }
 

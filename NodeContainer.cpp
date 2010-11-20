@@ -16,6 +16,7 @@ namespace XML
 
 NodeContainer::NodeContainer(Node* pParent)
 	: m_pParent(pParent)
+	, m_vChildNodes()
 {
 }
 

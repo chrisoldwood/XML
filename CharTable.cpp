@@ -18,6 +18,7 @@ namespace XML
 //! Default constructor.
 
 CharTable::CharTable()
+	: m_mapOther()
 {
 	STATIC_ASSERT(sizeof(uint) >= sizeof(tchar));
 

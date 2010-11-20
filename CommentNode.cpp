@@ -13,6 +13,7 @@ namespace XML
 //! Default constructor.
 
 CommentNode::CommentNode()
+	: m_strComment()
 {
 }
 

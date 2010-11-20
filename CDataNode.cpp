@@ -13,6 +13,7 @@ namespace XML
 //! Default constructor.
 
 CDataNode::CDataNode()
+	: m_strText()
 {
 }
 
