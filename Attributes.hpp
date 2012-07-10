@@ -71,19 +71,19 @@ public:
 	void clear();
 
 	//! Set an attribute.
-	void setAttribute(const AttributePtr& pAttribute);
+	void setAttribute(const AttributePtr& attribute);
 
 	//! Find an attribute by its name.
-	AttributePtr find(const tstring& strName) const;
+	AttributePtr find(const tstring& name) const;
 
 	//! Get an attribute by its name or throw if not found.
-	AttributePtr get(const tstring& strName) const; // throw(InvalidArgException)
+	AttributePtr get(const tstring& name) const; // throw(InvalidArgException)
 
 private:
 	//
 	// Members.
 	//
-	Container	m_vAttribs;		//!< The underlying container.
+	Container	m_attributes;		//!< The underlying container.
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ private:
 
 inline bool Attributes::isEmpty() const
 {
-	return m_vAttribs.empty();
+	return m_attributes.empty();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ inline bool Attributes::isEmpty() const
 
 inline size_t Attributes::count() const
 {
-	return m_vAttribs.size();
+	return m_attributes.size();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ inline size_t Attributes::count() const
 
 inline Attributes::const_iterator Attributes::begin() const
 {
-	return m_vAttribs.begin();
+	return m_attributes.begin();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ inline Attributes::const_iterator Attributes::begin() const
 
 inline Attributes::const_iterator Attributes::end() const
 {
-	return m_vAttribs.end();
+	return m_attributes.end();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ inline Attributes::const_iterator Attributes::end() const
 
 inline Attributes::iterator Attributes::begin()
 {
-	return m_vAttribs.begin();
+	return m_attributes.begin();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ inline Attributes::iterator Attributes::begin()
 
 inline Attributes::iterator Attributes::end()
 {
-	return m_vAttribs.end();
+	return m_attributes.end();
 }
 
 //namespace XML

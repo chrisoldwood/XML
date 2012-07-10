@@ -23,7 +23,7 @@ class IOException : public Core::Exception
 {
 public:
 	//! Construction from a string containing the details.
-	IOException(const tstring& strDetails);
+	IOException(const tstring& details);
 
 	//! Destructor.
 	virtual ~IOException() throw();
@@ -32,8 +32,8 @@ public:
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from a string containing the details.
 
-inline IOException::IOException(const tstring& strDetails)
-	: Exception(strDetails)
+inline IOException::IOException(const tstring& details)
+	: Exception(details)
 {
 }
 

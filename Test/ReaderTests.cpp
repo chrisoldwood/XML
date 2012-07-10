@@ -228,11 +228,11 @@ TEST_CASE("child tag order maintained")
 
 	TEST_TRUE((*it)->type() == XML::ELEMENT_NODE);
 
-	XML::ElementNodePtr pElement = Core::dynamic_ptr_cast<XML::ElementNode>(*it);
+	XML::ElementNodePtr element = Core::dynamic_ptr_cast<XML::ElementNode>(*it);
 
-	TEST_TRUE(pElement->name() == TXT("R"));
-	TEST_TRUE(pElement->getChildCount() == 1);
-	TEST_TRUE(Core::dynamic_ptr_cast<XML::ElementNode>(*pElement->beginChild())->name() == TXT("E"));
+	TEST_TRUE(element->name() == TXT("R"));
+	TEST_TRUE(element->getChildCount() == 1);
+	TEST_TRUE(Core::dynamic_ptr_cast<XML::ElementNode>(*element->beginChild())->name() == TXT("E"));
 }
 TEST_CASE_END
 

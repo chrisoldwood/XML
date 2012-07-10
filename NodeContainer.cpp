@@ -14,9 +14,9 @@ namespace XML
 ////////////////////////////////////////////////////////////////////////////////
 //! Constructor.
 
-NodeContainer::NodeContainer(Node* pParent)
-	: m_pParent(pParent)
-	, m_vChildNodes()
+NodeContainer::NodeContainer(Node* parent)
+	: m_parent(parent)
+	, m_childNodes()
 {
 }
 
@@ -30,19 +30,19 @@ NodeContainer::~NodeContainer()
 ////////////////////////////////////////////////////////////////////////////////
 //! Append a child node.
 
-void NodeContainer::appendChild(NodePtr& pNode)
+void NodeContainer::appendChild(NodePtr& node)
 {
 	// Validate node.
-	if (pNode->type() == DOCUMENT_NODE)
+	if (node->type() == DOCUMENT_NODE)
 		throw Core::InvalidArgException(TXT("Failed to append a node because it's a Document node"));
 
-	if (pNode->hasParent())
-		throw Core::InvalidArgException(Core::fmt(TXT("Failed to append a '%s' node because it is already part of a document"), pNode->typeStr()));
+	if (node->hasParent())
+		throw Core::InvalidArgException(Core::fmt(TXT("Failed to append a '%s' node because it is already part of a document"), node->typeStr()));
 
 	// Add to the children.
-	m_vChildNodes.push_back(pNode);
+	m_childNodes.push_back(node);
 
-	pNode->setParent(m_pParent);
+	node->setParent(m_parent);
 }
 
 //namespace XML

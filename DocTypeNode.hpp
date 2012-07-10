@@ -27,7 +27,7 @@ public:
 	DocTypeNode();
 
 	//! Construction from a string declaration.
-	DocTypeNode(const tstring& strDeclaration);
+	DocTypeNode(const tstring& declaration);
 
 	//
 	// Properties
@@ -40,13 +40,13 @@ public:
 	const tstring& declaration() const;
 
 	//! Set the declaration.
-	void setDeclaration(const tstring& strDeclaration);
+	void setDeclaration(const tstring& declaration);
 
 private:
 	//
 	// Members.
 	//
-	tstring	m_strDeclaration;		//!< The string declaration.
+	tstring	m_declaration;		//!< The string declaration.
 
 	//! Destructor.
 	virtual ~DocTypeNode();
@@ -68,15 +68,15 @@ inline NodeType DocTypeNode::type() const
 
 inline const tstring& DocTypeNode::declaration() const
 {
-	return m_strDeclaration;
+	return m_declaration;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the declaration.
 
-inline void DocTypeNode::setDeclaration(const tstring& strDeclaration)
+inline void DocTypeNode::setDeclaration(const tstring& declaration_)
 {
-	m_strDeclaration = strDeclaration;
+	m_declaration = declaration_;
 }
 
 //namespace XML

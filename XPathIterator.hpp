@@ -28,7 +28,7 @@ public:
 	XPathIterator();
 
 	//! Construction from a query and a context node.
-	XPathIterator(const tstring& strQuery, const NodePtr& pNode);
+	XPathIterator(const tstring& query, const NodePtr& context);
 
 	//! Destructor.
 	~XPathIterator();
@@ -48,7 +48,7 @@ public:
 	//
 
 	//! Compare two iterators for equivalence.
-	bool equals(const XPathIterator& RHS) const;
+	bool equals(const XPathIterator& rhs) const;
 
 private:
 	//! The results container type.
@@ -61,10 +61,10 @@ private:
 	//
 	// Members.
 	//
-	tstring			m_strQuery;		//!< The query.
-	NodePtr			m_pNode;		//!< The context XML node.
-	Nodes			m_vecNodes;		//!< The query results.
-	NodeIterator	m_itNode;		//!< The iterator into the query results.
+	tstring			m_query;		//!< The query.
+	NodePtr			m_context;		//!< The context XML node.
+	Nodes			m_results;		//!< The query results.
+	NodeIterator	m_currNode;		//!< The iterator into the query results.
 
 	//
 	// Internal methods.
@@ -80,23 +80,23 @@ private:
 	void reset();
 
 	//! Parse the next part of the query.
-	void parse(QueryIterator begin, QueryIterator end, const NodePtr& pContext);
+	void parse(QueryIterator begin, QueryIterator end, const NodePtr& context);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Global equivalence operator for a XPath iterator.
 
-inline bool operator==(const XPathIterator& LHS, const XPathIterator& RHS)
+inline bool operator==(const XPathIterator& lhs, const XPathIterator& rhs)
 {
-	return LHS.equals(RHS);
+	return lhs.equals(rhs);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Global non-equivalence operator for a XPath iterator.
 
-inline bool operator!=(const XPathIterator& LHS, const XPathIterator& RHS)
+inline bool operator!=(const XPathIterator& lhs, const XPathIterator& rhs)
 {
-	return !operator==(LHS, RHS);
+	return !operator==(lhs, rhs);
 }
 
 //namespace XML

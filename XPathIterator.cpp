@@ -14,21 +14,21 @@ namespace XML
 //! Default constructor.
 
 XPathIterator::XPathIterator()
-	: m_strQuery()
-	, m_pNode()
-	, m_vecNodes()
-	, m_itNode(m_vecNodes.end())
+	: m_query()
+	, m_context()
+	, m_results()
+	, m_currNode(m_results.end())
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from a query and a document.
 
-XPathIterator::XPathIterator(const tstring& strQuery, const NodePtr& pNode)
-	: m_strQuery(strQuery)
-	, m_pNode(pNode)
-	, m_vecNodes()
-	, m_itNode(m_vecNodes.end())
+XPathIterator::XPathIterator(const tstring& query, const NodePtr& context)
+	: m_query(query)
+	, m_context(context)
+	, m_results()
+	, m_currNode(m_results.end())
 {
 	start();
 }
@@ -46,10 +46,10 @@ XPathIterator::~XPathIterator()
 
 NodePtr XPathIterator::operator*() const
 {
-	if (m_itNode == m_vecNodes.end())
+	if (m_currNode == m_results.end())
 		throw Core::BadLogicException(TXT("Attempt to dereference an invalid XPath iterator"));
 
-	return *m_itNode;
+	return *m_currNode;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -67,10 +67,10 @@ XPathIterator& XPathIterator::operator++()
 //! NB: As they are not copyable the only iterator they can be equivalent to is
 //! an end iterator.
 
-bool XPathIterator::equals(const XPathIterator& RHS) const
+bool XPathIterator::equals(const XPathIterator& rhs) const
 {
-	return ( (m_itNode     == m_vecNodes.end())
-		  && (RHS.m_itNode == RHS.m_vecNodes.end()) );
+	return ( (m_currNode     == m_results.end())
+		  && (rhs.m_currNode == rhs.m_results.end()) );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,10 +78,10 @@ bool XPathIterator::equals(const XPathIterator& RHS) const
 
 void XPathIterator::start()
 {
-	tstring::const_iterator it  = m_strQuery.begin();
-	tstring::const_iterator end = m_strQuery.end();
+	tstring::const_iterator it  = m_query.begin();
+	tstring::const_iterator end = m_query.end();
 
-	NodePtr pContext = m_pNode;
+	NodePtr context = m_context;
 
 	// Until the entire query has been parsed.
 	if (it != end)
@@ -92,15 +92,15 @@ void XPathIterator::start()
 			++it;
 
 			// Search for the document root...
-			while (pContext->hasParent())
-				pContext = pContext->parent();
+			while (context->hasParent())
+				context = context->parent();
 		}
 
-		parse(it, end, pContext);
+		parse(it, end, context);
 	}
 
 	// Start iterating the result set.
-	m_itNode = m_vecNodes.begin();
+	m_currNode = m_results.begin();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -108,10 +108,10 @@ void XPathIterator::start()
 
 void XPathIterator::next()
 {
-	if (m_itNode == m_vecNodes.end())
+	if (m_currNode == m_results.end())
 		throw Core::BadLogicException(TXT("Attempted to advance an invalid XPath iterator"));
 
-	++m_itNode;
+	++m_currNode;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -119,23 +119,23 @@ void XPathIterator::next()
 
 void XPathIterator::reset()
 {
-	m_strQuery.clear();
-	m_pNode.reset();
-	m_vecNodes.clear();
-	m_itNode = m_vecNodes.end();
+	m_query.clear();
+	m_context.reset();
+	m_results.clear();
+	m_currNode = m_results.end();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Parse the next part of the query.
 
-void XPathIterator::parse(QueryIterator begin, QueryIterator end, const NodePtr& pContext)
+void XPathIterator::parse(QueryIterator begin, QueryIterator end, const NodePtr& context)
 {
 	// Finished parsing?
 	if (begin == end)
 	{
 		// Add to results, if valid node.
-		if (pContext.get() != nullptr)
-			m_vecNodes.push_back(pContext);
+		if (context.get() != nullptr)
+			m_results.push_back(context);
 
 		return;
 	}
@@ -147,32 +147,32 @@ void XPathIterator::parse(QueryIterator begin, QueryIterator end, const NodePtr&
 		++it;
 
 	// Extract the node name.
-	tstring::const_iterator itName = it;
+	tstring::const_iterator nameFirst = it;
 
 	while ( (it != end) && (*it != TXT('/')) )
 		++it;
 
-	tstring strName(itName, it);
+	tstring name(nameFirst, it);
 
-	NodeType       eType  = pContext->type();
-	NodeContainer* pNodes = nullptr;
+	NodeType       type  = context->type();
+	NodeContainer* nodes = nullptr;
 
 	// Has children?
-	if (eType == DOCUMENT_NODE)
-		pNodes = Core::static_ptr_cast<Document>(pContext).get();
-	else if (eType == ELEMENT_NODE)
-		pNodes = Core::static_ptr_cast<ElementNode>(pContext).get();
+	if (type == DOCUMENT_NODE)
+		nodes = Core::static_ptr_cast<Document>(context).get();
+	else if (type == ELEMENT_NODE)
+		nodes = Core::static_ptr_cast<ElementNode>(context).get();
 
 	// Find all children that match the name.
-	for (NodeContainer::const_iterator itNode = pNodes->beginChild(); itNode != pNodes->endChild(); ++itNode)
+	for (NodeContainer::const_iterator nodeIter = nodes->beginChild(); nodeIter != nodes->endChild(); ++nodeIter)
 	{
-		const NodePtr& pNode = *itNode;
+		const NodePtr& node = *nodeIter;
 
 		// If a match, recurse...
-		if ( (pNode->type() == ELEMENT_NODE)
-			&& (Core::static_ptr_cast<ElementNode>(pNode)->name() == strName) )
+		if ( (node->type() == ELEMENT_NODE)
+			&& (Core::static_ptr_cast<ElementNode>(node)->name() == name) )
 		{
-			parse(it, end, *itNode);
+			parse(it, end, *nodeIter);
 		}
 	}
 }

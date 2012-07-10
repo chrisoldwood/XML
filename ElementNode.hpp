@@ -29,10 +29,10 @@ public:
 	ElementNode();
 
 	//! Construction from the element name.
-	ElementNode(const tstring& strName);
+	ElementNode(const tstring& name);
 
 	//! Construction from an element name and attributes.
-	ElementNode(const tstring& strName, const Attributes& vAttribs);
+	ElementNode(const tstring& name, const Attributes& attributes);
 
 	//
 	// Properties
@@ -45,7 +45,7 @@ public:
 	const tstring& name() const;
 
 	//! Set the elements name.
-	void setName(const tstring& strName);
+	void setName(const tstring& name);
 
 	//! Get the attributes.
 	const Attributes& getAttributes() const;
@@ -57,8 +57,8 @@ private:
 	//
 	// Members.
 	//
-	tstring		m_strName;		//!< The element name.
-	Attributes	m_vAttribs;		//!< The attributes.
+	tstring		m_name;			//!< The element name.
+	Attributes	m_attributes;	//!< The attributes.
 
 	//! Destructor.
 	virtual ~ElementNode();
@@ -80,15 +80,15 @@ inline NodeType ElementNode::type() const
 
 inline const tstring& ElementNode::name() const
 {
-	return m_strName;
+	return m_name;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the elements name.
 
-inline void ElementNode::setName(const tstring& strName)
+inline void ElementNode::setName(const tstring& name_)
 {
-	m_strName = strName;
+	m_name = name_;
 }
 
 
@@ -97,7 +97,7 @@ inline void ElementNode::setName(const tstring& strName)
 
 inline const Attributes& ElementNode::getAttributes() const
 {
-	return m_vAttribs;
+	return m_attributes;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@ inline const Attributes& ElementNode::getAttributes() const
 
 inline Attributes& ElementNode::getAttributes()
 {
-	return m_vAttribs;
+	return m_attributes;
 }
 
 //namespace XML

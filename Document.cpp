@@ -32,9 +32,9 @@ bool Document::hasRootElement() const
 	// Find the first element node...
 	for (Nodes::const_iterator it = beginChild(); it != endChild(); ++it)
 	{
-		const NodePtr& pNode = *it;
+		const NodePtr& node = *it;
 
-		if (pNode->type() == ELEMENT_NODE)
+		if (node->type() == ELEMENT_NODE)
 			return true;
 	}
 
@@ -49,10 +49,10 @@ const ElementNodePtr Document::getRootElement() const
 	// Find the first element node...
 	for (Nodes::const_iterator it = beginChild(); it != endChild(); ++it)
 	{
-		NodePtr pNode = *it;
+		NodePtr node = *it;
 
-		if (pNode->type() == ELEMENT_NODE)
-			return Core::static_ptr_cast<ElementNode>(pNode);
+		if (node->type() == ELEMENT_NODE)
+			return Core::static_ptr_cast<ElementNode>(node);
 	}
 
 	return ElementNodePtr();
@@ -66,10 +66,10 @@ ElementNodePtr Document::getRootElement()
 	// Find the first element node...
 	for (Nodes::const_iterator it = beginChild(); it != endChild(); ++it)
 	{
-		NodePtr pNode = *it;
+		NodePtr node = *it;
 
-		if (pNode->type() == ELEMENT_NODE)
-			return Core::static_ptr_cast<ElementNode>(pNode);
+		if (node->type() == ELEMENT_NODE)
+			return Core::static_ptr_cast<ElementNode>(node);
 	}
 
 	return ElementNodePtr();

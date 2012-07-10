@@ -13,15 +13,15 @@ namespace XML
 //! Default constructor.
 
 CDataNode::CDataNode()
-	: m_strText()
+	: m_text()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from the text string.
 
-CDataNode::CDataNode(const tstring& strText)
-	: m_strText(strText)
+CDataNode::CDataNode(const tstring& text_)
+	: m_text(text_)
 {
 }
 

@@ -13,15 +13,15 @@ namespace XML
 //! Default constructor.
 
 TextNode::TextNode()
-	: m_strText()
+	: m_text()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from the text string.
 
-TextNode::TextNode(const tstring& strText)
-	: m_strText(strText)
+TextNode::TextNode(const tstring& text_)
+	: m_text(text_)
 {
 }
 

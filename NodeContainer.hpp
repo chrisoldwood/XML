@@ -60,15 +60,15 @@ public:
 	//
 
 	//! Append a child node.
-	void appendChild(NodePtr& pNode);
+	void appendChild(NodePtr& node);
 
 	//! Append a child node.
 	template<typename T>
-	void appendChild(Core::RefCntPtr<T>& pNode);
+	void appendChild(Core::RefCntPtr<T>& node);
 
 protected:
 	//! Constructor.
-	NodeContainer(Node* pParent);
+	NodeContainer(Node* parent);
 
 	//! Destructor.
 	virtual ~NodeContainer();
@@ -77,8 +77,8 @@ private:
 	//
 	// Members.
 	//
-	Node*	m_pParent;			//!< The outer parent node.
-	Nodes	m_vChildNodes;		//!< The collection of child nodes.
+	Node*	m_parent;			//!< The outer parent node.
+	Nodes	m_childNodes;		//!< The collection of child nodes.
 
 	// NotCopyable.
 	NodeContainer(const NodeContainer&);
@@ -90,7 +90,7 @@ private:
 
 inline bool NodeContainer::hasChildren() const
 {
-	return !m_vChildNodes.empty();
+	return !m_childNodes.empty();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +98,7 @@ inline bool NodeContainer::hasChildren() const
 
 inline size_t NodeContainer::getChildCount() const
 {
-	return m_vChildNodes.size();
+	return m_childNodes.size();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ inline size_t NodeContainer::getChildCount() const
 
 inline NodeContainer::const_iterator NodeContainer::beginChild() const
 {
-	return m_vChildNodes.begin();
+	return m_childNodes.begin();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +114,7 @@ inline NodeContainer::const_iterator NodeContainer::beginChild() const
 
 inline NodeContainer::const_iterator NodeContainer::endChild() const
 {
-	return m_vChildNodes.end();
+	return m_childNodes.end();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -122,7 +122,7 @@ inline NodeContainer::const_iterator NodeContainer::endChild() const
 
 inline NodeContainer::iterator NodeContainer::beginChild()
 {
-	return m_vChildNodes.begin();
+	return m_childNodes.begin();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -130,14 +130,14 @@ inline NodeContainer::iterator NodeContainer::beginChild()
 
 inline NodeContainer::iterator NodeContainer::endChild()
 {
-	return m_vChildNodes.end();
+	return m_childNodes.end();
 }
 
 //! Append a child node.
 template<typename T>
-inline void NodeContainer::appendChild(Core::RefCntPtr<T>& pNode)
+inline void NodeContainer::appendChild(Core::RefCntPtr<T>& node)
 {
-	NodePtr p = pNode;
+	NodePtr p = node;
 
 	appendChild(p);
 }

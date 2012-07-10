@@ -26,7 +26,7 @@ public:
 	CommentNode();
 
 	//! Construction from a string comment.
-	CommentNode(const tstring& strComment);
+	CommentNode(const tstring& comment);
 
 	//
 	// Properties
@@ -39,13 +39,13 @@ public:
 	const tstring& comment() const;
 
 	//! Set the comment.
-	void setComment(const tstring& strComment);
+	void setComment(const tstring& comment);
 
 private:
 	//
 	// Members.
 	//
-	tstring	m_strComment;		//!< The string comment.
+	tstring	m_comment;		//!< The string comment.
 
 	//! Destructor.
 	virtual ~CommentNode();
@@ -67,15 +67,15 @@ inline NodeType CommentNode::type() const
 
 inline const tstring& CommentNode::comment() const
 {
-	return m_strComment;
+	return m_comment;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the comment.
 
-inline void CommentNode::setComment(const tstring& strComment)
+inline void CommentNode::setComment(const tstring& comment_)
 {
-	m_strComment = strComment;
+	m_comment = comment_;
 }
 
 //namespace XML

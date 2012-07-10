@@ -27,10 +27,10 @@ public:
 	ProcessingNode();
 
 	//! Construction from a target.
-	ProcessingNode(const tstring& strTarget);
+	ProcessingNode(const tstring& target);
 
 	//! Construction from a target and attributes.
-	ProcessingNode(const tstring& strTarget, const Attributes& vAttribs);
+	ProcessingNode(const tstring& target, const Attributes& attributes);
 
 	//
 	// Properties
@@ -43,7 +43,7 @@ public:
 	const tstring& target() const;
 
 	//! Set the target.
-	void setTarget(const tstring& strTarget);
+	void setTarget(const tstring& target);
 
 	//! Get the attributes.
 	const Attributes& getAttributes() const;
@@ -55,8 +55,8 @@ private:
 	//
 	// Members.
 	//
-	tstring		m_strTarget;	//!< The target text.
-	Attributes	m_vAttribs;		//!< The attributes.
+	tstring		m_target;		//!< The target text.
+	Attributes	m_attributes;	//!< The attributes.
 
 	//! Destructor.
 	virtual ~ProcessingNode();
@@ -78,15 +78,15 @@ inline NodeType ProcessingNode::type() const
 
 inline const tstring& ProcessingNode::target() const
 {
-	return m_strTarget;
+	return m_target;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the target.
 
-inline void ProcessingNode::setTarget(const tstring& strTarget)
+inline void ProcessingNode::setTarget(const tstring& target_)
 {
-	m_strTarget = strTarget;
+	m_target = target_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ inline void ProcessingNode::setTarget(const tstring& strTarget)
 
 inline const Attributes& ProcessingNode::getAttributes() const
 {
-	return m_vAttribs;
+	return m_attributes;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +102,7 @@ inline const Attributes& ProcessingNode::getAttributes() const
 
 inline Attributes& ProcessingNode::getAttributes()
 {
-	return m_vAttribs;
+	return m_attributes;
 }
 
 //namespace XML

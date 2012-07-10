@@ -15,7 +15,7 @@ namespace XML
 //! Default constructor.
 
 Node::Node()
-	: m_pParent(nullptr)
+	: m_parent(nullptr)
 {
 }
 
@@ -29,9 +29,9 @@ Node::~Node()
 ////////////////////////////////////////////////////////////////////////////////
 //! Convert the node type to a string.
 
-const tchar* Node::formatNodeType(NodeType eType)
+const tchar* Node::formatNodeType(NodeType type)
 {
-	switch(eType)
+	switch(type)
 	{
 		case DOCUMENT_NODE:		return TXT("Document");
 		case ELEMENT_NODE:		return TXT("Element");
@@ -43,7 +43,7 @@ const tchar* Node::formatNodeType(NodeType eType)
 		default:				ASSERT_FALSE();
 	}
 
-	throw Core::InvalidArgException(Core::fmt(TXT("Invalid NodeType passed to GetNodeTypeStr: %u"), eType));
+	throw Core::InvalidArgException(Core::fmt(TXT("Invalid NodeType passed to GetNodeTypeStr: %u"), type));
 }
 
 //namespace XML

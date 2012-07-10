@@ -26,8 +26,8 @@ public:
 	TextNode();
 
 	//! Construction from the text string.
-	TextNode(const tstring& strText);
-	
+	TextNode(const tstring& text);
+
 	//
 	// Properties
 	//
@@ -39,13 +39,13 @@ public:
 	const tstring& text() const;
 
 	//! Set the text string.
-	void setText(const tstring& strText);
+	void setText(const tstring& text);
 
 private:
 	//
 	// Members.
 	//
-	tstring	m_strText;		//!< The text string.
+	tstring	m_text;		//!< The text string.
 
 	//! Destructor.
 	virtual ~TextNode();
@@ -67,15 +67,15 @@ inline NodeType TextNode::type() const
 
 inline const tstring& TextNode::text() const
 {
-	return m_strText;
+	return m_text;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the text string.
 
-inline void TextNode::setText(const tstring& strText)
+inline void TextNode::setText(const tstring& text_)
 {
-	m_strText = strText;
+	m_text = text_;
 }
 
 //namespace XML

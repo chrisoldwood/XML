@@ -18,17 +18,17 @@ namespace XML
 {
 
 //! The stream character lookup table.
-static CharTable s_oCharTable;
+static CharTable s_charTable;
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Default constructor.
 
 Reader::Reader()
-	: m_pcBegin(nullptr)
-	, m_pcEnd(nullptr)
-	, m_pcCurrent(nullptr)
-	, m_nFlags(DEFAULT)
-	, m_oNodeStack()
+	: m_begin(nullptr)
+	, m_end(nullptr)
+	, m_current(nullptr)
+	, m_flags(DEFAULT)
+	, m_stack()
 {
 }
 
@@ -43,56 +43,56 @@ Reader::~Reader()
 //! Helper function for appending a child node.
 
 template<typename T>
-inline void appendChild(NodePtr pNode, Core::RefCntPtr<T>& pChild)
+inline void appendChild(NodePtr parent, Core::RefCntPtr<T>& child)
 {
-	ASSERT((pNode->type() == DOCUMENT_NODE) || (pNode->type() == ELEMENT_NODE));
+	ASSERT((parent->type() == DOCUMENT_NODE) || (parent->type() == ELEMENT_NODE));
 
-	if (pNode->type() == DOCUMENT_NODE)
-		Core::static_ptr_cast<Document>(pNode)->appendChild(pChild);
+	if (parent->type() == DOCUMENT_NODE)
+		Core::static_ptr_cast<Document>(parent)->appendChild(child);
 	else
-		Core::static_ptr_cast<ElementNode>(pNode)->appendChild(pChild);
+		Core::static_ptr_cast<ElementNode>(parent)->appendChild(child);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read a document from a pair of raw string pointers.
 
-DocumentPtr Reader::readDocument(const tchar* pcBegin, const tchar* pcEnd, uint nFlags)
+DocumentPtr Reader::readDocument(const tchar* begin, const tchar* end, uint flags)
 {
-	initialise(pcBegin, pcEnd, nFlags);
+	initialise(begin, end, flags);
 
-	DocumentPtr pDoc(new Document);
+	DocumentPtr document(new Document);
 
 	// Start by appending to the document node.
-	m_oNodeStack.push(pDoc);
+	m_stack.push(document);
 
 	// For all nodes...
-	while (m_pcCurrent != m_pcEnd)
+	while (m_current != m_end)
 	{
-		const tchar* pcNodeBegin = m_pcCurrent;
+		const tchar* nodeBegin = m_current;
 
 		// Is a tag?
-		if (*m_pcCurrent == TXT('<'))
+		if (*m_current == TXT('<'))
 		{
-			++m_pcCurrent;
+			++m_current;
 
 			// A comment or document type tag?
-			if (*m_pcCurrent == TXT('!'))
+			if (*m_current == TXT('!'))
 			{
-				if (m_pcCurrent != m_pcEnd)
+				if (m_current != m_end)
 				{
-					++m_pcCurrent;
+					++m_current;
 
-					if (*m_pcCurrent == TXT('-'))
+					if (*m_current == TXT('-'))
 					{
-						readCommentTag(pcNodeBegin);
+						readCommentTag(nodeBegin);
 					}
-					else if (*m_pcCurrent == TXT('D'))
+					else if (*m_current == TXT('D'))
 					{
-						readDocTypeTag(pcNodeBegin);
+						readDocTypeTag(nodeBegin);
 					}
-					else if (*m_pcCurrent == TXT('['))
+					else if (*m_current == TXT('['))
 					{
-						readCDataSection(pcNodeBegin);
+						readCDataSection(nodeBegin);
 					}
 					else
 					{
@@ -105,189 +105,189 @@ DocumentPtr Reader::readDocument(const tchar* pcBegin, const tchar* pcEnd, uint 
 				}
 			}
 			// A processing instruction tag?
-			else if (*m_pcCurrent == TXT('?'))
+			else if (*m_current == TXT('?'))
 			{
-				readProcessingTag(pcNodeBegin);
+				readProcessingTag(nodeBegin);
 			}
 			// An element tag.
 			else
 			{
-				readElementTag(pcNodeBegin);
+				readElementTag(nodeBegin);
 			}
 		}
 		// Is text.
 		else
 		{
-			readTextNode(pcNodeBegin);
+			readTextNode(nodeBegin);
 		}
 	}
 
 	// Missing one or more end tags?
-	if (m_oNodeStack.size() > 1)
+	if (m_stack.size() > 1)
 		throw IOException(TXT("One or more end tags were missing"));
 
-	m_oNodeStack.pop();
+	m_stack.pop();
 
 	// Document empty?
-	if (!pDoc->hasRootElement())
+	if (!document->hasRootElement())
 		throw IOException(TXT("The XML document was empty"));
 
-	ASSERT(m_oNodeStack.size() == 0);
+	ASSERT(m_stack.size() == 0);
 
-	return pDoc;
+	return document;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Initialise the internal state ready for reading.
 
-void Reader::initialise(const tchar* pcBegin, const tchar* pcEnd, uint nFlags)
+void Reader::initialise(const tchar* begin, const tchar* end, uint flags)
 {
-	m_pcBegin   = pcBegin;
-	m_pcEnd     = pcEnd;
-	m_pcCurrent = pcBegin;
-	m_nFlags    = nFlags;
+	m_begin   = begin;
+	m_end     = end;
+	m_current = begin;
+	m_flags   = flags;
 
-	while (!m_oNodeStack.empty())
-		m_oNodeStack.pop();
+	while (!m_stack.empty())
+		m_stack.pop();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read and parse a comment tag.
 
-void Reader::readCommentTag(const tchar* pcNodeBegin)
+void Reader::readCommentTag(const tchar* nodeBegin)
 {
-	ASSERT((m_pcCurrent-pcNodeBegin) >= 2);
+	ASSERT((m_current-nodeBegin) >= 2);
 
 	// Find node terminator.
-	while ( (m_pcCurrent != m_pcEnd) && ((*m_pcCurrent != TXT('>') || (tstrncmp(m_pcCurrent-2, TXT("-->"), 3) != 0))) )
-		++m_pcCurrent;
+	while ( (m_current != m_end) && ((*m_current != TXT('>') || (tstrncmp(m_current-2, TXT("-->"), 3) != 0))) )
+		++m_current;
 
-	if (m_pcCurrent == m_pcEnd)
+	if (m_current == m_end)
 		throw IOException(TXT("EOF encountered reading a comment node"));
 
-	ASSERT(*m_pcCurrent == TXT('>'));
-	++m_pcCurrent;
+	ASSERT(*m_current == TXT('>'));
+	++m_current;
 
-	const tchar* pcNodeEnd = m_pcCurrent;
-	size_t       nLength   = pcNodeEnd - pcNodeBegin;
+	const tchar* nodeEnd = m_current;
+	size_t       length  = nodeEnd - nodeBegin;
 
 	// Must be at least "<!---->"
-	if ( (nLength < 7)
-	  || (tstrncmp(pcNodeBegin, TXT("<!--"), 4) != 0)
-	  || (tstrncmp(pcNodeEnd-3, TXT("-->"),  3) != 0) )
+	if ( (length < 7)
+	  || (tstrncmp(nodeBegin, TXT("<!--"), 4) != 0)
+	  || (tstrncmp(nodeEnd-3, TXT("-->"),  3) != 0) )
 	{
 		throw IOException(TXT("Invalid comment node format"));
 	}
 
 	// Keeping comments?
-	if ((m_nFlags & DISCARD_COMMENTS) == 0)
+	if ((m_flags & DISCARD_COMMENTS) == 0)
 	{
 		// Adjust iterators for the inner text.
-		pcNodeBegin += 4;
-		pcNodeEnd   -= 3;
+		nodeBegin += 4;
+		nodeEnd   -= 3;
 
 		// Create node and append to collection.
-		CommentNodePtr pNode = CommentNodePtr(new CommentNode(tstring(pcNodeBegin, pcNodeEnd)));
+		CommentNodePtr node = CommentNodePtr(new CommentNode(tstring(nodeBegin, nodeEnd)));
 
-		appendChild(m_oNodeStack.top(), pNode);
+		appendChild(m_stack.top(), node);
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read and parse a processing instruction tag.
 
-void Reader::readProcessingTag(const tchar* pcNodeBegin)
+void Reader::readProcessingTag(const tchar* nodeBegin)
 {
 	// Find node terminator.
-	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('>')) )
-		++m_pcCurrent;
+	while ( (m_current != m_end) && (*m_current != TXT('>')) )
+		++m_current;
 
-	if (m_pcCurrent == m_pcEnd)
+	if (m_current == m_end)
 		throw IOException(TXT("EOF encountered reading a processing instruction node"));
 
-	ASSERT(*m_pcCurrent == TXT('>'));
-	++m_pcCurrent;
+	ASSERT(*m_current == TXT('>'));
+	++m_current;
 
-	const tchar* pcNodeEnd = m_pcCurrent;
-	size_t       nLength   = pcNodeEnd - pcNodeBegin;
+	const tchar* nodeEnd = m_current;
+	size_t       length  = nodeEnd - nodeBegin;
 
 	// Must be at least "<?_?>"
-	if ( (nLength < 5)
-	  || (tstrncmp(pcNodeBegin, TXT("<?"), 2) != 0)
-	  || (tstrncmp(pcNodeEnd-2, TXT("?>"), 2) != 0) )
+	if ( (length < 5)
+	  || (tstrncmp(nodeBegin, TXT("<?"), 2) != 0)
+	  || (tstrncmp(nodeEnd-2, TXT("?>"), 2) != 0) )
 	{
 		throw IOException(TXT("Invalid processing instruction node format"));
 	}
 
 	// Keeping processing instructions?
-	if ((m_nFlags & DISCARD_PROC_INSTNS) == 0)
+	if ((m_flags & DISCARD_PROC_INSTNS) == 0)
 	{
 		// Adjust iterators for the inner text.
-		pcNodeBegin += 2;
-		pcNodeEnd   -= 2;
+		nodeBegin += 2;
+		nodeEnd   -= 2;
 
-		tstring    strTarget;
-		Attributes vAttribs;
+		tstring    target;
+		Attributes attributes;
 
 		// Read the target.
-		const tchar* pcCurrent = readIdentifier(pcNodeBegin, pcNodeEnd, strTarget);
+		const tchar* current = readIdentifier(nodeBegin, nodeEnd, target);
 
-		while (pcCurrent != pcNodeEnd)
+		while (current != nodeEnd)
 		{
 			// Skip whitespace.
-			while ( (pcCurrent != pcNodeEnd) && (s_oCharTable.isWhitespace(*pcCurrent)) )
-				++pcCurrent;
+			while ( (current != nodeEnd) && (s_charTable.isWhitespace(*current)) )
+				++current;
 
 			// Read attribute, if present.
-			if (pcCurrent != pcNodeEnd)
+			if (current != nodeEnd)
 			{
-				tstring strName, strValue;
+				tstring name, value;
 
-				pcCurrent = readAttribute(pcCurrent, pcNodeEnd, strName, strValue);
+				current = readAttribute(current, nodeEnd, name, value);
 
-				vAttribs.setAttribute(AttributePtr(new Attribute(strName, strValue)));
+				attributes.setAttribute(AttributePtr(new Attribute(name, value)));
 			}
 		}
 
 		// Create node and append to collection.
-		ProcessingNodePtr pNode = ProcessingNodePtr(new ProcessingNode(strTarget, vAttribs));
+		ProcessingNodePtr node = ProcessingNodePtr(new ProcessingNode(target, attributes));
 
-		appendChild(m_oNodeStack.top(), pNode);
+		appendChild(m_stack.top(), node);
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read and create a text node.
 
-void Reader::readTextNode(const tchar* pcNodeBegin)
+void Reader::readTextNode(const tchar* nodeBegin)
 {
-	bool bWhitespaceOnly = true;
+	bool whitespaceOnly = true;
 
 	// Read up to a tag marker.
-	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('<')) )
+	while ( (m_current != m_end) && (*m_current != TXT('<')) )
 	{
-		if (!tisspace(static_cast<utchar>(*m_pcCurrent)))
-			bWhitespaceOnly = false;
+		if (!tisspace(static_cast<utchar>(*m_current)))
+			whitespaceOnly = false;
 
-		++m_pcCurrent;
+		++m_current;
 	}
 
-	const tchar* pcNodeEnd = m_pcCurrent;
+	const tchar* nodeEnd = m_current;
 
 	// Append text node, if present.
-	if (pcNodeBegin != pcNodeEnd)
+	if (nodeBegin != nodeEnd)
 	{
 		// Disallow text outside the root element.
-		if ( (!bWhitespaceOnly) && (m_oNodeStack.size() == 1) )
+		if ( (!whitespaceOnly) && (m_stack.size() == 1) )
 			throw IOException(TXT("Non-whitespace character(s) outside the root element"));
 
 		// Not just whitespace OR we're keeping whitespace?
-		if (!bWhitespaceOnly || ((m_nFlags & DISCARD_WHITESPACE) == 0))
+		if (!whitespaceOnly || ((m_flags & DISCARD_WHITESPACE) == 0))
 		{
 			// Create node and append to collection.
-			TextNodePtr pNode = TextNodePtr(new TextNode(tstring(pcNodeBegin, pcNodeEnd)));
+			TextNodePtr node = TextNodePtr(new TextNode(tstring(nodeBegin, nodeEnd)));
 
-			appendChild(m_oNodeStack.top(), pNode);
+			appendChild(m_stack.top(), node);
 		}
 	}
 }
@@ -296,295 +296,295 @@ void Reader::readTextNode(const tchar* pcNodeBegin)
 //! Read and parse an element tag. If the tag is a start tag or empty tag an
 //! element node is returned. If it's a close tag, no node is returned.
 
-void Reader::readElementTag(const tchar* pcNodeBegin)
+void Reader::readElementTag(const tchar* nodeBegin)
 {
 	// Find node terminator.
-	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('>')) )
+	while ( (m_current != m_end) && (*m_current != TXT('>')) )
 	{
 		// Apostrophe enclosed string?
-		if (*m_pcCurrent == TXT('\''))
+		if (*m_current == TXT('\''))
 		{
-			++m_pcCurrent;
+			++m_current;
 
-			while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('\'')) )
-				++m_pcCurrent;
+			while ( (m_current != m_end) && (*m_current != TXT('\'')) )
+				++m_current;
 
-			if (*m_pcCurrent == TXT('\''))
-				++m_pcCurrent;
+			if (*m_current == TXT('\''))
+				++m_current;
 		}
 		// Double-quote enclosed string?
-		else if (*m_pcCurrent == TXT('\"'))
+		else if (*m_current == TXT('\"'))
 		{
-			++m_pcCurrent;
+			++m_current;
 
-			while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('\"')) )
-				++m_pcCurrent;
+			while ( (m_current != m_end) && (*m_current != TXT('\"')) )
+				++m_current;
 
-			if (*m_pcCurrent == TXT('\"'))
-				++m_pcCurrent;
+			if (*m_current == TXT('\"'))
+				++m_current;
 		}
 		else
 		{
-			++m_pcCurrent;
+			++m_current;
 		}
 	}
 
-	if (m_pcCurrent == m_pcEnd)
+	if (m_current == m_end)
 		throw IOException(TXT("EOF encountered reading an element node"));
 
-	ASSERT(*m_pcCurrent == TXT('>'));
-	++m_pcCurrent;
+	ASSERT(*m_current == TXT('>'));
+	++m_current;
 
-	const tchar* pcNodeEnd = m_pcCurrent;
-	size_t       nLength   = pcNodeEnd - pcNodeBegin;
+	const tchar* nodeEnd = m_current;
+	size_t       length  = nodeEnd - nodeBegin;
 
 	// Must be at least "<X>"
-	if (nLength < 3)
+	if (length < 3)
 		throw IOException(TXT("Invalid element node format"));
 
 	// Is the end of an element?
-	if (*(pcNodeBegin+1) == TXT('/'))
+	if (*(nodeBegin+1) == TXT('/'))
 	{
 		// Adjust iterators for the inner text.
-		pcNodeBegin += 2;
-		pcNodeEnd   -= 1;
+		nodeBegin += 2;
+		nodeEnd   -= 1;
 
-		tstring strName(pcNodeBegin, pcNodeEnd);
+		tstring name(nodeBegin, nodeEnd);
 
-		ASSERT(!m_oNodeStack.empty());
+		ASSERT(!m_stack.empty());
 
 		// Validate tag matches the last open one.
-		NodePtr pNode = m_oNodeStack.top();
+		NodePtr node = m_stack.top();
 
-		if (pNode->type() != ELEMENT_NODE)
+		if (node->type() != ELEMENT_NODE)
 			throw IOException(TXT("End tag encountered without a matching start tag"));
 
-		ElementNodePtr pElement = Core::static_ptr_cast<ElementNode>(pNode);
+		ElementNodePtr element = Core::static_ptr_cast<ElementNode>(node);
 
-		if (pElement->name() != strName)
+		if (element->name() != name)
 			throw IOException(TXT("End tag does not match the last start tag"));
 
 		// Valid.
-		m_oNodeStack.pop();
+		m_stack.pop();
 	}
 	// Is an open or empty element.
 	else
 	{
 		// Adjust iterators for the inner text.
-		pcNodeBegin += 1;
+		nodeBegin += 1;
 
-		if (*(pcNodeEnd-2) == TXT('/'))
-			pcNodeEnd -= 2;
+		if (*(nodeEnd-2) == TXT('/'))
+			nodeEnd -= 2;
 		else
-			pcNodeEnd -= 1;
+			nodeEnd -= 1;
 
-		tstring    strElementName;
-		Attributes vAttribs;
+		tstring    elementName;
+		Attributes attributes;
 
 		// Read the target.
-		const tchar* pcCurrent = readIdentifier(pcNodeBegin, pcNodeEnd, strElementName);
+		const tchar* current = readIdentifier(nodeBegin, nodeEnd, elementName);
 
-		while (pcCurrent != pcNodeEnd)
+		while (current != nodeEnd)
 		{
 			// Skip whitespace.
-			while ( (pcCurrent != pcNodeEnd) && (s_oCharTable.isWhitespace(*pcCurrent)) )
-				++pcCurrent;
+			while ( (current != nodeEnd) && (s_charTable.isWhitespace(*current)) )
+				++current;
 
 			// Read attribute, if present.
-			if (pcCurrent != pcNodeEnd)
+			if (current != nodeEnd)
 			{
-				tstring strAttribName, strAttribValue;
+				tstring attribName, attribValue;
 
-				pcCurrent = readAttribute(pcCurrent, pcNodeEnd, strAttribName, strAttribValue);
+				current = readAttribute(current, nodeEnd, attribName, attribValue);
 
-				vAttribs.setAttribute(AttributePtr(new Attribute(strAttribName, strAttribValue)));
+				attributes.setAttribute(AttributePtr(new Attribute(attribName, attribValue)));
 			}
 		}
 
 		// Create node and append to collection.
-		ElementNodePtr pNode(new ElementNode(strElementName, vAttribs));
+		ElementNodePtr node(new ElementNode(elementName, attributes));
 
-		appendChild(m_oNodeStack.top(), pNode);
+		appendChild(m_stack.top(), node);
 
 		// Track start tags.
-		if (*pcNodeEnd != TXT('/'))
-			m_oNodeStack.push(pNode);
+		if (*nodeEnd != TXT('/'))
+			m_stack.push(node);
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read and parse a document type tag.
 
-void Reader::readDocTypeTag(const tchar* pcNodeBegin)
+void Reader::readDocTypeTag(const tchar* nodeBegin)
 {
 	// Find node terminator.
-	while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT('>')) )
+	while ( (m_current != m_end) && (*m_current != TXT('>')) )
 	{
 		// Declarations?
-		if (*m_pcCurrent == TXT('['))
+		if (*m_current == TXT('['))
 		{
-			++m_pcCurrent;
+			++m_current;
 
-			while ( (m_pcCurrent != m_pcEnd) && (*m_pcCurrent != TXT(']')) )
-				++m_pcCurrent;
+			while ( (m_current != m_end) && (*m_current != TXT(']')) )
+				++m_current;
 
-			if (*m_pcCurrent == TXT(']'))
-				++m_pcCurrent;
+			if (*m_current == TXT(']'))
+				++m_current;
 		}
 		else
 		{
-			++m_pcCurrent;
+			++m_current;
 		}
 	}
 
-	if (m_pcCurrent == m_pcEnd)
+	if (m_current == m_end)
 		throw IOException(TXT("EOF encountered reading a document type node"));
 
-	ASSERT(*m_pcCurrent == TXT('>'));
-	++m_pcCurrent;
+	ASSERT(*m_current == TXT('>'));
+	++m_current;
 
-	const tchar* pcNodeEnd = m_pcCurrent;
-	size_t       nLength   = pcNodeEnd - pcNodeBegin;
+	const tchar* nodeEnd = m_current;
+	size_t       length  = nodeEnd - nodeBegin;
 
 	// Must be at least "<!DOCTYPE>"
-	if ( (nLength < 10)
-	  || (tstrncmp(pcNodeBegin, TXT("<!DOCTYPE"), 9) != 0) )
+	if ( (length < 10)
+	  || (tstrncmp(nodeBegin, TXT("<!DOCTYPE"), 9) != 0) )
 	{
 		throw IOException(TXT("Invalid document type node format"));
 	}
 
 	// Keeping document type declarations?
-	if ((m_nFlags & DISCARD_DOC_TYPES) == 0)
+	if ((m_flags & DISCARD_DOC_TYPES) == 0)
 	{
 		// Adjust iterators for the inner text.
-		pcNodeBegin += 9;
-		pcNodeEnd   -= 1;
+		nodeBegin += 9;
+		nodeEnd   -= 1;
 
 		// Create node and append to collection.
-		DocTypeNodePtr pNode = DocTypeNodePtr(new DocTypeNode(tstring(pcNodeBegin, pcNodeEnd)));
+		DocTypeNodePtr node = DocTypeNodePtr(new DocTypeNode(tstring(nodeBegin, nodeEnd)));
 
-		appendChild(m_oNodeStack.top(), pNode);
+		appendChild(m_stack.top(), node);
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read and parse CDATA section.
 
-void Reader::readCDataSection(const tchar* pcNodeBegin)
+void Reader::readCDataSection(const tchar* nodeBegin)
 {
-	ASSERT((m_pcCurrent-pcNodeBegin) >= 2);
+	ASSERT((m_current-nodeBegin) >= 2);
 
 	// Find node terminator.
-	while ( (m_pcCurrent != m_pcEnd) && ((*m_pcCurrent != TXT('>') || (tstrncmp(m_pcCurrent-2, TXT("]]>"), 3) != 0))) )
-		++m_pcCurrent;
+	while ( (m_current != m_end) && ((*m_current != TXT('>') || (tstrncmp(m_current-2, TXT("]]>"), 3) != 0))) )
+		++m_current;
 
-	if (m_pcCurrent == m_pcEnd)
+	if (m_current == m_end)
 		throw IOException(TXT("EOF encountered reading a CDATA section"));
 
-	ASSERT(*m_pcCurrent == TXT('>'));
-	++m_pcCurrent;
+	ASSERT(*m_current == TXT('>'));
+	++m_current;
 
-	const tchar* pcNodeEnd = m_pcCurrent;
-	size_t       nLength   = pcNodeEnd - pcNodeBegin;
+	const tchar* nodeEnd = m_current;
+	size_t       length  = nodeEnd - nodeBegin;
 
 	// Must be at least "<![CDATA[]]>"
-	if ( (nLength < 12)
-	  || (tstrncmp(pcNodeBegin, TXT("<![CDATA["), 9) != 0)
-	  || (tstrncmp(pcNodeEnd-3, TXT("]]>"),       3) != 0) )
+	if ( (length < 12)
+	  || (tstrncmp(nodeBegin, TXT("<![CDATA["), 9) != 0)
+	  || (tstrncmp(nodeEnd-3, TXT("]]>"),       3) != 0) )
 	{
 		throw IOException(TXT("Invalid CDATA section format"));
 	}
 
 	// Adjust iterators for the inner text.
-	pcNodeBegin += 9;
-	pcNodeEnd   -= 3;
+	nodeBegin += 9;
+	nodeEnd   -= 3;
 
 	// Create node and append to collection.
-	CDataNodePtr pNode = CDataNodePtr(new CDataNode(tstring(pcNodeBegin, pcNodeEnd)));
+	CDataNodePtr node = CDataNodePtr(new CDataNode(tstring(nodeBegin, nodeEnd)));
 
-	appendChild(m_oNodeStack.top(), pNode);
+	appendChild(m_stack.top(), node);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read an identifier.
 
-const tchar* Reader::readIdentifier(const tchar* pcBegin, const tchar* pcEnd, tstring& strIdentifier)
+const tchar* Reader::readIdentifier(const tchar* begin, const tchar* end, tstring& identifier)
 {
-	if (pcBegin == pcEnd)
+	if (begin == end)
 		throw IOException(TXT("EOF encountered reading a tag identifier"));
 
-	const tchar* pcCurrent = pcBegin;
+	const tchar* current = begin;
 
 	// Find end of identifier.
-	while ( (pcCurrent != pcEnd) && (s_oCharTable.isIdentifier(*pcCurrent)) )
-		++pcCurrent;
+	while ( (current != end) && (s_charTable.isIdentifier(*current)) )
+		++current;
 
-	size_t nLength = pcCurrent - pcBegin;
+	size_t length = current - begin;
 
-	if (nLength == 0)
+	if (length == 0)
 		throw IOException(TXT("Tag identifer missing"));
 
 	// Extract identifier.
-	strIdentifier = tstring(pcBegin, pcCurrent);
+	identifier = tstring(begin, current);
 
-	return pcCurrent;
+	return current;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Read an attribute. The reads both the name and value.
 
-const tchar* Reader::readAttribute(const tchar* pcBegin, const tchar* pcEnd, tstring& strName, tstring& strValue)
+const tchar* Reader::readAttribute(const tchar* begin, const tchar* end, tstring& name, tstring& value)
 {
-	if (pcBegin == pcEnd)
+	if (begin == end)
 		throw IOException(TXT("EOF encountered reading an attribute"));
 
-	const tchar* pcCurrent = pcBegin;
+	const tchar* current = begin;
 
 	// Find end of attribute name.
-	while ( (pcCurrent != pcEnd) && (s_oCharTable.isIdentifier(*pcCurrent)) )
-		++pcCurrent;
+	while ( (current != end) && (s_charTable.isIdentifier(*current)) )
+		++current;
 
-	size_t nNameLen = pcCurrent - pcBegin;
+	size_t nameLen = current - begin;
 
-	if (nNameLen == 0)
+	if (nameLen == 0)
 		throw IOException(TXT("Attribute name missing"));
 
 	// Extract attribute name.
-	strName = tstring(pcBegin, pcCurrent);
+	name = tstring(begin, current);
 
 	// Skip whitespace.
-	while ( (pcCurrent != pcEnd) && (s_oCharTable.isWhitespace(*pcCurrent)) )
-		++pcCurrent;
+	while ( (current != end) && (s_charTable.isWhitespace(*current)) )
+		++current;
 
-	if ( (pcCurrent == pcEnd) || (*pcCurrent != TXT('=')) )
+	if ( (current == end) || (*current != TXT('=')) )
 		throw IOException(TXT("EOF encountered reading an attribute"));
 
-	++pcCurrent;
+	++current;
 
 	// Skip whitespace.
-	while ( (pcCurrent != pcEnd) && (s_oCharTable.isWhitespace(*pcCurrent)) )
-		++pcCurrent;
+	while ( (current != end) && (s_charTable.isWhitespace(*current)) )
+		++current;
 
-	if ( (pcCurrent == pcEnd) || ((*pcCurrent != TXT('\"')) && (*pcCurrent != TXT('\''))) )
+	if ( (current == end) || ((*current != TXT('\"')) && (*current != TXT('\''))) )
 		throw IOException(TXT("EOF encountered reading an attribute value"));
 
-	tchar cQuote = *pcCurrent++;
+	tchar quote = *current++;
 
-	pcBegin = pcCurrent;
+	begin = current;
 
 	// Find end of attribute value.
-	while ( (pcCurrent != pcEnd) && (*pcCurrent != cQuote) )
-		++pcCurrent;
+	while ( (current != end) && (*current != quote) )
+		++current;
 
-	if ( (pcCurrent == pcEnd) || (*pcCurrent != cQuote) )
+	if ( (current == end) || (*current != quote) )
 		throw IOException(TXT("EOF encountered reading an attribute value"));
 
 	// Extract attribute name.
-	strValue = tstring(pcBegin, pcCurrent);
+	value = tstring(begin, current);
 
-	++pcCurrent;
+	++current;
 
-	return pcCurrent;
+	return current;
 }
 
 //namespace XML

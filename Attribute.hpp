@@ -25,7 +25,7 @@ public:
 	Attribute();
 
 	//! Construction from a name and value pair.
-	Attribute(const tstring& strName, const tstring& strValue);
+	Attribute(const tstring& name, const tstring& value);
 
 	//
 	// Properties.
@@ -38,14 +38,14 @@ public:
 	const tstring& value() const;
 
 	//! Set the value.
-	void setValue(const tstring& strValue);
+	void setValue(const tstring& value);
 
 private:
 	//
 	// Members.
 	//
-	tstring	m_strName;		//!< The attribute name.
-	tstring	m_strValue;		//!< The attribute value.
+	tstring	m_name;			//!< The attribute name.
+	tstring	m_value;		//!< The attribute value.
 };
 
 //! The default Attribute smart-pointer type.
@@ -55,15 +55,15 @@ typedef Core::SharedPtr<Attribute> AttributePtr;
 //! Default constructor.
 
 inline Attribute::Attribute()
-	: m_strName(), m_strValue()
+	: m_name(), m_value()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from a name and value pair.
 
-inline Attribute::Attribute(const tstring& strName, const tstring& strValue)
-	: m_strName(strName), m_strValue(strValue)
+inline Attribute::Attribute(const tstring& name_, const tstring& value_)
+	: m_name(name_), m_value(value_)
 {
 }
 
@@ -72,7 +72,7 @@ inline Attribute::Attribute(const tstring& strName, const tstring& strValue)
 
 inline const tstring& Attribute::name() const
 {
-	return m_strName;
+	return m_name;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,15 +80,15 @@ inline const tstring& Attribute::name() const
 
 inline const tstring& Attribute::value() const
 {
-	return m_strValue;
+	return m_value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the value.
 
-inline void Attribute::setValue(const tstring& strValue)
+inline void Attribute::setValue(const tstring& value_)
 {
-	m_strValue = strValue;
+	m_value = value_;
 }
 
 //namespace XML

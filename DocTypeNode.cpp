@@ -13,15 +13,15 @@ namespace XML
 //! Default constructor.
 
 DocTypeNode::DocTypeNode()
-	: m_strDeclaration()
+	: m_declaration()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from a string declaration.
 
-DocTypeNode::DocTypeNode(const tstring& strDeclaration)
-	: m_strDeclaration(strDeclaration)
+DocTypeNode::DocTypeNode(const tstring& declaration_)
+	: m_declaration(declaration_)
 {
 }
 

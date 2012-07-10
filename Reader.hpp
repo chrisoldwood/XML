@@ -44,10 +44,10 @@ public:
 	//
 
 	//! Read a document from a pair of raw string pointers.
-	DocumentPtr readDocument(const tchar* pcBegin, const tchar* pcEnd, uint nFlags = DEFAULT); // throw(IOException)
+	DocumentPtr readDocument(const tchar* begin, const tchar* end, uint flags = DEFAULT); // throw(IOException)
 
 	//! Read a document from a string.
-	DocumentPtr readDocument(const tstring& str, uint nFlags = DEFAULT); // throw(IOException)
+	DocumentPtr readDocument(const tstring& string, uint flags = DEFAULT); // throw(IOException)
 
 private:
 	//! A stack of XML nodes.
@@ -56,42 +56,42 @@ private:
 	//
 	// Members.
 	//
-	const tchar*	m_pcBegin;		//!< The start of the text stream.
-	const tchar*	m_pcEnd;		//!< The end of the text stream.
-	const tchar*	m_pcCurrent;	//!< The current position in the stream.
-	uint			m_nFlags;		//!< The flags to control reading.
-	NodeStack		m_oNodeStack;	//!< The stack of unclosed element nodes.
+	const tchar*	m_begin;		//!< The start of the text stream.
+	const tchar*	m_end;			//!< The end of the text stream.
+	const tchar*	m_current;		//!< The current position in the stream.
+	uint			m_flags;		//!< The flags to control reading.
+	NodeStack		m_stack;		//!< The stack of unclosed element nodes.
 
 	//
 	// Internal methods.
 	//
 
 	//! Initialise the internal state ready for reading.
-	void initialise(const tchar* pcBegin, const tchar* pcEnd, uint nFlags);
+	void initialise(const tchar* begin, const tchar* end, uint flags);
 
 	//! Read and parse a comment tag.
-	void readCommentTag(const tchar* pcNodeBegin);
+	void readCommentTag(const tchar* nodeBegin);
 
 	//! Read and parse a processing instruction tag.
-	void readProcessingTag(const tchar* pcNodeBegin);
+	void readProcessingTag(const tchar* nodeBegin);
 
 	//! Read and create a text node.
-	void readTextNode(const tchar* pcNodeBegin);
+	void readTextNode(const tchar* nodeBegin);
 
 	//! Read and parse an element tag.
-	void readElementTag(const tchar* pcNodeBegin);
+	void readElementTag(const tchar* nodeBegin);
 
 	//! Read and parse a document type tag.
-	void readDocTypeTag(const tchar* pcNodeBegin);
+	void readDocTypeTag(const tchar* nodeBegin);
 
 	//! Read and parse CDATA section.
-	void readCDataSection(const tchar* pcNodeBegin);
+	void readCDataSection(const tchar* nodeBegin);
 
 	//! Read an identifier.
-	const tchar* readIdentifier(const tchar* pcBegin, const tchar* pcEnd, tstring& strIdentifier);
+	const tchar* readIdentifier(const tchar* begin, const tchar* end, tstring& identifier);
 
 	//! Read an attribute.
-	const tchar* readAttribute(const tchar* pcBegin, const tchar* pcEnd, tstring& strName, tstring& strValue);
+	const tchar* readAttribute(const tchar* begin, const tchar* end, tstring& name, tstring& value);
 
 	// NotCopyable.
 	Reader(const Reader&);
@@ -101,19 +101,19 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 //! Read a document from a string.
 
-inline DocumentPtr Reader::readDocument(const tstring& str, uint nFlags)
+inline DocumentPtr Reader::readDocument(const tstring& string, uint flags)
 {
-	const tchar* pcBegin = nullptr;
-	const tchar* pcEnd   = nullptr;
+	const tchar* begin = nullptr;
+	const tchar* end   = nullptr;
 
 	// Get raw iterators for the string.
-	if (!str.empty())
+	if (!string.empty())
 	{
-		pcBegin = str.data();
-		pcEnd   = pcBegin + str.length();
+		begin = string.data();
+		end   = begin + string.length();
 	}
 
-	return readDocument(pcBegin, pcEnd, nFlags);
+	return readDocument(begin, end, flags);
 }
 
 //namespace XML

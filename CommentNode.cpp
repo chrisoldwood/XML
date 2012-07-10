@@ -13,15 +13,15 @@ namespace XML
 //! Default constructor.
 
 CommentNode::CommentNode()
-	: m_strComment()
+	: m_comment()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from a string comment.
 
-CommentNode::CommentNode(const tstring& strComment)
-	: m_strComment(strComment)
+CommentNode::CommentNode(const tstring& comment_)
+	: m_comment(comment_)
 {
 }
 

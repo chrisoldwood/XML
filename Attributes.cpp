@@ -32,9 +32,9 @@ struct FindByName : public std::unary_function<AttributePtr, bool>
 	}
 
 	//! Compare the attribute name for a match.
-	bool operator()(const AttributePtr& pAttribute)
+	bool operator()(const AttributePtr& attribute)
 	{
-		return (pAttribute->name() == m_str);
+		return (attribute->name() == m_str);
 	}
 };
 
@@ -42,7 +42,7 @@ struct FindByName : public std::unary_function<AttributePtr, bool>
 //! Default constructor.
 
 Attributes::Attributes()
-	: m_vAttribs()
+	: m_attributes()
 {
 }
 
@@ -58,53 +58,53 @@ Attributes::~Attributes()
 
 void Attributes::clear()
 {
-	m_vAttribs.clear();
+	m_attributes.clear();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Set an attribute. If the attribute name already exists in the collection
 //! it replaces it, otherwise it is appeneded.
 
-void Attributes::setAttribute(const AttributePtr& pAttribute)
+void Attributes::setAttribute(const AttributePtr& attribute)
 {
-	if (pAttribute->name().empty())
+	if (attribute->name().empty())
 		throw Core::InvalidArgException(TXT("Failed to set an attribute as the name is empty"));
 
 	// Replace value or append attribute to collection.
-	AttributePtr pExisting = find(pAttribute->name());
+	AttributePtr existing = find(attribute->name());
 
-	if (pExisting.get() != nullptr)
-		pExisting->setValue(pAttribute->value());
+	if (existing.get() != nullptr)
+		existing->setValue(attribute->value());
 	else
-		m_vAttribs.push_back(pAttribute);
+		m_attributes.push_back(attribute);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Find an attribute by its name.
 
-AttributePtr Attributes::find(const tstring& strName) const
+AttributePtr Attributes::find(const tstring& name) const
 {
-	AttributePtr pAttribute;
+	AttributePtr attribute;
 
-	Container::const_iterator it = std::find_if(m_vAttribs.begin(), m_vAttribs.end(), FindByName(strName));
+	Container::const_iterator it = std::find_if(m_attributes.begin(), m_attributes.end(), FindByName(name));
 
-	if (it != m_vAttribs.end())
-		pAttribute = *it;
+	if (it != m_attributes.end())
+		attribute = *it;
 
-	return pAttribute;
+	return attribute;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Get an attribute by its name or throw if not found.
 
-AttributePtr Attributes::get(const tstring& strName) const
+AttributePtr Attributes::get(const tstring& name) const
 {
-	AttributePtr pAttribute = find(strName);
+	AttributePtr attribute = find(name);
 
-	if (pAttribute.get() == nullptr)
-		throw Core::InvalidArgException(Core::fmt(TXT("Failed to retrieve attribute '%s'"), strName.c_str()));
+	if (attribute.get() == nullptr)
+		throw Core::InvalidArgException(Core::fmt(TXT("Failed to retrieve attribute '%s'"), name.c_str()));
 
-	return pAttribute;
+	return attribute;
 }
 
 //namespace XML

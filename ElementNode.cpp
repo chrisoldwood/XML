@@ -14,28 +14,28 @@ namespace XML
 
 ElementNode::ElementNode()
 	: NodeContainer(this)
-	, m_strName()
-	, m_vAttribs()
+	, m_name()
+	, m_attributes()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from the element name.
 
-ElementNode::ElementNode(const tstring& strName)
+ElementNode::ElementNode(const tstring& name_)
 	: NodeContainer(this)
-	, m_strName(strName)
-	, m_vAttribs()
+	, m_name(name_)
+	, m_attributes()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from an element name and attributes.
 
-ElementNode::ElementNode(const tstring& strName, const Attributes& vAttribs)
+ElementNode::ElementNode(const tstring& name_, const Attributes& attributes)
 	: NodeContainer(this)
-	, m_strName(strName)
-	, m_vAttribs(vAttribs)
+	, m_name(name_)
+	, m_attributes(attributes)
 {
 }
 

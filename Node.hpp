@@ -61,7 +61,7 @@ public:
 	//
 
 	//! Convert the node type to a string.
-	static const tchar* formatNodeType(NodeType eType);
+	static const tchar* formatNodeType(NodeType type);
 
 protected:
 	//! Default constructor.
@@ -75,13 +75,13 @@ protected:
 	//
 
 	//! Set the parent node.
-	void setParent(Node* pParent);
+	void setParent(Node* parent);
 
 private:
 	//
 	// Members.
 	//
-	Node*	m_pParent;		//!< The parent node.
+	Node*	m_parent;		//!< The parent node.
 
 	//
 	// Friends.
@@ -108,7 +108,7 @@ inline const tchar* Node::typeStr() const
 
 inline bool Node::hasParent() const
 {
-	return (m_pParent != nullptr);
+	return (m_parent != nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -116,7 +116,7 @@ inline bool Node::hasParent() const
 
 inline const NodePtr Node::parent() const
 {
-	return NodePtr(m_pParent, true);
+	return NodePtr(m_parent, true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -124,17 +124,17 @@ inline const NodePtr Node::parent() const
 
 inline NodePtr Node::parent()
 {
-	return NodePtr(m_pParent, true);
+	return NodePtr(m_parent, true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Set the parent node.
 
-inline void Node::setParent(Node* pParent)
+inline void Node::setParent(Node* parent_)
 {
-	ASSERT(m_pParent == nullptr);
+	ASSERT(m_parent == nullptr);
 
-	m_pParent = pParent;
+	m_parent = parent_;
 }
 
 //namespace XML

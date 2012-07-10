@@ -13,26 +13,26 @@ namespace XML
 //! Default constructor.
 
 ProcessingNode::ProcessingNode()
-	: m_strTarget()
-	, m_vAttribs()
+	: m_target()
+	, m_attributes()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from a target.
 
-ProcessingNode::ProcessingNode(const tstring& strTarget)
-	: m_strTarget(strTarget)
-	, m_vAttribs()
+ProcessingNode::ProcessingNode(const tstring& target_)
+	: m_target(target_)
+	, m_attributes()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from a target and attributes.
 
-ProcessingNode::ProcessingNode(const tstring& strTarget, const Attributes& vAttribs)
-	: m_strTarget(strTarget)
-	, m_vAttribs(vAttribs)
+ProcessingNode::ProcessingNode(const tstring& target_, const Attributes& attributes)
+	: m_target(target_)
+	, m_attributes(attributes)
 {
 }
 

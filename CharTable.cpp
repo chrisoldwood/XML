@@ -18,11 +18,11 @@ namespace XML
 //! Default constructor.
 
 CharTable::CharTable()
-	: m_mapOther()
+	: m_other()
 {
 	STATIC_ASSERT(sizeof(uint) >= sizeof(tchar));
 
-	std::fill(m_anASCII, m_anASCII+TABLE_SIZE, 0);
+	std::fill(m_ascii, m_ascii+TABLE_SIZE, 0);
 
 	// Set the whitespace chars.
 	appendFlags(TXT(' '),  WHITESPACE);
@@ -50,16 +50,16 @@ CharTable::~CharTable()
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the flags for the character.
 
-uint CharTable::getFlags(uint nChar) const
+uint CharTable::getFlags(uint character) const
 {
 	// ASCII char?
-	if (nChar < 128)
-		return m_anASCII[nChar];
+	if (character < 128)
+		return m_ascii[character];
 
 	// Non-ASCII non-default?
-	MapCharFlags::const_iterator it = m_mapOther.find(nChar);
+	MapCharFlags::const_iterator it = m_other.find(character);
 
-	if (it != m_mapOther.end())
+	if (it != m_other.end())
 		return it->second;
 
 	return DEFAULT;
@@ -69,33 +69,33 @@ uint CharTable::getFlags(uint nChar) const
 //! Get the flags for the character.
 //  NB: The use of map<T>::operator[] assumes that the default value == T().
 
-uint& CharTable::getFlags(uint nChar)
+uint& CharTable::getFlags(uint character)
 {
 	// ASCII char?
-	if (nChar < 128)
-		return m_anASCII[nChar];
+	if (character < 128)
+		return m_ascii[character];
 
-	return m_mapOther[nChar];
+	return m_other[character];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Append flags for the character.
 
-void CharTable::appendFlags(tchar cChar, uint nFlags)
+void CharTable::appendFlags(tchar character, uint flags)
 {
-	getFlags(cChar) |= nFlags;
+	getFlags(character) |= flags;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Append flags for the character range. The range is [First, Last] and hence
 //! is inclusive of Last unlike with iterators.
 
-void CharTable::appendFlags(tchar cFirst, tchar cLast, uint nFlags)
+void CharTable::appendFlags(tchar firstChar, tchar lastChar, uint flags)
 {
-	ASSERT(cLast >= cFirst);
+	ASSERT(lastChar >= firstChar);
 
-	for (tchar cChar = cFirst; cChar <= cLast; ++cChar)
-		getFlags(cChar) |= nFlags;
+	for (tchar character = firstChar; character <= lastChar; ++character)
+		getFlags(character) |= flags;
 }
 
 //namespace XML
