@@ -8,10 +8,8 @@
 
 - Add support for CDATA.
 
-- Add shorthand on Atrributes for getting an attribute value.
+- Add shorthand on Attributes for getting an attribute value.
 
 - Change use of GetType() to use some form of Extension Interface.
-
-- Add readDocument() static method to XML::Reader.
 
 - get child node by index (as order is important).

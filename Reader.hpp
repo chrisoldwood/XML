@@ -18,18 +18,12 @@ namespace XML
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-//! The reader to create an XML document from a text stream.
+//! The reader to parse an XML document from a text stream.
 
 class Reader /*: private NotCopyable*/
 {
 public:
-	//! Default constructor.
-	Reader();
-
-	//! Destructor.
-	~Reader();
-
-	//! The readingflags.
+	//! The reading flags.
 	enum Flag
 	{
 		DEFAULT				= 0x0000,	//!< Default flags.
@@ -40,14 +34,14 @@ public:
 	};
 
 	//
-	// Methods.
+	// Class methods.
 	//
 
 	//! Read a document from a pair of raw string pointers.
-	DocumentPtr readDocument(const tchar* begin, const tchar* end, uint flags = DEFAULT); // throw(IOException)
+	static DocumentPtr readDocument(const tchar* begin, const tchar* end, uint flags = DEFAULT); // throw(IOException)
 
 	//! Read a document from a string.
-	DocumentPtr readDocument(const tstring& string, uint flags = DEFAULT); // throw(IOException)
+	static DocumentPtr readDocument(const tstring& string, uint flags = DEFAULT); // throw(IOException)
 
 private:
 	//! A stack of XML nodes.
@@ -65,6 +59,18 @@ private:
 	//
 	// Internal methods.
 	//
+
+	//! Default constructor.
+	Reader();
+
+	//! Destructor.
+	~Reader();
+
+	//! Read a document from a pair of raw string pointers.
+	DocumentPtr parseDocument(const tchar* begin, const tchar* end, uint flags = DEFAULT); // throw(IOException)
+
+	//! Read a document from a string.
+	DocumentPtr parseDocument(const tstring& string, uint flags = DEFAULT); // throw(IOException)
 
 	//! Initialise the internal state ready for reading.
 	void initialise(const tchar* begin, const tchar* end, uint flags);
@@ -97,24 +103,6 @@ private:
 	Reader(const Reader&);
 	Reader& operator=(const Reader);
 };
-
-////////////////////////////////////////////////////////////////////////////////
-//! Read a document from a string.
-
-inline DocumentPtr Reader::readDocument(const tstring& string, uint flags)
-{
-	const tchar* begin = nullptr;
-	const tchar* end   = nullptr;
-
-	// Get raw iterators for the string.
-	if (!string.empty())
-	{
-		begin = string.data();
-		end   = begin + string.length();
-	}
-
-	return readDocument(begin, end, flags);
-}
 
 //namespace XML
 }

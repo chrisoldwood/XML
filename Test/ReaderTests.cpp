@@ -12,91 +12,76 @@
 #include <XML/ProcessingNode.hpp>
 #include <XML/DocTypeNode.hpp>
 
-typedef Core::SharedPtr<XML::Reader> ReaderPtr;
-
-static ReaderPtr s_reader;
-
 TEST_SET(Reader)
 {
-TEST_CASE_SETUP()
-{
-	s_reader = ReaderPtr(new XML::Reader);
-}
-TEST_CASE_SETUP_END
-
-TEST_CASE_TEARDOWN()
-{
-	s_reader.reset();
-}
-TEST_CASE_TEARDOWN_END
 
 TEST_CASE("empty xml document throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT("")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("")));
 }
 TEST_CASE_END
 
 TEST_CASE("malformed tag throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT("<>")));
-	TEST_THROWS(s_reader->readDocument(TXT("<+>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<+>")));
 }
 TEST_CASE_END
 
 TEST_CASE("text node before or after the root element throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT(" x <R/>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT(" x <R/>")));
 
-	TEST_THROWS(s_reader->readDocument(TXT("<R/> x ")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R/> x ")));
 }
 TEST_CASE_END
 
 TEST_CASE("malformed processing instruction throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT("<?")));	// ??> is a trigraph.
+	TEST_THROWS(XML::Reader::readDocument(TXT("<?")));	// ??> is a trigraph.
 
-	TEST_THROWS(s_reader->readDocument(TXT("<?\?><R/>")));	// ??> is a trigraph.
+	TEST_THROWS(XML::Reader::readDocument(TXT("<?\?><R/>")));	// ??> is a trigraph.
 }
 TEST_CASE_END
 
 TEST_CASE("unopened or unclosed element tag throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT("<R>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R>")));
 
-	TEST_THROWS(s_reader->readDocument(TXT("</R>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("</R>")));
 }
 TEST_CASE_END
 
 TEST_CASE("nested unopened or unclosed element tag throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT("<R><E></R>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R><E></R>")));
 
-	TEST_THROWS(s_reader->readDocument(TXT("<R></E></R>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R></E></R>")));
 }
 TEST_CASE_END
 
 TEST_CASE("malformed attribute throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT("<R a>")));
-	TEST_THROWS(s_reader->readDocument(TXT("<R +>")));
-	TEST_THROWS(s_reader->readDocument(TXT("<R a=>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R a>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R +>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R a=>")));
 }
 TEST_CASE_END
 
 TEST_CASE("missing or mismatched attribute quotes throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT("<R a=b>")));
-	TEST_THROWS(s_reader->readDocument(TXT("<R a='b>")));
-	TEST_THROWS(s_reader->readDocument(TXT("<R a=\"b>")));
-	TEST_THROWS(s_reader->readDocument(TXT("<R a='b\">")));
-	TEST_THROWS(s_reader->readDocument(TXT("<R a=\"b'>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R a=b>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R a='b>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R a=\"b>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R a='b\">")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<R a=\"b'>")));
 }
 TEST_CASE_END
 
 TEST_CASE("attribute list can use different quote types on different attributes")
 {
 	const tchar*     xml = TXT("<root d=\"double\" s='single' />");
-	XML::DocumentPtr document = s_reader->readDocument(xml);
+	XML::DocumentPtr document = XML::Reader::readDocument(xml);
 
 	XML::NodeContainer::const_iterator it = document->beginChild();
 	XML::ElementNodePtr	               element = Core::dynamic_ptr_cast<XML::ElementNode>(*it);
@@ -109,7 +94,7 @@ TEST_CASE_END
 TEST_CASE("attribute can contain embedded angle brackets")
 {
 	const tchar*     xml = TXT("<root brackets='<>' />");
-	XML::DocumentPtr document = s_reader->readDocument(xml);
+	XML::DocumentPtr document = XML::Reader::readDocument(xml);
 
 	XML::NodeContainer::const_iterator it = document->beginChild();
 	XML::ElementNodePtr	               element = Core::dynamic_ptr_cast<XML::ElementNode>(*it);
@@ -120,16 +105,16 @@ TEST_CASE_END
 
 TEST_CASE("malformed comment tag throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT("<!")));
-	TEST_THROWS(s_reader->readDocument(TXT("<!-")));
-	TEST_THROWS(s_reader->readDocument(TXT("<!-->")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<!")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<!-")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<!-->")));
 }
 TEST_CASE_END
 
 TEST_CASE("comment tag can contain embedded dashes and angle brackets")
 {
 	const tchar*     xml = TXT("<!-- <> -> -- --><root/>");
-	XML::DocumentPtr document = s_reader->readDocument(xml);
+	XML::DocumentPtr document = XML::Reader::readDocument(xml);
 
 	XML::NodeContainer::const_iterator it = document->beginChild();
 	XML::CommentNodePtr	               comment = Core::dynamic_ptr_cast<XML::CommentNode>(*it);
@@ -140,16 +125,16 @@ TEST_CASE_END
 
 TEST_CASE("malformed document type tag throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT("<!")));
-	TEST_THROWS(s_reader->readDocument(TXT("<!D")));
-	TEST_THROWS(s_reader->readDocument(TXT("<!D>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<!")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<!D")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<!D>")));
 }
 TEST_CASE_END
 
 TEST_CASE("document type tag can contain embedded xml")
 {
 	const tchar*     xml = TXT("<!DOCTYPE root PUBLIC \"http://\"[<!-- comment -->]><root/>");
-	XML::DocumentPtr document = s_reader->readDocument(xml);
+	XML::DocumentPtr document = XML::Reader::readDocument(xml);
 
 	XML::NodeContainer::const_iterator it = document->beginChild();
 	XML::DocTypeNodePtr	               docType = Core::dynamic_ptr_cast<XML::DocTypeNode>(*it);
@@ -160,21 +145,21 @@ TEST_CASE_END
 
 TEST_CASE("malformed CDATA section throws an exception")
 {
-	TEST_THROWS(s_reader->readDocument(TXT("<![CDATA")));
-	TEST_THROWS(s_reader->readDocument(TXT("<![ ]]>")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<![CDATA")));
+	TEST_THROWS(XML::Reader::readDocument(TXT("<![ ]]>")));
 }
 TEST_CASE_END
 
 TEST_CASE("CDATA section can contain embedded xml")
 {
-	TEST_TRUE(s_reader->readDocument(TXT("<root> <![CDATA[ <> ]]> </root>")).get() != nullptr);
+	TEST_TRUE(XML::Reader::readDocument(TXT("<root> <![CDATA[ <> ]]> </root>")).get() != nullptr);
 }
 TEST_CASE_END
 
 TEST_CASE("xml declaration can contain version and encoding attributes")
 {
 	const tchar*     xml = TXT("<?xml version=\"1.0\" encoding=\"utf-8\"?><R/>");
-	XML::DocumentPtr document = s_reader->readDocument(xml);
+	XML::DocumentPtr document = XML::Reader::readDocument(xml);
 
 	XML::ProcessingNodePtr declaration = Core::dynamic_ptr_cast<XML::ProcessingNode>(*document->beginChild());
 
@@ -199,7 +184,7 @@ TEST_CASE_END
 
 TEST_CASE("child tag order maintained")
 {
-	XML::DocumentPtr document = s_reader->readDocument(TXT("  <?P?>  <!DOCTYPE R>  <!---->  <R><E/></R>  "));
+	XML::DocumentPtr document = XML::Reader::readDocument(TXT("  <?P?>  <!DOCTYPE R>  <!---->  <R><E/></R>  "));
 
 	TEST_TRUE(document->getChildCount() == 9);
 	TEST_TRUE(document->getRootElement()->name() == TXT("R"));
@@ -238,7 +223,7 @@ TEST_CASE_END
 
 TEST_CASE("tags can contain extra whitespace")
 {
-	XML::DocumentPtr document = s_reader->readDocument(TXT("<?x v = \"1.0\" encoding = 'utf-8'  ?><R a = 'b'  />"));
+	XML::DocumentPtr document = XML::Reader::readDocument(TXT("<?x v = \"1.0\" encoding = 'utf-8'  ?><R a = 'b'  />"));
 
 	TEST_TRUE(document->getChildCount() == 2);
 
@@ -258,7 +243,7 @@ TEST_CASE("insignificant whitespace can be discarded during parsing")
 {
 	const tstring xml = TXT(" \t<?xml?><!DOCTYPE R><!----><R>\r\n</R> \t");
 
-	XML::DocumentPtr document = s_reader->readDocument(xml, XML::Reader::DISCARD_WHITESPACE);
+	XML::DocumentPtr document = XML::Reader::readDocument(xml, XML::Reader::DISCARD_WHITESPACE);
 
 	TEST_TRUE(document->getChildCount() == 4);
 }
@@ -268,7 +253,7 @@ TEST_CASE("comments can be discarded during parsing")
 {
 	const tstring xml = TXT(" \t<?xml?><!DOCTYPE R><!----><R>\r\n</R> \t");
 
-	XML::DocumentPtr document = s_reader->readDocument(xml, XML::Reader::DISCARD_COMMENTS);
+	XML::DocumentPtr document = XML::Reader::readDocument(xml, XML::Reader::DISCARD_COMMENTS);
 
 	TEST_TRUE(document->getChildCount() == 5);
 
@@ -279,7 +264,7 @@ TEST_CASE("processing instructions can be discarded during parsing")
 {
 	const tstring xml = TXT(" \t<?xml?><!DOCTYPE R><!----><R>\r\n</R> \t");
 
-	XML::DocumentPtr document = s_reader->readDocument(xml, XML::Reader::DISCARD_PROC_INSTNS);
+	XML::DocumentPtr document = XML::Reader::readDocument(xml, XML::Reader::DISCARD_PROC_INSTNS);
 
 	TEST_TRUE(document->getChildCount() == 5);
 }
@@ -289,9 +274,19 @@ TEST_CASE("the document type can be discarded during parsing")
 {
 	const tstring xml = TXT(" \t<?xml?><!DOCTYPE R><!----><R>\r\n</R> \t");
 
-	XML::DocumentPtr document = s_reader->readDocument(xml, XML::Reader::DISCARD_DOC_TYPES);
+	XML::DocumentPtr document = XML::Reader::readDocument(xml, XML::Reader::DISCARD_DOC_TYPES);
 
 	TEST_TRUE(document->getChildCount() == 5);
+}
+TEST_CASE_END
+
+TEST_CASE("the document can be parsed using a single method call")
+{
+	const tstring xml = TXT("<root/>");
+
+	XML::DocumentPtr document = XML::Reader::readDocument(xml, XML::Reader::DISCARD_DOC_TYPES);
+
+	TEST_TRUE(document->hasRootElement());
 }
 TEST_CASE_END
 

@@ -54,9 +54,27 @@ inline void appendChild(NodePtr parent, Core::RefCntPtr<T>& child)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Read a document from a string.
+
+DocumentPtr Reader::parseDocument(const tstring& string, uint flags)
+{
+	const tchar* begin = nullptr;
+	const tchar* end   = nullptr;
+
+	// Get raw iterators for the string.
+	if (!string.empty())
+	{
+		begin = string.data();
+		end   = begin + string.length();
+	}
+
+	return readDocument(begin, end, flags);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Read a document from a pair of raw string pointers.
 
-DocumentPtr Reader::readDocument(const tchar* begin, const tchar* end, uint flags)
+DocumentPtr Reader::parseDocument(const tchar* begin, const tchar* end, uint flags)
 {
 	initialise(begin, end, flags);
 
@@ -135,6 +153,26 @@ DocumentPtr Reader::readDocument(const tchar* begin, const tchar* end, uint flag
 	ASSERT(m_stack.size() == 0);
 
 	return document;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read a document from a pair of raw string pointers.
+
+DocumentPtr Reader::readDocument(const tchar* begin, const tchar* end, uint flags)
+{
+	XML::Reader reader;
+
+	return reader.parseDocument(begin, end, flags);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Read a document from a string.
+
+DocumentPtr Reader::readDocument(const tstring& string, uint flags)
+{
+	XML::Reader reader;
+
+	return reader.parseDocument(string, flags);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

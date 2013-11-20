@@ -24,7 +24,7 @@ TEST_SET(XPathIterator)
 
 TEST_CASE_SETUP()
 {
-	s_document = XML::Reader().readDocument(s_xml);
+	s_document = XML::Reader::readDocument(s_xml);
 }
 TEST_CASE_SETUP_END
 
