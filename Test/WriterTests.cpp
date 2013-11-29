@@ -9,12 +9,13 @@
 
 TEST_SET(Writer)
 {
+	const uint defaultTestFlags = XML::Writer::NO_FORMATTING;
 
 TEST_CASE("An empty document is serialized as an empty string")
 {
 	XML::DocumentPtr emptyDocument(new XML::Document);
 
-	const tstring output = XML::Writer::writeDocument(emptyDocument);
+	const tstring output = XML::Writer::writeDocument(emptyDocument, defaultTestFlags);
 
 	TEST_TRUE(output == TXT(""));
 }
@@ -27,7 +28,7 @@ TEST_CASE("An empty element is serialized as a single tag")
 	
 	document->appendChild(rootNode);
 
-	const tstring output = XML::Writer::writeDocument(document);
+	const tstring output = XML::Writer::writeDocument(document, defaultTestFlags);
 
 	TEST_TRUE(output == TXT("<root/>"));
 }
@@ -42,7 +43,7 @@ TEST_CASE("A parent element is serialized as a pair of tags")
 	document->appendChild(parentNode);
 	parentNode->appendChild(childNode);
 
-	const tstring output = XML::Writer::writeDocument(document);
+	const tstring output = XML::Writer::writeDocument(document, defaultTestFlags);
 
 	TEST_TRUE(output == TXT("<parent><child/></parent>"));
 }
@@ -59,7 +60,7 @@ TEST_CASE("Multiple child elements are serialized within the parent tags")
 	parentNode->appendChild(childNode1);
 	parentNode->appendChild(childNode2);
 
-	const tstring output = XML::Writer::writeDocument(document);
+	const tstring output = XML::Writer::writeDocument(document, defaultTestFlags);
 
 	TEST_TRUE(output == TXT("<parent><child1/><child2/></parent>"));
 }
@@ -74,7 +75,7 @@ TEST_CASE("Attributes on an empty element are serialized as key/value pairs in t
 	document->appendChild(rootNode);
 	rootNode->getAttributes().setAttribute(attribute);
 
-	const tstring output = XML::Writer::writeDocument(document);
+	const tstring output = XML::Writer::writeDocument(document, defaultTestFlags);
 
 	TEST_TRUE(output == TXT("<root key=\"value\"/>"));
 }
@@ -91,9 +92,43 @@ TEST_CASE("Attributes on an non-empty element are serialized as key/value pairs 
 	parentNode->appendChild(childNode);
 	parentNode->getAttributes().setAttribute(attribute);
 
-	const tstring output = XML::Writer::writeDocument(document);
+	const tstring output = XML::Writer::writeDocument(document, defaultTestFlags);
 
 	TEST_TRUE(output == TXT("<parent key=\"value\"><child/></parent>"));
+}
+TEST_CASE_END
+
+TEST_CASE("elements are written one per line and indented using a tab character by default")
+{
+	XML::DocumentPtr    document(new XML::Document);
+	XML::ElementNodePtr grandparentNode(new XML::ElementNode(TXT("grandparent")));
+	XML::ElementNodePtr parentNode(new XML::ElementNode(TXT("parent")));
+	XML::ElementNodePtr childNode(new XML::ElementNode(TXT("child")));
+	
+	document->appendChild(grandparentNode);
+	grandparentNode->appendChild(parentNode);
+	parentNode->appendChild(childNode);
+
+	const tstring output = XML::Writer::writeDocument(document);
+
+	TEST_TRUE(output == TXT("<grandparent>\n\t<parent>\n\t\t<child/>\n\t</parent>\n</grandparent>\n"));
+}
+TEST_CASE_END
+
+TEST_CASE("The indenting style can be overridden")
+{
+	XML::DocumentPtr    document(new XML::Document);
+	XML::ElementNodePtr grandparentNode(new XML::ElementNode(TXT("grandparent")));
+	XML::ElementNodePtr parentNode(new XML::ElementNode(TXT("parent")));
+	XML::ElementNodePtr childNode(new XML::ElementNode(TXT("child")));
+	
+	document->appendChild(grandparentNode);
+	grandparentNode->appendChild(parentNode);
+	parentNode->appendChild(childNode);
+
+	const tstring output = XML::Writer::writeDocument(document, XML::Writer::DEFAULT, TXT("  "));
+
+	TEST_TRUE(output == TXT("<grandparent>\n  <parent>\n    <child/>\n  </parent>\n</grandparent>\n"));
 }
 TEST_CASE_END
 

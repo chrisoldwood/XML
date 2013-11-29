@@ -27,21 +27,30 @@ public:
 	enum Flag
 	{
 		DEFAULT				= 0x0000,	//!< Default flags.
+		NO_FORMATTING		= 0x0001,	//!< Don't pretty print the XML.
 	};
+
+	//! The default indentation style.
+	static const tchar* DEFAULT_INDENT_STYLE;
+	
+	//! The default line terminator.
+	static const tchar* DEFAULT_TERMINATOR;
 	
 	//
 	// Class methods.
 	//
 
 	//! Write a document to a string buffer.
-	static tstring writeDocument(DocumentPtr document);
+	static tstring writeDocument(DocumentPtr document, uint flags = DEFAULT, const tchar* indentStyle = DEFAULT_INDENT_STYLE);
 
 private:
 	//
 	// Members.
 	//
 	uint			m_flags;		//!< The flags to control writing.
+	tstring			m_indentStyle;	//!< The string to use for indenting.
 	tstring			m_buffer;		//!< The output buffer.
+	uint			m_depth;		//!< The indentation depth.
 
 	//
 	// Internal methods.
@@ -51,7 +60,7 @@ private:
 	Writer();
 
 	//! Constructor.
-	Writer(uint flags);
+	Writer(uint flags, const tchar* indent);
 
 	//! Destructor.
 	~Writer();

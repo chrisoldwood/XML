@@ -10,19 +10,31 @@
 namespace XML
 {
 
+//! The default indentation style.
+const tchar* Writer::DEFAULT_INDENT_STYLE = TXT("\t");
+
+//! The default line terminator.
+const tchar* Writer::DEFAULT_TERMINATOR = TXT("\n");
+	
 ////////////////////////////////////////////////////////////////////////////////
 //! Default constructor.
 
 Writer::Writer()
 	: m_flags(DEFAULT)
+	, m_indentStyle(DEFAULT_INDENT_STYLE)
+	, m_buffer()
+	, m_depth(0)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Constructor.
 
-Writer::Writer(uint flags)
+Writer::Writer(uint flags, const tchar* indentStyle)
 	: m_flags(flags)
+	, m_indentStyle(indentStyle)
+	, m_buffer()
+	, m_depth(0)
 {
 }
 
@@ -44,15 +56,17 @@ tstring Writer::formatDocument(DocumentPtr document)
 
 	writeContainer(*document.get());
 
+	ASSERT(m_depth == 0);
+
 	return m_buffer;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Write a document to a string buffer.
 
-tstring Writer::writeDocument(DocumentPtr document)
+tstring Writer::writeDocument(DocumentPtr document, uint flags, const tchar* indentStyle)
 {
-	XML::Writer writer;
+	XML::Writer writer(flags, indentStyle);
 
 	return writer.formatDocument(document);
 }
@@ -92,38 +106,61 @@ void Writer::writeAttributes(const Attributes& attributes)
 
 void Writer::writeElement(ElementNodePtr element)
 {
+	tstring indentation;
+	tstring terminator;
+
+	if (!(m_flags & NO_FORMATTING))
+	{
+		for (uint i = 0; i != m_depth; ++i)
+			indentation += m_indentStyle;
+
+		terminator = DEFAULT_TERMINATOR;
+	}
+
 	if (element->hasChildren())
 	{
 		if (!element->getAttributes().isEmpty())
 		{
+			m_buffer += indentation;
 			m_buffer += Core::fmt(TXT("<%s"), element->name().c_str());
 
 			writeAttributes(element->getAttributes());
 
 			m_buffer += TXT(">");
+			m_buffer += terminator;
 		}
 		else
 		{
+			m_buffer += indentation;
 			m_buffer += Core::fmt(TXT("<%s>"), element->name().c_str());
+			m_buffer += terminator;
 		}
 
+		++m_depth;
 		writeContainer(*element);
+		--m_depth;
 
+		m_buffer += indentation;
 		m_buffer += Core::fmt(TXT("</%s>"), element->name().c_str());
+		m_buffer += terminator;
 	}
 	else
 	{
 		if (!element->getAttributes().isEmpty())
 		{
+			m_buffer += indentation;
 			m_buffer += Core::fmt(TXT("<%s"), element->name().c_str());
 
 			writeAttributes(element->getAttributes());
 
 			m_buffer += TXT("/>");
+			m_buffer += terminator;
 		}
 		else
 		{
+			m_buffer += indentation;
 			m_buffer += Core::fmt(TXT("<%s/>"), element->name().c_str());
+			m_buffer += terminator;
 		}
 	}
 }
