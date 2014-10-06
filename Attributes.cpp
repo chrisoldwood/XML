@@ -47,6 +47,15 @@ Attributes::Attributes()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Construction with a single attribute.
+
+Attributes::Attributes(AttributePtr attribute)
+	: m_attributes()
+{
+	m_attributes.push_back(attribute);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Destructor.
 
 Attributes::~Attributes()

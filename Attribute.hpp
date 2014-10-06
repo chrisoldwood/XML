@@ -91,6 +91,14 @@ inline void Attribute::setValue(const tstring& value_)
 	m_value = value_;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Create an element with a specified name.
+
+inline AttributePtr makeAttribute(const tstring& name, const tstring& value)
+{
+	return AttributePtr(new Attribute(name, value));
+}
+
 //namespace XML
 }
 

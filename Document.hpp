@@ -27,6 +27,9 @@ public:
 	//! Default constructor.
 	Document();
 
+	//! Construction with a root element.
+	Document(ElementNodePtr root);
+
 	//
 	// Properties.
 	//
@@ -65,6 +68,22 @@ typedef Core::RefCntPtr<Document> DocumentPtr;
 inline NodeType Document::type() const
 {
 	return DOCUMENT_NODE;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Create an empty document.
+
+inline DocumentPtr makeDocument()
+{
+	return DocumentPtr(new Document());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Create an empty document.
+
+inline DocumentPtr makeDocument(ElementNodePtr root)
+{
+	return DocumentPtr(new Document(root));
 }
 
 //namespace XML

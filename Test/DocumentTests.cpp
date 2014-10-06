@@ -89,5 +89,35 @@ TEST_CASE("appending an element node gives the document a root element")
 }
 TEST_CASE_END
 
+TEST_CASE("a document can be constructed with a root element")
+{
+	XML::ElementNodePtr root(new XML::ElementNode(TXT("root")));
+	XML::DocumentPtr document(new XML::Document(root));
+
+	TEST_TRUE(document->hasRootElement() == true);
+	TEST_TRUE(document->getRootElement() == root);
+}
+TEST_CASE_END
+
+TEST_CASE("an empty document can be made via a helper")
+{
+	XML::DocumentPtr document = XML::makeDocument();
+
+	TEST_TRUE(document->hasRootElement() == false);
+}
+TEST_CASE_END
+
+TEST_CASE("a document with a root element can be made via a helper")
+{
+	XML::DocumentPtr document = XML::makeDocument
+	(
+		XML::makeElement(TXT("root"))
+	);
+
+	TEST_TRUE(document->hasRootElement() == true);
+	TEST_TRUE(document->getRootElement()->name() == TXT("root"));
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

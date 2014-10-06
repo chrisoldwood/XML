@@ -43,5 +43,14 @@ TEST_CASE("only the value can be modified after construction")
 }
 TEST_CASE_END
 
+TEST_CASE("a shared attribute can be constructed via a helper")
+{
+	XML::AttributePtr attribute = XML::makeAttribute(TXT("name"), TXT("value"));
+
+	TEST_TRUE(attribute->name() == TXT("name"));
+	TEST_TRUE(attribute->value() == TXT("value"));
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

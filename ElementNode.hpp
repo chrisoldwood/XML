@@ -31,8 +31,14 @@ public:
 	//! Construction from the element name.
 	ElementNode(const tstring& name);
 
+	//! Construction from an element name and single attribute.
+	ElementNode(const tstring& name, AttributePtr attribute);
+
 	//! Construction from an element name and attributes.
 	ElementNode(const tstring& name, const Attributes& attributes);
+
+	//! Construction from an element name and single child element.
+	ElementNode(const tstring& name, Core::RefCntPtr<ElementNode> childNode);
 
 	//
 	// Properties
@@ -106,6 +112,38 @@ inline const Attributes& ElementNode::getAttributes() const
 inline Attributes& ElementNode::getAttributes()
 {
 	return m_attributes;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Create an empty element.
+
+inline ElementNodePtr makeElement()
+{
+	return ElementNodePtr(new ElementNode());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Create an element with a specified name.
+
+inline ElementNodePtr makeElement(const tstring& name)
+{
+	return ElementNodePtr(new ElementNode(name));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Create an element with a specified name and a single attribute.
+
+inline ElementNodePtr makeElement(const tstring& name, AttributePtr attribute)
+{
+	return ElementNodePtr(new ElementNode(name, attribute));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Construction from an element name and single child element.
+
+inline ElementNodePtr makeElement(const tstring& name, Core::RefCntPtr<ElementNode> childNode)
+{
+	return ElementNodePtr(new ElementNode(name, childNode));
 }
 
 //namespace XML

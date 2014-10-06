@@ -55,5 +55,96 @@ TEST_CASE("the name can be set via a mutator")
 }
 TEST_CASE_END
 
+TEST_CASE("an element can be constructed with a single attribute")
+{
+	XML::AttributePtr   attribute = XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value")));
+	XML::ElementNodePtr node = XML::ElementNodePtr(new XML::ElementNode(TXT("element"), attribute));
+
+	TEST_TRUE(node->name() == TXT("element"));
+	TEST_TRUE(node->getAttributes().count() == 1);
+	TEST_TRUE(node->getAttributes().get(TXT("name")) == attribute);
+}
+TEST_CASE_END
+
+TEST_CASE("an element can be constructed with an empty set of attributes")
+{
+	XML::Attributes     attributes;
+	XML::ElementNodePtr node = XML::ElementNodePtr(new XML::ElementNode(TXT("element"), attributes));
+
+	TEST_TRUE(node->name() == TXT("element"));
+	TEST_TRUE(node->getAttributes().count() == 0);
+}
+TEST_CASE_END
+
+TEST_CASE("an element can be constructed with a set of attributes")
+{
+	XML::Attributes attributes;
+
+	XML::AttributePtr attribute = XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value")));
+
+	attributes.setAttribute(attribute);
+
+	XML::ElementNodePtr node = XML::ElementNodePtr(new XML::ElementNode(TXT("element"), attributes));
+
+	TEST_TRUE(node->name() == TXT("element"));
+	TEST_TRUE(node->getAttributes().count() == 1);
+	TEST_TRUE(node->getAttributes().get(TXT("name")) == attribute);
+}
+TEST_CASE_END
+
+TEST_CASE("an element can be constructed with a name and a single child element")
+{
+	XML::ElementNodePtr child = XML::ElementNodePtr(new XML::ElementNode(TXT("child")));
+	XML::ElementNodePtr parent = XML::ElementNodePtr(new XML::ElementNode(TXT("parent"), child));
+
+	TEST_TRUE(parent->name() == TXT("parent"));
+	TEST_TRUE(parent->getChildCount() == 1);
+
+	XML::ElementNodePtr firstChild = Core::dynamic_ptr_cast<XML::ElementNode>(*parent->beginChild());
+
+	TEST_TRUE(firstChild->name() == TXT("child"));
+}
+TEST_CASE_END
+
+TEST_CASE("an element with no name can be constructed via a helper")
+{
+	XML::ElementNodePtr node = XML::makeElement();
+
+	TEST_TRUE(node->name().empty());
+}
+TEST_CASE_END
+
+TEST_CASE("an element can be constructed with a name via a helper")
+{
+	XML::ElementNodePtr node = XML::makeElement(TXT("name"));
+
+	TEST_TRUE(node->name() == TXT("name"));
+}
+TEST_CASE_END
+
+TEST_CASE("an element can be constructed with a name and single attribute via a helper")
+{
+	XML::AttributePtr   attribute = XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value")));
+	XML::ElementNodePtr node = XML::makeElement(TXT("element"), attribute);
+
+	TEST_TRUE(node->name() == TXT("element"));
+	TEST_TRUE(node->getAttributes().count() == 1);
+	TEST_TRUE(node->getAttributes().get(TXT("name")) == attribute);
+}
+TEST_CASE_END
+
+TEST_CASE("an element can be constructed with a name and a single child element via a helper")
+{
+	XML::ElementNodePtr parent = XML::makeElement(TXT("parent"), XML::makeElement(TXT("child")));
+
+	TEST_TRUE(parent->name() == TXT("parent"));
+	TEST_TRUE(parent->getChildCount() == 1);
+
+	XML::ElementNodePtr firstChild = Core::dynamic_ptr_cast<XML::ElementNode>(*parent->beginChild());
+
+	TEST_TRUE(firstChild->name() == TXT("child"));
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

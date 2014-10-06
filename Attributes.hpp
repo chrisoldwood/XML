@@ -29,6 +29,9 @@ public:
 	//! Default constructor.
 	Attributes();
 
+	//! Construction with a single attribute.
+	Attributes(AttributePtr attribute);
+
 	//! Destructor.
 	~Attributes();
 	
