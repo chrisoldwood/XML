@@ -59,6 +59,9 @@ public:
 	//! Get the attributes.
 	Attributes& getAttributes();
 
+	//! Get the value of an attribute by name or throw if not found.
+	const tstring& getAttributeValue(const tstring& name) const; // throw(InvalidArgException)
+
 private:
 	//
 	// Members.
@@ -112,6 +115,14 @@ inline const Attributes& ElementNode::getAttributes() const
 inline Attributes& ElementNode::getAttributes()
 {
 	return m_attributes;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get the value of an attribute by name or throw if not found.
+
+inline const tstring& ElementNode::getAttributeValue(const tstring& name) const
+{
+	return m_attributes.get(name)->value();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

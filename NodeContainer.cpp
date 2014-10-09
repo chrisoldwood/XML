@@ -28,6 +28,17 @@ NodeContainer::~NodeContainer()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Get a child by its index.
+
+NodePtr NodeContainer::getChild(size_t index) const
+{
+	if (index >= m_childNodes.size())
+		throw Core::InvalidArgException(Core::fmt(TXT("Invalid child node index '%u'"), index));
+
+	return m_childNodes[index];
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Append a child node.
 
 void NodeContainer::appendChild(NodePtr& node)

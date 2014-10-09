@@ -13,6 +13,7 @@
 
 #include "Node.hpp"
 #include <vector>
+#include <Core/BadLogicException.hpp>
 
 namespace XML
 {
@@ -42,6 +43,13 @@ public:
 
 	//! Get the count of child nodes.
 	size_t getChildCount() const;
+
+	//! Get a child by its index.
+	NodePtr getChild(size_t index) const;
+
+	//! Get a child by its index.
+	template<typename T>
+	Core::RefCntPtr<T> getChild(size_t index) const;
 
 	//! Get the start iterator for the child nodes.
 	const_iterator beginChild() const;
@@ -99,6 +107,20 @@ inline bool NodeContainer::hasChildren() const
 inline size_t NodeContainer::getChildCount() const
 {
 	return m_childNodes.size();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Get a child by its index.
+
+template<typename T>
+inline Core::RefCntPtr<T> NodeContainer::getChild(size_t index) const
+{
+	Core::RefCntPtr<T> node = Core::dynamic_ptr_cast<T>(getChild(index));
+
+	if (node.get() == nullptr)
+		throw Core::BadLogicException(TXT("Failed to downcast node type"));
+
+	return node;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

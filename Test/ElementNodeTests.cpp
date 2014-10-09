@@ -106,6 +106,28 @@ TEST_CASE("an element can be constructed with a name and a single child element"
 }
 TEST_CASE_END
 
+TEST_CASE("the value for a single attribute can be requested by its name")
+{
+	XML::Attributes attributes;
+
+	XML::AttributePtr attribute = XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value")));
+
+	attributes.setAttribute(attribute);
+
+	XML::ElementNodePtr node = XML::ElementNodePtr(new XML::ElementNode(TXT("element"), attributes));
+
+	TEST_TRUE(node->getAttributeValue(TXT("name")) == TXT("value"));
+}
+TEST_CASE_END
+
+TEST_CASE("requesting the value for an unknown attribute throws")
+{
+	XML::ElementNodePtr node = XML::ElementNodePtr(new XML::ElementNode(TXT("element")));
+
+	TEST_THROWS(node->getAttributeValue(TXT("unknown")));
+}
+TEST_CASE_END
+
 TEST_CASE("an element with no name can be constructed via a helper")
 {
 	XML::ElementNodePtr node = XML::makeElement();

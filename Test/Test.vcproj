@@ -152,6 +152,9 @@
 				RelativePath=".\ElementNodeTests.cpp">
 			</File>
 			<File
+				RelativePath=".\NodeContainerTests.cpp">
+			</File>
+			<File
 				RelativePath=".\ProcessingNodeTests.cpp">
 			</File>
 			<File
