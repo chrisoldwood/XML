@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include <Core/UnitTest.hpp>
 #include <XML/ElementNode.hpp>
+#include <XML/TextNode.hpp>
 
 TEST_SET(ElementNode)
 {
@@ -155,6 +156,18 @@ TEST_CASE("an element can be constructed with a name and single attribute via a 
 }
 TEST_CASE_END
 
+TEST_CASE("an element can be constructed with a name and set of attributes via a helper")
+{
+	XML::AttributePtr   attribute = XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value")));
+	XML::Attributes     attributes(attribute);
+	XML::ElementNodePtr node = XML::makeElement(TXT("element"), attributes);
+
+	TEST_TRUE(node->name() == TXT("element"));
+	TEST_TRUE(node->getAttributes().count() == 1);
+	TEST_TRUE(node->getAttributeValue(TXT("name")) == TXT("value"));
+}
+TEST_CASE_END
+
 TEST_CASE("an element can be constructed with a name and a single child element via a helper")
 {
 	XML::ElementNodePtr parent = XML::makeElement(TXT("parent"), XML::makeElement(TXT("child")));
@@ -165,6 +178,19 @@ TEST_CASE("an element can be constructed with a name and a single child element 
 	XML::ElementNodePtr firstChild = Core::dynamic_ptr_cast<XML::ElementNode>(*parent->beginChild());
 
 	TEST_TRUE(firstChild->name() == TXT("child"));
+}
+TEST_CASE_END
+
+TEST_CASE("an element can be constructed with a name and a text node via a helper")
+{
+	XML::ElementNodePtr parent = XML::makeElement(TXT("parent"), XML::makeText(TXT("text")));
+
+	TEST_TRUE(parent->name() == TXT("parent"));
+	TEST_TRUE(parent->getChildCount() == 1);
+
+	XML::TextNodePtr firstChild = Core::dynamic_ptr_cast<XML::TextNode>(*parent->beginChild());
+
+	TEST_TRUE(firstChild->text() == TXT("text"));
 }
 TEST_CASE_END
 

@@ -89,6 +89,23 @@ void Attributes::setAttribute(const AttributePtr& attribute)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//! Set an attribute from the name/value pair.
+
+void Attributes::setAttribute(const tstring& name, const tstring& value)
+{
+	if (name.empty())
+		throw Core::InvalidArgException(TXT("Failed to set an attribute as the name is empty"));
+
+	// Replace value or append attribute to collection.
+	AttributePtr existing = find(name);
+
+	if (existing.get() != nullptr)
+		existing->setValue(value);
+	else
+		m_attributes.push_back(makeAttribute(name, value));
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //! Find an attribute by its name.
 
 AttributePtr Attributes::find(const tstring& name) const

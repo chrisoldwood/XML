@@ -78,6 +78,14 @@ inline void TextNode::setText(const tstring& text_)
 	m_text = text_;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Create a text node.
+
+inline TextNodePtr makeText(const tstring& text)
+{
+	return TextNodePtr(new TextNode(text));
+}
+
 //namespace XML
 }
 

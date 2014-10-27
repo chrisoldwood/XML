@@ -37,8 +37,9 @@ public:
 	//! Construction from an element name and attributes.
 	ElementNode(const tstring& name, const Attributes& attributes);
 
-	//! Construction from an element name and single child element.
-	ElementNode(const tstring& name, Core::RefCntPtr<ElementNode> childNode);
+	//! Construction from an element name and single child node.
+	template<typename T>
+	ElementNode(const tstring& name, Core::RefCntPtr<T> childNode);
 
 	//
 	// Properties
@@ -75,6 +76,18 @@ private:
 
 //! The default ElementNode smart-pointer type.
 typedef Core::RefCntPtr<ElementNode> ElementNodePtr;
+
+////////////////////////////////////////////////////////////////////////////////
+//! Construction from an element name and single child element.
+
+template<typename T>
+inline ElementNode::ElementNode(const tstring& name, Core::RefCntPtr<T> childNode)
+	: NodeContainer(this)
+	, m_name(name)
+	, m_attributes()
+{
+	appendChild(childNode);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the real type of the node.
@@ -150,9 +163,18 @@ inline ElementNodePtr makeElement(const tstring& name, AttributePtr attribute)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Construction from an element name and single child element.
+//! Create an element with a specified name and a set of attributes.
 
-inline ElementNodePtr makeElement(const tstring& name, Core::RefCntPtr<ElementNode> childNode)
+inline ElementNodePtr makeElement(const tstring& name, Attributes attributes)
+{
+	return ElementNodePtr(new ElementNode(name, attributes));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Construction from an element name and single child node.
+
+template<typename T>
+inline ElementNodePtr makeElement(const tstring& name, Core::RefCntPtr<T> childNode)
 {
 	return ElementNodePtr(new ElementNode(name, childNode));
 }

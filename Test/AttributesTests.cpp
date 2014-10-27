@@ -53,6 +53,32 @@ TEST_CASE("setting an attribute replaces the existing attribute value if it alre
 }
 TEST_CASE_END
 
+TEST_CASE("an attribute can be added from the name/value pair")
+{
+	XML::Attributes attributes;
+
+	attributes.setAttribute(TXT("name"), TXT("value"));
+
+	XML::Attributes::const_iterator it = attributes.begin();
+
+	TEST_TRUE((*it)->name() == TXT("name"));
+	TEST_TRUE((*it)->value() == TXT("value"));
+}
+TEST_CASE_END
+
+TEST_CASE("an attribute can be replaced from a name/value pair")
+{
+	XML::Attributes attributes;
+
+	attributes.setAttribute(TXT("name"), TXT("original"));
+	attributes.setAttribute(TXT("name"), TXT("replacement"));
+
+	XML::Attributes::const_iterator it = attributes.begin();
+
+	TEST_TRUE((*it)->value() == TXT("replacement"));
+}
+TEST_CASE_END
+
 TEST_CASE("attempting to add an unnamed attribute throws an exception")
 {
 	XML::Attributes attributes;

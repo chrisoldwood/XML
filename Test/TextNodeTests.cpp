@@ -55,5 +55,13 @@ TEST_CASE("the text value can be set via a mutator")
 }
 TEST_CASE_END
 
+TEST_CASE("a text node can be created via a helper")
+{
+	XML::TextNodePtr node = XML::makeText(TXT("text"));
+
+	TEST_TRUE(node->text() == TXT("text"));
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

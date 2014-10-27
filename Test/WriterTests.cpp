@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include <Core/UnitTest.hpp>
 #include <XML/Writer.hpp>
+#include <XML/TextNode.hpp>
 
 TEST_SET(Writer)
 {
@@ -129,6 +130,44 @@ TEST_CASE("The indenting style can be overridden")
 	const tstring output = XML::Writer::writeDocument(document, XML::Writer::DEFAULT, TXT("  "));
 
 	TEST_TRUE(output == TXT("<grandparent>\n  <parent>\n    <child/>\n  </parent>\n</grandparent>\n"));
+}
+TEST_CASE_END
+
+TEST_CASE("A child text node is written between the element tags when no formatting is specified")
+{
+	XML::DocumentPtr document = XML::makeDocument
+	(
+		XML::makeElement
+		(
+			TXT("root"), XML::makeElement
+			(
+				TXT("element"), XML::makeText(TXT("value"))
+			)
+		)
+	);
+	
+	const tstring output = XML::Writer::writeDocument(document, defaultTestFlags);
+
+	TEST_TRUE(output == TXT("<root><element>value</element></root>"));
+}
+TEST_CASE_END
+
+TEST_CASE("A single child text node and the element tags are written on the same line")
+{
+	XML::DocumentPtr document = XML::makeDocument
+	(
+		XML::makeElement
+		(
+			TXT("root"), XML::makeElement
+			(
+				TXT("element"), XML::makeText(TXT("value"))
+			)
+		)
+	);
+	
+	const tstring output = XML::Writer::writeDocument(document, XML::Writer::DEFAULT, TXT("  "));
+
+	TEST_TRUE(output == TXT("<root>\n  <element>value</element>\n</root>\n"));
 }
 TEST_CASE_END
 

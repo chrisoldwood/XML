@@ -50,17 +50,6 @@ ElementNode::ElementNode(const tstring& name, const Attributes& attributes)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Construction from an element name and single child element.
-
-ElementNode::ElementNode(const tstring& name, Core::RefCntPtr<ElementNode> childNode)
-	: NodeContainer(this)
-	, m_name(name)
-	, m_attributes()
-{
-	appendChild(childNode);
-}
-
-////////////////////////////////////////////////////////////////////////////////
 //! Destructor.
 
 ElementNode::~ElementNode()

@@ -6,6 +6,7 @@
 #include "Common.hpp"
 #include "Writer.hpp"
 #include <Core/StringUtils.hpp>
+#include <XML/TextNode.hpp>
 
 namespace XML
 {
@@ -81,9 +82,22 @@ void Writer::writeContainer(const NodeContainer& container)
 
 	for (; it != end; ++it)
 	{
-		XML::ElementNodePtr child = Core::dynamic_ptr_cast<XML::ElementNode>(*it);
+		if ((*it)->type() == ELEMENT_NODE)
+		{
+			XML::ElementNodePtr child = Core::dynamic_ptr_cast<XML::ElementNode>(*it);
 
-		writeElement(child);
+			writeElement(child);
+		}
+		else if ((*it)->type() == TEXT_NODE)
+		{
+			XML::TextNodePtr child = Core::dynamic_ptr_cast<XML::TextNode>(*it);
+
+			m_buffer += child->text();
+		}
+		else
+		{
+			ASSERT_FALSE();
+		}
 	}
 }
 
@@ -119,6 +133,9 @@ void Writer::writeElement(ElementNodePtr element)
 
 	if (element->hasChildren())
 	{
+		const bool inlineValue = ( (element->getChildCount() == 1)
+								&& (element->getChild(0)->type() == TEXT_NODE) );
+
 		if (!element->getAttributes().isEmpty())
 		{
 			m_buffer += indentation;
@@ -127,20 +144,26 @@ void Writer::writeElement(ElementNodePtr element)
 			writeAttributes(element->getAttributes());
 
 			m_buffer += TXT(">");
-			m_buffer += terminator;
+
+			if (!inlineValue)
+				m_buffer += terminator;
 		}
 		else
 		{
 			m_buffer += indentation;
 			m_buffer += Core::fmt(TXT("<%s>"), element->name().c_str());
-			m_buffer += terminator;
+
+			if (!inlineValue)
+				m_buffer += terminator;
 		}
 
 		++m_depth;
 		writeContainer(*element);
 		--m_depth;
 
-		m_buffer += indentation;
+		if (!inlineValue)
+			m_buffer += indentation;
+
 		m_buffer += Core::fmt(TXT("</%s>"), element->name().c_str());
 		m_buffer += terminator;
 	}
