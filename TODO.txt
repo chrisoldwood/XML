@@ -8,14 +8,4 @@
 
 - Add support for CDATA.
 
-- Add shorthand on Attributes for getting an attribute value.
-
-- Change use of GetType() to use some form of Extension Interface.
-
-- get child node by index (as order is important).
-
-- get first element node by name.
-
-- get text node value for an element.
-
-- create element node with range of child elements.
+- Escaping of attributes and text nodes.

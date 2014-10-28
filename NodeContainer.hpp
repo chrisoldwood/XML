@@ -72,7 +72,7 @@ public:
 
 	//! Append a child node.
 	template<typename T>
-	void appendChild(Core::RefCntPtr<T>& node);
+	void appendChild(Core::RefCntPtr<T> node);
 
 protected:
 	//! Constructor.
@@ -157,7 +157,7 @@ inline NodeContainer::iterator NodeContainer::endChild()
 
 //! Append a child node.
 template<typename T>
-inline void NodeContainer::appendChild(Core::RefCntPtr<T>& node)
+inline void NodeContainer::appendChild(Core::RefCntPtr<T> node)
 {
 	NodePtr p = node;
 

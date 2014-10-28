@@ -141,11 +141,29 @@ TEST_CASE("an attribute can be got by its name")
 }
 TEST_CASE_END
 
+TEST_CASE("an attribute value can be retrieved directly by its name")
+{
+	XML::Attributes attributes;
+
+	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value"))));
+
+	TEST_TRUE(attributes.getValue(TXT("name")) == TXT("value"));
+}
+TEST_CASE_END
+
 TEST_CASE("getting an invalid attribute throws an exception")
 {
 	XML::Attributes attributes;
 
 	TEST_THROWS(attributes.get(TXT("invalid_name")));
+}
+TEST_CASE_END
+
+TEST_CASE("getting the value for an invalid attribute throws an exception")
+{
+	XML::Attributes attributes;
+
+	TEST_THROWS(attributes.getValue(TXT("invalid_name")));
 }
 TEST_CASE_END
 

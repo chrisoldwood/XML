@@ -85,6 +85,9 @@ public:
 	//! Get an attribute by its name or throw if not found.
 	AttributePtr get(const tstring& name) const; // throw(InvalidArgException)
 
+	//! Get the value for an attribute by its name or throw if not found.
+	const tstring& getValue(const tstring& name) const; // throw(InvalidArgException)
+
 private:
 	//
 	// Members.

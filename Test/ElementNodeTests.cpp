@@ -194,5 +194,92 @@ TEST_CASE("an element can be constructed with a name and a text node via a helpe
 }
 TEST_CASE_END
 
+TEST_CASE("an element can be constructed with a range of nodes")
+{
+	XML::NodePtr children[] = { XML::makeElement(TXT("child-1")), XML::makeText(TXT("child-2")) };
+
+	XML::ElementNodePtr parent = XML::makeElement(TXT("parent"), children, children+ARRAY_SIZE(children));
+
+	TEST_TRUE(parent->getChildCount() == 2);
+	TEST_TRUE(parent->getChild(0)->type() == XML::ELEMENT_NODE);
+	TEST_TRUE(parent->getChild(1)->type() == XML::TEXT_NODE);
+}
+TEST_CASE_END
+
+TEST_CASE("an empty string is returned for the child text when an element has no children")
+{
+	XML::ElementNodePtr node = XML::makeElement(TXT("element"));
+
+	TEST_TRUE(node->getTextValue() == TXT(""));
+}
+TEST_CASE_END
+
+TEST_CASE("the child text node for an element can be retrieved directly")
+{
+	XML::ElementNodePtr node = XML::makeElement(TXT("element"), XML::makeText(TXT("text")));
+
+	TEST_TRUE(node->getTextValue() == TXT("text"));
+}
+TEST_CASE_END
+
+TEST_CASE("retrieving the child text for an element throws when the child is not a text node")
+{
+	XML::ElementNodePtr node = XML::makeElement(TXT("element"), XML::makeElement(TXT("child")));
+
+	TEST_THROWS(node->getTextValue());
+}
+TEST_CASE_END
+
+TEST_CASE("retrieving the child text for an element throws when more than one child exists")
+{
+	XML::ElementNodePtr parent = XML::makeElement(TXT("parent"));
+
+	parent->appendChild(XML::makeText(TXT("child-1")));
+	parent->appendChild(XML::makeText(TXT("child-2")));
+
+	TEST_THROWS(parent->getTextValue());
+}
+TEST_CASE_END
+
+TEST_CASE("retrieving the first element node returns nothing when none exist")
+{
+	XML::ElementNodePtr parent = XML::makeElement(TXT("parent"));
+
+	XML::ElementNodePtr child = parent->findFirstElement(TXT("child"));
+
+	TEST_TRUE(child.empty());
+}
+TEST_CASE_END
+
+TEST_CASE("retrieving the first element node returns only the first node")
+{
+	XML::NodePtr first = XML::makeElement(TXT("first"));
+	XML::NodePtr second = XML::makeElement(TXT("second"));
+
+	XML::NodePtr children[] = { first, second };
+
+	XML::ElementNodePtr parent = XML::makeElement(TXT("parent"), children, children+ARRAY_SIZE(children));
+
+	XML::ElementNodePtr child = parent->findFirstElement(TXT("second"));
+
+	TEST_TRUE(child.get() == second.get());
+}
+TEST_CASE_END
+
+TEST_CASE("retrieving the first element node returns the first element node")
+{
+	XML::NodePtr first = XML::makeText(TXT("text"));
+	XML::NodePtr second = XML::makeElement(TXT("element"));
+
+	XML::NodePtr children[] = { first, second };
+
+	XML::ElementNodePtr parent = XML::makeElement(TXT("parent"), children, children+ARRAY_SIZE(children));
+
+	XML::ElementNodePtr child = parent->findFirstElement(TXT("element"));
+
+	TEST_TRUE(child.get() == second.get());
+}
+TEST_CASE_END
+
 }
 TEST_SET_END

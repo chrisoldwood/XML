@@ -41,6 +41,9 @@ public:
 	template<typename T>
 	ElementNode(const tstring& name, Core::RefCntPtr<T> childNode);
 
+	//! Construction from an element name and a range of child nodes.
+	ElementNode(const tstring& name, NodePtr* begin, NodePtr* end);
+
 	//
 	// Properties
 	//
@@ -60,8 +63,18 @@ public:
 	//! Get the attributes.
 	Attributes& getAttributes();
 
+	//
+	// Methods
+	//
+
 	//! Get the value of an attribute by name or throw if not found.
 	const tstring& getAttributeValue(const tstring& name) const; // throw(InvalidArgException)
+
+	//! Get the child text node value if it exists.
+	tstring getTextValue() const; // throw(BadLogicException)
+
+	//! Find the first element node matching the given name.
+	Core::RefCntPtr<ElementNode> findFirstElement(const tstring& name) const;
 
 private:
 	//
@@ -177,6 +190,12 @@ template<typename T>
 inline ElementNodePtr makeElement(const tstring& name, Core::RefCntPtr<T> childNode)
 {
 	return ElementNodePtr(new ElementNode(name, childNode));
+}
+
+//! Construction from an element name and a range of child nodes.
+inline ElementNodePtr makeElement(const tstring& name, NodePtr* begin, NodePtr* end)
+{
+	return ElementNodePtr(new ElementNode(name, begin, end));
 }
 
 //namespace XML

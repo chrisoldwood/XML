@@ -133,5 +133,13 @@ AttributePtr Attributes::get(const tstring& name) const
 	return attribute;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//! Get the value for an attribute by its name or throw if not found.
+
+const tstring& Attributes::getValue(const tstring& name) const
+{
+	return get(name)->value();
+}
+
 //namespace XML
 }
