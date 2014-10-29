@@ -94,9 +94,9 @@ typedef Core::RefCntPtr<ElementNode> ElementNodePtr;
 //! Construction from an element name and single child element.
 
 template<typename T>
-inline ElementNode::ElementNode(const tstring& name, Core::RefCntPtr<T> childNode)
+inline ElementNode::ElementNode(const tstring& name_, Core::RefCntPtr<T> childNode)
 	: NodeContainer(this)
-	, m_name(name)
+	, m_name(name_)
 	, m_attributes()
 {
 	appendChild(childNode);
@@ -146,9 +146,9 @@ inline Attributes& ElementNode::getAttributes()
 ////////////////////////////////////////////////////////////////////////////////
 //! Get the value of an attribute by name or throw if not found.
 
-inline const tstring& ElementNode::getAttributeValue(const tstring& name) const
+inline const tstring& ElementNode::getAttributeValue(const tstring& name_) const
 {
-	return m_attributes.get(name)->value();
+	return m_attributes.get(name_)->value();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

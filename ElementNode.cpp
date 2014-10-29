@@ -23,9 +23,9 @@ ElementNode::ElementNode()
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from the element name.
 
-ElementNode::ElementNode(const tstring& name)
+ElementNode::ElementNode(const tstring& name_)
 	: NodeContainer(this)
-	, m_name(name)
+	, m_name(name_)
 	, m_attributes()
 {
 }
@@ -33,9 +33,9 @@ ElementNode::ElementNode(const tstring& name)
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from an element name and single attribute.
 
-ElementNode::ElementNode(const tstring& name, AttributePtr attribute)
+ElementNode::ElementNode(const tstring& name_, AttributePtr attribute)
 	: NodeContainer(this)
-	, m_name(name)
+	, m_name(name_)
 	, m_attributes(attribute)
 {
 }
@@ -43,9 +43,9 @@ ElementNode::ElementNode(const tstring& name, AttributePtr attribute)
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from an element name and attributes.
 
-ElementNode::ElementNode(const tstring& name, const Attributes& attributes)
+ElementNode::ElementNode(const tstring& name_, const Attributes& attributes)
 	: NodeContainer(this)
-	, m_name(name)
+	, m_name(name_)
 	, m_attributes(attributes)
 {
 }
@@ -53,9 +53,9 @@ ElementNode::ElementNode(const tstring& name, const Attributes& attributes)
 ////////////////////////////////////////////////////////////////////////////////
 //! Construction from an element name and a range of child nodes.
 
-ElementNode::ElementNode(const tstring& name, NodePtr* begin, NodePtr* end)
+ElementNode::ElementNode(const tstring& name_, NodePtr* begin, NodePtr* end)
 	: NodeContainer(this)
-	, m_name(name)
+	, m_name(name_)
 {
 	for (NodePtr* it = begin; it != end; ++it)
 		appendChild(*it);
@@ -90,13 +90,13 @@ tstring ElementNode::getTextValue() const
 ////////////////////////////////////////////////////////////////////////////////
 //! Find the first element node matching the given name.
 
-Core::RefCntPtr<ElementNode> ElementNode::findFirstElement(const tstring& name) const
+Core::RefCntPtr<ElementNode> ElementNode::findFirstElement(const tstring& name_) const
 {
 	for (const_iterator it = beginChild(); it != endChild(); ++it)
 	{
 		ElementNodePtr element = Core::dynamic_ptr_cast<ElementNode>(*it);
 
-		if ( (!element.empty()) && (element->name() == name) )
+		if ( (!element.empty()) && (element->name() == name_) )
 			return element;
 	}
 
