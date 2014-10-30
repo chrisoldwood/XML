@@ -107,6 +107,16 @@ TEST_CASE("an element can be constructed with a name and a single child element"
 }
 TEST_CASE_END
 
+TEST_CASE("the value for a single attribute can be set directly")
+{
+	XML::ElementNodePtr node = XML::ElementNodePtr(new XML::ElementNode(TXT("element")));
+
+	node->setAttribute(TXT("name"), TXT("value"));
+
+	TEST_TRUE(node->getAttributeValue(TXT("name")) == TXT("value"));
+}
+TEST_CASE_END
+
 TEST_CASE("the value for a single attribute can be requested by its name")
 {
 	XML::Attributes attributes;

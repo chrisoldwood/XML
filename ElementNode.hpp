@@ -67,6 +67,9 @@ public:
 	// Methods
 	//
 
+	//! Set an attribute from a name/value pair.
+	void setAttribute(const tstring& name, const tstring& value);
+
 	//! Get the value of an attribute by name or throw if not found.
 	const tstring& getAttributeValue(const tstring& name) const; // throw(InvalidArgException)
 
@@ -141,6 +144,14 @@ inline const Attributes& ElementNode::getAttributes() const
 inline Attributes& ElementNode::getAttributes()
 {
 	return m_attributes;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//! Set an attribute from a name/value pair.
+
+inline void ElementNode::setAttribute(const tstring& name_, const tstring& value)
+{
+	return m_attributes.setAttribute(name_, value);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
