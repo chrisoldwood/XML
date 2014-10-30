@@ -74,10 +74,10 @@ public:
 	void clear();
 
 	//! Set an attribute.
-	void setAttribute(const AttributePtr& attribute);
+	void set(const AttributePtr& attribute);
 
 	//! Set an attribute from the name/value pair.
-	void setAttribute(const tstring& name, const tstring& value);
+	void set(const tstring& name, const tstring& value);
 
 	//! Find an attribute by its name.
 	AttributePtr find(const tstring& name) const;

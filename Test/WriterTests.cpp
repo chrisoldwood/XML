@@ -74,7 +74,7 @@ TEST_CASE("Attributes on an empty element are serialized as key/value pairs in t
 	XML::AttributePtr   attribute(new XML::Attribute(TXT("key"), TXT("value")));
 	
 	document->appendChild(rootNode);
-	rootNode->getAttributes().setAttribute(attribute);
+	rootNode->getAttributes().set(attribute);
 
 	const tstring output = XML::Writer::writeDocument(document, defaultTestFlags);
 
@@ -91,7 +91,7 @@ TEST_CASE("Attributes on an non-empty element are serialized as key/value pairs 
 	
 	document->appendChild(parentNode);
 	parentNode->appendChild(childNode);
-	parentNode->getAttributes().setAttribute(attribute);
+	parentNode->getAttributes().set(attribute);
 
 	const tstring output = XML::Writer::writeDocument(document, defaultTestFlags);
 

@@ -74,7 +74,7 @@ void Attributes::clear()
 //! Set an attribute. If the attribute name already exists in the collection
 //! it replaces it, otherwise it is appeneded.
 
-void Attributes::setAttribute(const AttributePtr& attribute)
+void Attributes::set(const AttributePtr& attribute)
 {
 	if (attribute->name().empty())
 		throw Core::InvalidArgException(TXT("Failed to set an attribute as the name is empty"));
@@ -91,7 +91,7 @@ void Attributes::setAttribute(const AttributePtr& attribute)
 ////////////////////////////////////////////////////////////////////////////////
 //! Set an attribute from the name/value pair.
 
-void Attributes::setAttribute(const tstring& name, const tstring& value)
+void Attributes::set(const tstring& name, const tstring& value)
 {
 	if (name.empty())
 		throw Core::InvalidArgException(TXT("Failed to set an attribute as the name is empty"));

@@ -83,7 +83,7 @@ TEST_CASE("an element can be constructed with a set of attributes")
 
 	XML::AttributePtr attribute = XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value")));
 
-	attributes.setAttribute(attribute);
+	attributes.set(attribute);
 
 	XML::ElementNodePtr node = XML::ElementNodePtr(new XML::ElementNode(TXT("element"), attributes));
 
@@ -123,7 +123,7 @@ TEST_CASE("the value for a single attribute can be requested by its name")
 
 	XML::AttributePtr attribute = XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value")));
 
-	attributes.setAttribute(attribute);
+	attributes.set(attribute);
 
 	XML::ElementNodePtr node = XML::ElementNodePtr(new XML::ElementNode(TXT("element"), attributes));
 

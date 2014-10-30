@@ -31,7 +31,7 @@ TEST_CASE("setting an attribute adds it to the sequence if it doesn't already ex
 
 	XML::Attributes attributes;
 
-	attributes.setAttribute(attribute);
+	attributes.set(attribute);
 
 	XML::Attributes::const_iterator it = attributes.begin();
 
@@ -44,8 +44,8 @@ TEST_CASE("setting an attribute replaces the existing attribute value if it alre
 {
 	XML::Attributes attributes;
 
-	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("original"))));
-	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("replacement"))));
+	attributes.set(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("original"))));
+	attributes.set(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("replacement"))));
 
 	XML::Attributes::const_iterator it = attributes.begin();
 
@@ -57,7 +57,7 @@ TEST_CASE("an attribute can be added from the name/value pair")
 {
 	XML::Attributes attributes;
 
-	attributes.setAttribute(TXT("name"), TXT("value"));
+	attributes.set(TXT("name"), TXT("value"));
 
 	XML::Attributes::const_iterator it = attributes.begin();
 
@@ -70,8 +70,8 @@ TEST_CASE("an attribute can be replaced from a name/value pair")
 {
 	XML::Attributes attributes;
 
-	attributes.setAttribute(TXT("name"), TXT("original"));
-	attributes.setAttribute(TXT("name"), TXT("replacement"));
+	attributes.set(TXT("name"), TXT("original"));
+	attributes.set(TXT("name"), TXT("replacement"));
 
 	XML::Attributes::const_iterator it = attributes.begin();
 
@@ -85,7 +85,7 @@ TEST_CASE("attempting to add an unnamed attribute throws an exception")
 
 	XML::AttributePtr unnamedAttribute(new XML::Attribute);
 
-	TEST_THROWS(attributes.setAttribute(unnamedAttribute));
+	TEST_THROWS(attributes.set(unnamedAttribute));
 }
 TEST_CASE_END
 
@@ -93,7 +93,7 @@ TEST_CASE("modifying the value of an attribute modifies the sequence")
 {
 	XML::Attributes attributes;
 
-	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("original"))));
+	attributes.set(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("original"))));
 
 	XML::Attributes::iterator it = attributes.begin();
 
@@ -109,7 +109,7 @@ TEST_CASE("an attribute can be searched for by its name")
 {
 	XML::Attributes attributes;
 
-	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value"))));
+	attributes.set(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value"))));
 
 	XML::AttributePtr attribute = attributes.find(TXT("name"));
 
@@ -132,7 +132,7 @@ TEST_CASE("an attribute can be got by its name")
 {
 	XML::Attributes attributes;
 
-	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value"))));
+	attributes.set(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value"))));
 
 	XML::AttributePtr attribute = attributes.get(TXT("name"));
 
@@ -145,7 +145,7 @@ TEST_CASE("an attribute value can be retrieved directly by its name")
 {
 	XML::Attributes attributes;
 
-	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value"))));
+	attributes.set(XML::AttributePtr(new XML::Attribute(TXT("name"), TXT("value"))));
 
 	TEST_TRUE(attributes.getValue(TXT("name")) == TXT("value"));
 }
@@ -171,8 +171,8 @@ TEST_CASE("clearing the attributes empties the sequence")
 {
 	XML::Attributes attributes;
 
-	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name1"), TXT("value1"))));
-	attributes.setAttribute(XML::AttributePtr(new XML::Attribute(TXT("name2"), TXT("value2"))));
+	attributes.set(XML::AttributePtr(new XML::Attribute(TXT("name1"), TXT("value1"))));
+	attributes.set(XML::AttributePtr(new XML::Attribute(TXT("name2"), TXT("value2"))));
 
 	TEST_TRUE(attributes.count() != 0);
 

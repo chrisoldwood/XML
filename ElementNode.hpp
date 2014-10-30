@@ -151,7 +151,7 @@ inline Attributes& ElementNode::getAttributes()
 
 inline void ElementNode::setAttribute(const tstring& name_, const tstring& value)
 {
-	return m_attributes.setAttribute(name_, value);
+	return m_attributes.set(name_, value);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

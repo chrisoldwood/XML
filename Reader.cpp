@@ -283,7 +283,7 @@ void Reader::readProcessingTag(const tchar* nodeBegin)
 
 				current = readAttribute(current, nodeEnd, name, value);
 
-				attributes.setAttribute(AttributePtr(new Attribute(name, value)));
+				attributes.set(AttributePtr(new Attribute(name, value)));
 			}
 		}
 
@@ -435,7 +435,7 @@ void Reader::readElementTag(const tchar* nodeBegin)
 
 				current = readAttribute(current, nodeEnd, attribName, attribValue);
 
-				attributes.setAttribute(AttributePtr(new Attribute(attribName, attribValue)));
+				attributes.set(AttributePtr(new Attribute(attribName, attribValue)));
 			}
 		}
 
