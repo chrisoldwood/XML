@@ -108,35 +108,10 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			Name="Build"
+			Filter="">
 			<File
-				RelativePath=".\Attributes.cpp">
-			</File>
-			<File
-				RelativePath=".\CDataNode.cpp">
-			</File>
-			<File
-				RelativePath=".\CharTable.cpp">
-			</File>
-			<File
-				RelativePath=".\CommentNode.cpp">
-			</File>
-			<File
-				RelativePath=".\DocTypeNode.cpp">
-			</File>
-			<File
-				RelativePath=".\Document.cpp">
-			</File>
-			<File
-				RelativePath=".\ElementNode.cpp">
-			</File>
-			<File
-				RelativePath=".\Node.cpp">
-			</File>
-			<File
-				RelativePath=".\NodeContainer.cpp">
+				RelativePath=".\Common.hpp">
 			</File>
 			<File
 				RelativePath=".\pch.cpp">
@@ -153,67 +128,69 @@
 						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\ProcessingNode.cpp">
-			</File>
-			<File
-				RelativePath=".\Reader.cpp">
-			</File>
-			<File
-				RelativePath=".\TextNode.cpp">
-			</File>
-			<File
-				RelativePath=".\Writer.cpp">
-			</File>
-			<File
-				RelativePath=".\XPathIterator.cpp">
-			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			Name="Document"
+			Filter="">
 			<File
 				RelativePath=".\Attribute.hpp">
+			</File>
+			<File
+				RelativePath=".\Attributes.cpp">
 			</File>
 			<File
 				RelativePath=".\Attributes.hpp">
 			</File>
 			<File
+				RelativePath=".\CDataNode.cpp">
+			</File>
+			<File
 				RelativePath=".\CDataNode.hpp">
 			</File>
 			<File
-				RelativePath=".\CharTable.hpp">
+				RelativePath=".\CommentNode.cpp">
 			</File>
 			<File
 				RelativePath=".\CommentNode.hpp">
 			</File>
 			<File
-				RelativePath=".\Common.hpp">
+				RelativePath=".\DocTypeNode.cpp">
 			</File>
 			<File
 				RelativePath=".\DocTypeNode.hpp">
 			</File>
 			<File
+				RelativePath=".\Document.cpp">
+			</File>
+			<File
 				RelativePath=".\Document.hpp">
+			</File>
+			<File
+				RelativePath=".\ElementNode.cpp">
 			</File>
 			<File
 				RelativePath=".\ElementNode.hpp">
 			</File>
 			<File
-				RelativePath=".\IOException.hpp">
+				RelativePath=".\Node.cpp">
 			</File>
 			<File
 				RelativePath=".\Node.hpp">
 			</File>
 			<File
+				RelativePath=".\NodeContainer.cpp">
+			</File>
+			<File
 				RelativePath=".\NodeContainer.hpp">
+			</File>
+			<File
+				RelativePath=".\ProcessingNode.cpp">
 			</File>
 			<File
 				RelativePath=".\ProcessingNode.hpp">
 			</File>
 			<File
-				RelativePath=".\Reader.hpp">
+				RelativePath=".\TextNode.cpp">
 			</File>
 			<File
 				RelativePath=".\TextNode.hpp">
@@ -221,18 +198,45 @@
 			<File
 				RelativePath=".\Types.hpp">
 			</File>
+		</Filter>
+		<Filter
+			Name="IO"
+			Filter="">
+			<File
+				RelativePath=".\CharTable.cpp">
+			</File>
+			<File
+				RelativePath=".\CharTable.hpp">
+			</File>
+			<File
+				RelativePath=".\IOException.hpp">
+			</File>
+			<File
+				RelativePath=".\Reader.cpp">
+			</File>
+			<File
+				RelativePath=".\Reader.hpp">
+			</File>
+			<File
+				RelativePath=".\Writer.cpp">
+			</File>
 			<File
 				RelativePath=".\Writer.hpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="XPath"
+			Filter="">
+			<File
+				RelativePath=".\XPathIterator.cpp">
 			</File>
 			<File
 				RelativePath=".\XPathIterator.hpp">
 			</File>
 		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
-		</Filter>
+		<File
+			RelativePath=".\DevNotes.txt">
+		</File>
 		<File
 			RelativePath=".\ReadMe.txt">
 		</File>
