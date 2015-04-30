@@ -44,6 +44,8 @@
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-Werror" />
+			<Add option="-Winvalid-pch" />
+			<Add option='-include &quot;Common.hpp&quot;' />
 			<Add option="-DWIN32" />
 			<Add option="-D_LIB" />
 			<Add directory="..\..\Lib" />
@@ -57,7 +59,10 @@
 		<Unit filename="CharTable.hpp" />
 		<Unit filename="CommentNode.cpp" />
 		<Unit filename="CommentNode.hpp" />
-		<Unit filename="Common.hpp" />
+		<Unit filename="Common.hpp">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
 		<Unit filename="DocTypeNode.cpp" />
 		<Unit filename="DocTypeNode.hpp" />
 		<Unit filename="Document.cpp" />
