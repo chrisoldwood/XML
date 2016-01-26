@@ -67,6 +67,7 @@
 		<Unit filename="DocTypeNodeTests.cpp" />
 		<Unit filename="DocumentTests.cpp" />
 		<Unit filename="ElementNodeTests.cpp" />
+		<Unit filename="NodeContainerTests.cpp" />
 		<Unit filename="ProcessingNodeTests.cpp" />
 		<Unit filename="ReaderTests.cpp" />
 		<Unit filename="Test.cpp" />

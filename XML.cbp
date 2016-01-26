@@ -63,6 +63,7 @@
 			<Option compile="1" />
 			<Option weight="0" />
 		</Unit>
+		<Unit filename="DevNotes.txt" />
 		<Unit filename="DocTypeNode.cpp" />
 		<Unit filename="DocTypeNode.hpp" />
 		<Unit filename="Document.cpp" />
