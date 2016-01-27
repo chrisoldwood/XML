@@ -14,11 +14,6 @@
 #include "Types.hpp"
 #include <Core/RefCntPtr.hpp>
 
-#ifdef __GNUG__
-// base class 'X' has a non-virtual destructor
-#pragma GCC diagnostic ignored "-Weffc++"
-#endif
-
 namespace XML
 {
 
