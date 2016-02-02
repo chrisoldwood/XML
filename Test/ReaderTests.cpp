@@ -3,7 +3,7 @@
 //! \brief  The unit tests for the Reader class.
 //! \author Chris Oldwood
 
-#include "stdafx.h"
+#include "Common.hpp"
 #include <Core/UnitTest.hpp>
 #include <XML/Reader.hpp>
 #include <XML/TextNode.hpp>
