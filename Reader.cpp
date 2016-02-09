@@ -272,7 +272,7 @@ void Reader::readProcessingTag(const tchar* nodeBegin)
 
 		while (current != nodeEnd)
 		{
-			// Skip whitespace.
+			// Skip white-space.
 			while ( (current != nodeEnd) && (s_charTable.isWhitespace(*current)) )
 				++current;
 
@@ -319,7 +319,7 @@ void Reader::readTextNode(const tchar* nodeBegin)
 		if ( (!whitespaceOnly) && (m_stack.size() == 1) )
 			throw IOException(TXT("Non-whitespace character(s) outside the root element"));
 
-		// Not just whitespace OR we're keeping whitespace?
+		// Not just white-space OR we're keeping white-space?
 		if (!whitespaceOnly || ((m_flags & DISCARD_WHITESPACE) == 0))
 		{
 			// Create node and append to collection.
@@ -424,7 +424,7 @@ void Reader::readElementTag(const tchar* nodeBegin)
 
 		while (current != nodeEnd)
 		{
-			// Skip whitespace.
+			// Skip white-space.
 			while ( (current != nodeEnd) && (s_charTable.isWhitespace(*current)) )
 				++current;
 
@@ -560,7 +560,7 @@ const tchar* Reader::readIdentifier(const tchar* begin, const tchar* end, tstrin
 	size_t length = current - begin;
 
 	if (length == 0)
-		throw IOException(TXT("Tag identifer missing"));
+		throw IOException(TXT("Tag identifier missing"));
 
 	// Extract identifier.
 	identifier = tstring(begin, current);
@@ -590,7 +590,7 @@ const tchar* Reader::readAttribute(const tchar* begin, const tchar* end, tstring
 	// Extract attribute name.
 	name = tstring(begin, current);
 
-	// Skip whitespace.
+	// Skip white-space.
 	while ( (current != end) && (s_charTable.isWhitespace(*current)) )
 		++current;
 
@@ -599,7 +599,7 @@ const tchar* Reader::readAttribute(const tchar* begin, const tchar* end, tstring
 
 	++current;
 
-	// Skip whitespace.
+	// Skip white-space.
 	while ( (current != end) && (s_charTable.isWhitespace(*current)) )
 		++current;
 

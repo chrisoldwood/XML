@@ -27,7 +27,7 @@ public:
 	enum Flag
 	{
 		DEFAULT				= 0x0000,	//!< Default flags.
-		DISCARD_WHITESPACE	= 0x0001,	//!< Discard whitespace-only text nodes.
+		DISCARD_WHITESPACE	= 0x0001,	//!< Discard white-space-only text nodes.
 		DISCARD_COMMENTS	= 0x0002,	//!< Discard comment nodes.
 		DISCARD_PROC_INSTNS	= 0x0004,	//!< Discard processing instructions.
 		DISCARD_DOC_TYPES	= 0x0008,	//!< Discard document type declarations.

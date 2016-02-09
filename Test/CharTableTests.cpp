@@ -10,7 +10,7 @@
 TEST_SET(CharTable)
 {
 
-TEST_CASE("table returns true for characters classified as whitespace")
+TEST_CASE("table returns true for characters classified as white-space")
 {
 	XML::CharTable table;
 
@@ -21,7 +21,7 @@ TEST_CASE("table returns true for characters classified as whitespace")
 }
 TEST_CASE_END
 
-TEST_CASE("table returns false for characters not classified as whitespace")
+TEST_CASE("table returns false for characters not classified as white-space")
 {
 	XML::CharTable table;
 

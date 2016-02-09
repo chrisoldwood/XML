@@ -44,7 +44,7 @@ TEST_CASE("default construction initialises iterator to the end of the sequence"
 }
 TEST_CASE_END
 
-TEST_CASE("dereferecing an iterator at the sequence end throws an exception")
+TEST_CASE("dereferencing an iterator at the sequence end throws an exception")
 {
 	XML::XPathIterator end;
 

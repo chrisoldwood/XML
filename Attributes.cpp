@@ -67,7 +67,7 @@ void Attributes::clear()
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Set an attribute. If the attribute name already exists in the collection
-//! it replaces it, otherwise it is appeneded.
+//! it replaces it, otherwise it is appended.
 
 void Attributes::set(const AttributePtr& attribute)
 {

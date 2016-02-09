@@ -22,7 +22,7 @@ namespace XML
 typedef std::vector<NodePtr> Nodes;
 
 ////////////////////////////////////////////////////////////////////////////////
-//! The mixin class used for node types that can contain other nodes. The outer
+//! The mix-in class used for node types that can contain other nodes. The outer
 //! parent node is held internally so that we can fix up the child nodes here
 //! automatically.
 

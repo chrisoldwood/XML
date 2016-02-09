@@ -24,7 +24,7 @@ CharTable::CharTable()
 
 	std::fill(m_ascii, m_ascii+TABLE_SIZE, 0);
 
-	// Set the whitespace chars.
+	// Set the white-space chars.
 	appendFlags(TXT(' '),  WHITESPACE);
 	appendFlags(TXT('\t'), WHITESPACE);
 	appendFlags(TXT('\r'), WHITESPACE);

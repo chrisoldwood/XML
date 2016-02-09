@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //! \file   Types.hpp
-//! \brief  Enumerations used to support simple RTTI syle operations.
+//! \brief  Enumerations used to support simple RTTI style operations.
 //! \author Chris Oldwood
 
 // Check for previous inclusion

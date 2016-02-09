@@ -54,7 +54,7 @@ TEST_CASE("a child can be retrieved by its index and downcast to its concrete no
 }
 TEST_CASE_END
 
-TEST_CASE("retrieving a child node and downcasting to the wrong type throws")
+TEST_CASE("retrieving a child node and down-casting to the wrong type throws")
 {
 	XML::ElementNodePtr container = XML::makeElement();
 	XML::ElementNodePtr child = XML::makeElement(TXT("child"));

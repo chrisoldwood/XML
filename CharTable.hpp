@@ -29,12 +29,12 @@ public:
 
 	//! Destructor.
 	~CharTable();
-	
+
 	//
 	// Methods.
 	//
 
-	//! Check if a character is whitespace. 
+	//! Check if a character is white-space.
 	bool isWhitespace(tchar character) const;
 
 	//! Check if a character is valid in an identifier.
@@ -57,7 +57,7 @@ private:
 	enum
 	{
 		DEFAULT		= 0x0000,		//!< The default flags.
-		WHITESPACE	= 0x0001,		//!< A whitespace character.
+		WHITESPACE	= 0x0001,		//!< A white-space character.
 		IDENTIFIER	= 0x0002,		//!< A character for use in identifiers.
 	};
 
@@ -79,7 +79,7 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-//! Check if a character is whitespace. 
+//! Check if a character is white-space.
 
 inline bool CharTable::isWhitespace(tchar character) const
 {

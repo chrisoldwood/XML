@@ -221,7 +221,7 @@ TEST_CASE("child tag order maintained")
 }
 TEST_CASE_END
 
-TEST_CASE("tags can contain extra whitespace")
+TEST_CASE("tags can contain extra white-space")
 {
 	XML::DocumentPtr document = XML::Reader::readDocument(TXT("<?x v = \"1.0\" encoding = 'utf-8'  ?><R a = 'b'  />"));
 
@@ -239,7 +239,7 @@ TEST_CASE("tags can contain extra whitespace")
 }
 TEST_CASE_END
 
-TEST_CASE("insignificant whitespace can be discarded during parsing")
+TEST_CASE("insignificant white-space can be discarded during parsing")
 {
 	const tstring xml = TXT(" \t<?xml?><!DOCTYPE R><!----><R>\r\n</R> \t");
 
