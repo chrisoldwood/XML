@@ -33,7 +33,7 @@ NodeContainer::~NodeContainer()
 NodePtr NodeContainer::getChild(size_t index) const
 {
 	if (index >= m_childNodes.size())
-		throw Core::InvalidArgException(Core::fmt(TXT("Invalid child node index '%u'"), index));
+		throw Core::InvalidArgException(Core::fmt(TXT("Invalid child node index '%Iu'"), index));
 
 	return m_childNodes[index];
 }
